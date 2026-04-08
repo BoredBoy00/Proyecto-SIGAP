@@ -20,9 +20,25 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'apellido',
+        'telefono',
+        'fecha_de_nacimiento',
+        'rol',
+        'estado',
+        'id_empresa',
         'email',
         'password',
     ];
+
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class, 'id_empresa', 'id_empresa');
+    }
+
+    public function ordenes()
+    {
+        return $this->hasMany(Orden::class, 'id_usuario', 'id');
+    }
 
     /**
      * The attributes that should be hidden for serialization.
