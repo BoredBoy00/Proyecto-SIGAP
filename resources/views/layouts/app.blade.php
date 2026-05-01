@@ -27,11 +27,17 @@
                 @php
                     $navItems = [
                         ['name' => 'Facturación', 'icon' => 'file-text', 'route' => '#', 'active' => false, 'hasDropdown' => true],
-                        ['name' => 'Usuarios', 'icon' => 'users', 'route' => route('users.index'), 'active' => request()->routeIs('users.*'), 'hasDropdown' => false],
+                    ];
+
+                    if (Auth::user()->rol === 'admin') {
+                        $navItems[] = ['name' => 'Usuarios', 'icon' => 'users', 'route' => route('users.index'), 'active' => request()->routeIs('users.*'), 'hasDropdown' => false];
+                    }
+
+                    $navItems = array_merge($navItems, [
                         ['name' => 'Clientes', 'icon' => 'user-plus', 'route' => route('patients.create'), 'active' => request()->routeIs('patients.*'), 'hasDropdown' => false],
                         ['name' => 'Convenios', 'icon' => 'handshake', 'route' => '#', 'active' => false, 'hasDropdown' => false],
                         ['name' => 'Exámenes', 'icon' => 'test-tube', 'route' => route('exams.index'), 'active' => request()->routeIs('exams.*'), 'hasDropdown' => false],
-                    ];
+                    ]);
                 @endphp
 
                 @foreach($navItems as $item)
@@ -66,13 +72,28 @@
 
                 <!-- Right Section (User Profile) -->
                 <div class="flex items-center space-x-4">
-                    <div class="text-right flex flex-col justify-center">
-                        <span class="text-sm font-semibold text-slate-800 leading-tight">Dra. Ana López</span>
-                        <span class="text-xs text-slate-500 leading-tight">Administrador</span>
-                    </div>
-                    <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
-                        <i data-lucide="user" class="w-5 h-5"></i>
-                    </div>
+                    @auth
+                        <div class="text-right flex flex-col justify-center">
+                            <span class="text-sm font-semibold text-slate-800 leading-tight">{{ Auth::user()->name }} {{ Auth::user()->apellido }}</span>
+                            <span class="text-xs text-slate-500 leading-tight capitalize">{{ Auth::user()->rol }}</span>
+                        </div>
+                        <div class="relative group">
+                            <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 cursor-pointer">
+                                <i data-lucide="user" class="w-5 h-5"></i>
+                            </div>
+                            <!-- Dropdown -->
+                            <div class="absolute right-0 pt-2 w-48 hidden group-hover:block z-50">
+                                <div class="bg-white rounded-xl shadow-lg py-2 border border-gray-100">
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center transition-colors">
+                                            <i data-lucide="log-out" class="w-4 h-4 mr-2"></i> Cerrar Sesión
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    @endauth
                 </div>
             </header>
 
