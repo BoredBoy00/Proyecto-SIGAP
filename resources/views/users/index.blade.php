@@ -63,9 +63,13 @@
             <div class="p-6 md:p-8 border-b border-gray-100 flex flex-col md:flex-row items-center justify-between gap-4">
                 <!-- Search -->
                 <div class="relative w-full md:w-[320px]">
-                    <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                    <form action="{{ route('users.index') }}" method="GET" class="relative w-full md:w-[320px]">
+                        <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400"></i>
                     <input type="text" placeholder="Buscar usuario por nombre o rol..." 
-                           class="w-full pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all text-slate-700 placeholder-slate-400">
+                        class="w-full pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all text-slate-700 placeholder-slate-400"
+                        name="search">
+                    </form>
+                    
                 </div>
 
                 <!-- Right Controls -->
@@ -113,13 +117,24 @@
                             </td>
                             <td class="px-6 py-4 text-slate-500">{{ $user->updated_at->diffForHumans() }}</td>
                             <td class="px-6 py-4">
-                                <div class="flex items-center justify-center space-x-2">
+                                <div class="flex items-center justify-center space-x-2"> 
+
+                                    <!-- Editar -->
+                                    <a href="{{ route('users.edit', $user->id) }}">
                                     <button class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-blue-500 hover:bg-blue-50 transition-colors">
                                         <i data-lucide="edit-2" class="w-4 h-4"></i>
                                     </button>
-                                    <button class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 transition-colors">
-                                        <i data-lucide="trash-2" class="w-4 h-4"></i>
-                                    </button>
+                                    </a>
+
+                                    <!-- Eliminar -->
+                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE') 
+                                        <button type="submit" class="...">
+                                            <i data-lucide="trash-2"></i>
+                                        </button>
+                                    </form>
+                                    
                                 </div>
                             </td>
                         </tr>

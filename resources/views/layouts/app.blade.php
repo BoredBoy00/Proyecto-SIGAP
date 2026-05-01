@@ -42,8 +42,8 @@
 
                 @foreach($navItems as $item)
                     <a href="{{ $item['route'] }}" 
-                       class="flex items-center justify-between px-4 py-3 rounded-xl transition-colors
-                       {{ $item['active'] ? 'bg-blue-50 text-blue-600 font-medium' : 'text-slate-500 hover:bg-gray-50 hover:text-slate-800' }}">
+                        class="flex items-center justify-between px-4 py-3 rounded-xl transition-colors
+                        {{ $item['active'] ? 'bg-blue-50 text-blue-600 font-medium' : 'text-slate-500 hover:bg-gray-50 hover:text-slate-800' }}">
                         <div class="flex items-center space-x-3">
                             <i data-lucide="{{ $item['icon'] }}" class="w-5 h-5 {{ $item['active'] ? 'text-blue-600' : 'text-slate-400' }}"></i>
                             <span>{{ $item['name'] }}</span>
@@ -101,6 +101,7 @@
             <div class="w-full max-w-[1400px] flex-1 overflow-y-auto px-8 pb-8 pt-4">
                 @yield('content')
             </div>
+
         </main>
 
         <!-- Lucide Icons -->

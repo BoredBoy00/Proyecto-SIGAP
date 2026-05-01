@@ -3,10 +3,12 @@
 @section('title', 'Nuevo Usuario')
 
 @section('header_left')
+<a href="{{ route('users.index') }}">
     <button class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center hover:bg-blue-100 transition-colors">
         <i data-lucide="arrow-left" class="w-5 h-5"></i>
     </button>
     <h2 class="text-xl font-bold text-slate-800 tracking-tight">Nuevo Usuario</h2>
+</a>
 @endsection
 
 @section('content')

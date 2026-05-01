@@ -9,17 +9,60 @@ use Carbon\Carbon;
 
 class UserController extends Controller
 {
-    public function index()
-    {
-        // Get users that are not 'paciente'
-        $usuarios = User::where('rol', '!=', 'paciente')->orderBy('id', 'desc')->get();
+    public function index(Request $request)
+{
+    $search = $request->input('search');
 
-        return view('users.index', compact('usuarios'));
-    }
+    $usuarios = User::where('rol', '!=', 'paciente')
+        ->when($search, function ($query, $search) {
+            return $query->where(function($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%")
+                ->orWhere('apellido', 'LIKE', "%{$search}%")
+                ->orWhere('email', 'LIKE', "%{$search}%")
+                ->orWhere('rol', 'LIKE', "%{$search}%");
+            });
+        })
+        ->orderBy('id', 'desc')
+        ->get();
+
+    return view('users.index', compact('usuarios'));
+}
 
     public function create()
     {
         return view('users.create');
+    }
+
+    public function edit($id)
+    {
+        return view('users.edit', ['user' => User::findOrFail($id)]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+        'nombres' => 'required|string|max:255',
+        'apellidos' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email,'.$id, 
+        'rol' => 'required|string',
+    ]);
+
+    $user = User::findOrFail($id);
+    $user->update([
+        'name' => $request->nombres,
+        'apellido' => $request->apellidos,
+        'email' => $request->email,
+        'rol' => $request->rol,
+    ]);
+
+    return redirect()->route('users.index')->with('success', 'Usuario actualizado');
+    }
+
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+        return redirect(to: '/usuarios');
     }
 
     public function store(Request $request)
@@ -40,6 +83,8 @@ class UserController extends Controller
             'rol' => $request->rol,
             'estado' => 'Activo',
         ]);
+
+    
 
         return redirect()->route('users.index')->with('success', 'Usuario creado exitosamente');
     }
