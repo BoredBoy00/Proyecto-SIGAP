@@ -16,6 +16,7 @@ class Examen extends Model
         'codigo_examen',
         'nombre_examen',
         'precio_actual',
+        'tiempo_entrega',
     ];
 
     public function detalles()

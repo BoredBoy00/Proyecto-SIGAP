@@ -33,11 +33,10 @@ class PatientController extends Controller
             'email' => $request->email,
         ]);
 
-
         return redirect()->route('patients.create')->with('success', 'Paciente registrado exitosamente');
     }
 
-    public function edit($id) 
+    public function edit($id)
     {
         return view('patients.edit', ['patient' => Patient::findOrFail($id)]);
     }
@@ -61,7 +60,6 @@ class PatientController extends Controller
             'fecha_nacimiento' => $request->fecha_nacimiento,
             'telefono' => $request->telefono,
             'email' => $request->email,
-
         ]);
 
         return redirect()->route('patients.look')->with('success', 'Paciente actualizado exitosamente');

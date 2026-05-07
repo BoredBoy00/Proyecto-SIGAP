@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -22,7 +22,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropForeign(['id_empresa']);
-            $table->dropColumn(['apellido', 'telefono', 'fecha_de_nacimiento', 'id_empresa']);
+            $table->dropColumn(['telefono', 'fecha_de_nacimiento', 'id_empresa']);
         });
     }
 };

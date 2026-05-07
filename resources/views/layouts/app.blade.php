@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
@@ -42,8 +42,7 @@
 
                 @foreach($navItems as $item)
                     <a href="{{ $item['route'] }}" 
-                        class="flex items-center justify-between px-4 py-3 rounded-xl transition-colors
-                        {{ $item['active'] ? 'bg-blue-50 text-blue-600 font-medium' : 'text-slate-500 hover:bg-gray-50 hover:text-slate-800' }}">
+                        class="flex items-center justify-between px-4 py-3 rounded-xl transition-colors {{ $item['active'] ? 'bg-blue-50 text-blue-600 font-medium' : 'text-slate-500 hover:bg-gray-50 hover:text-slate-800' }}">
                         <div class="flex items-center space-x-3">
                             <i data-lucide="{{ $item['icon'] }}" class="w-5 h-5 {{ $item['active'] ? 'text-blue-600' : 'text-slate-400' }}"></i>
                             <span>{{ $item['name'] }}</span>
@@ -60,8 +59,6 @@
         <main class="flex-1 flex flex-col h-screen relative items-center">
             <!-- Header wrapper -->
             <header class="w-full max-w-[1400px] h-20 bg-white md:bg-transparent border-b md:border-none border-gray-100 flex items-center justify-between px-8 shrink-0 relative top-0 z-10 pt-4 pb-2">
-                
-                <!-- Left Section (Title/Back) -->
                 <div class="flex items-center space-x-4">
                     @hasSection('header_left')
                         @yield('header_left')
@@ -70,7 +67,6 @@
                     @endif
                 </div>
 
-                <!-- Right Section (User Profile) -->
                 <div class="flex items-center space-x-4">
                     @auth
                         <div class="text-right flex flex-col justify-center">
@@ -81,7 +77,6 @@
                             <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 cursor-pointer">
                                 <i data-lucide="user" class="w-5 h-5"></i>
                             </div>
-                            <!-- Dropdown -->
                             <div class="absolute right-0 pt-2 w-48 hidden group-hover:block z-50">
                                 <div class="bg-white rounded-xl shadow-lg py-2 border border-gray-100">
                                     <form method="POST" action="{{ route('logout') }}">
@@ -97,12 +92,10 @@
                 </div>
             </header>
 
-            <!-- Search Form -->
             <div class="w-full max-w-[1400px] px-8 py-4">
                 @yield('search_form')
             </div>
 
-            <!-- Flash Messages -->
             <div class="w-full max-w-[1400px] px-8">
                 @if(session('success'))
                     <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
@@ -112,12 +105,12 @@
                 @endif
             </div>
 
-            <!-- Scrollable Content Area -->
             <div class="w-full max-w-[1400px] flex-1 overflow-y-auto px-8 pb-8 pt-4">
                 @yield('content')
             </div>
-
         </main>
+
+        @stack('modals')
 
         <!-- Lucide Icons -->
         <script src="https://unpkg.com/lucide@latest"></script>
