@@ -99,6 +99,6 @@ class ConvController extends Controller
     {
         $empresa = Empresa::findOrFail($id);
         $empresa->delete();
-        return redirect()->route('convens.index')->with('success', 'Convenio eliminado exitosamente.');
+        return redirect()->route('convens.index')->with('deleted', 'Convenio eliminado exitosamente.');
     }
 }

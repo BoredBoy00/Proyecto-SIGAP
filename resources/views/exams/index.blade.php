@@ -161,11 +161,11 @@
                                             data-precio="{{ $examen->precio_actual }}"
                                             data-tiempo="{{ $examen->tiempo_entrega }}" onclick="openEdit(this)"
                                             class="text-blue-500 hover:text-blue-700 hover:bg-blue-50 p-1.5 rounded-lg hover:ring-4 hover:ring-blue-200 transition-all active:scale-90 cursor-pointer">
-                                            <i data-lucide="edit-2" class="w-4 h-4"></i>
+                                            <i data-lucide="edit-2" class="w-5 h-5"></i>
                                         </button>
                                         <button data-id="{{ $examen->id_examen }}" data-nombre="{{ $examen->nombre_examen }}" onclick="openDelete(this)"
                                             class="text-red-500 hover:text-red-700 hover:bg-red-50 p-1.5 rounded-lg hover:ring-4 hover:ring-red-200 transition-all active:scale-90 cursor-pointer">
-                                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                            <i data-lucide="trash-2" class="w-5 h-5"></i>
                                         </button>
                                     </div>
                                 </td>

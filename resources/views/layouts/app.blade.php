@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
@@ -73,20 +73,16 @@
                             <span class="text-sm font-semibold text-slate-800 leading-tight">{{ Auth::user()->name }} {{ Auth::user()->apellido }}</span>
                             <span class="text-xs text-slate-500 leading-tight capitalize">{{ Auth::user()->rol }}</span>
                         </div>
-                        <div class="relative group">
-                            <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 cursor-pointer">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
                                 <i data-lucide="user" class="w-5 h-5"></i>
                             </div>
-                            <div class="absolute right-0 pt-2 w-48 hidden group-hover:block z-50">
-                                <div class="bg-white rounded-xl shadow-lg py-2 border border-gray-100">
-                                    <form method="POST" action="{{ route('logout') }}">
-                                        @csrf
-                                        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center transition-colors">
-                                            <i data-lucide="log-out" class="w-4 h-4 mr-2"></i> Cerrar Sesión
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
+                            <form method="POST" action="{{ route('logout') }}" class="m-0">
+                                @csrf
+                                <button type="submit" class="w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors" title="Cerrar Sesión">
+                                    <i data-lucide="log-out" class="w-5 h-5"></i>
+                                </button>
+                            </form>
                         </div>
                     @endauth
                 </div>
@@ -98,10 +94,6 @@
 
             <div class="w-full max-w-[1400px] px-8">
                 @if(session('success'))
-                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-                        <strong class="font-bold">¡Éxito! </strong>
-                        <span class="block sm:inline">{{ session('success') }}</span>
-                    </div>
                 @endif
             </div>
 
