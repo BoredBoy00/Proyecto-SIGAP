@@ -34,6 +34,9 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('examenes')->name('exams.')->group(function () {
         Route::get('/', [ExamController::class, 'index'])->name('index');
+        Route::post('/', [ExamController::class, 'store'])->name('store');
+        Route::patch('/{id}', [ExamController::class, 'update'])->name('update');
+        Route::delete('/{id}', [ExamController::class, 'destroy'])->name('destroy');
     });
 
     Route::prefix('usuarios')->name('users.')->middleware('role:admin')->group(function () {

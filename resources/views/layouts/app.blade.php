@@ -104,6 +104,9 @@
 
         </main>
 
+        <!-- Modals (rendered at body level to avoid overflow clipping) -->
+        @stack('modals')
+
         <!-- Lucide Icons -->
         <script src="https://unpkg.com/lucide@latest"></script>
         <script>
