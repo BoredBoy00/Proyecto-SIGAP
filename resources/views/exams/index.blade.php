@@ -50,13 +50,16 @@
                 <p class="text-slate-400 mt-1 font-medium">Gestiona la lista de pruebas clínicas y precios oficiales.</p>
             </div>
             <div class="flex items-center space-x-4">
-                <div class="flex items-center space-x-4 px-6 py-3 bg-[#f1f5f9] border border-blue-100 rounded-2xl">
-                    <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-blue-500 shadow-sm border border-blue-50">
+                <div class="flex items-center space-x-4 px-6 py-3 bg-[#f1f5f9] border-2 border-blue-200 rounded-2xl shadow-sm">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-blue-500 shadow-sm border-2 border-blue-400">
                         <i data-lucide="trending-up" class="w-5 h-5"></i>
                     </div>
                     <div class="flex flex-col">
-                        <span class="text-[11px] uppercase font-extrabold text-[#1e293b] leading-tight tracking-wider">TASA BCV</span>
-                        <span class="text-base font-bold text-blue-700 leading-tight">Bs. {{ number_format($tasaBcv, 2, ',', '.') }}</span>
+                        <span class="text-[11px] uppercase font-extrabold text-[#1e293b] leading-tight tracking-wider">TASA
+                            BCV</span>
+                        <span class="text-base font-bold text-blue-700 leading-tight">Bs.
+                            {{ number_format($tasaBcv, 2, ',', '.') }}</span>
                     </div>
                 </div>
                 <button type="button" onclick="openCreate()"
@@ -70,7 +73,8 @@
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
             <div class="p-6 md:p-8 border-b border-gray-100 flex items-center gap-4">
                 <div class="relative w-full md:w-[450px]">
-                    <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                    <i data-lucide="search"
+                        class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400"></i>
                     <input type="text" id="examSearch" placeholder="Buscar por código o nombre del examen"
                         class="w-full pl-9 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-400 transition-all text-slate-700 placeholder-slate-400 font-medium">
                 </div>
@@ -78,7 +82,8 @@
 
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm text-slate-600 table-auto border-separate border-spacing-0">
-                    <thead class="bg-[#f1f7ff] text-slate-500 font-bold text-[11px] uppercase tracking-wider border-b border-blue-100">
+                    <thead
+                        class="bg-[#f1f7ff] text-slate-500 font-bold text-[11px] uppercase tracking-wider border-b border-blue-100">
                         <tr>
                             <th class="px-6 py-4 w-32 text-center border-b border-blue-100">CÓDIGO</th>
                             <th class="px-6 py-4 text-center border-b border-blue-100">NOMBRE DEL EXAMEN</th>
@@ -90,14 +95,20 @@
                     </thead>
                     <tbody class="divide-y divide-gray-100 text-[15px]" id="examTableBody">
                         @forelse($examenes as $examen)
-                            <tr id="item-{{ $examen->id_examen }}" class="hover:bg-gray-50/50 transition-colors exam-row {{ (request('highlight') == $examen->id_examen || request('highlight') == $examen->codigo_examen) ? 'highlight-flash' : '' }}">
+                            <tr id="item-{{ $examen->id_examen }}"
+                                class="hover:bg-gray-50/50 transition-colors exam-row {{ (request('highlight') == $examen->id_examen || request('highlight') == $examen->codigo_examen) ? 'highlight-flash' : '' }}">
                                 <td class="px-6 py-4 text-center">
-                                    <span class="bg-blue-50/50 font-mono text-blue-600 text-xs font-semibold px-2.5 py-1 rounded-md">{{ $examen->codigo_examen }}</span>
+                                    <span
+                                        class="bg-blue-50/50 font-mono text-blue-600 text-xs font-semibold px-2.5 py-1 rounded-md">{{ $examen->codigo_examen }}</span>
                                 </td>
-                                <td class="px-6 py-4 font-semibold text-slate-800 text-center exam-name">{{ $examen->nombre_examen }}</td>
-                                <td class="px-6 py-4 font-bold text-slate-800 text-center">{{ '$' . number_format($examen->precio_actual, 2) }}</td>
-                                <td class="px-6 py-4 font-medium text-slate-500 text-center">Bs. {{ number_format($examen->precio_actual * $tasaBcv, 2, ',', '.') }}</td>
-                                <td class="px-6 py-4 text-center font-bold text-slate-700">{{ $examen->tiempo_entrega ?? 'N/A' }}</td>
+                                <td class="px-6 py-4 font-semibold text-slate-800 text-center exam-name">
+                                    {{ $examen->nombre_examen }}</td>
+                                <td class="px-6 py-4 font-bold text-slate-800 text-center">
+                                    {{ '$' . number_format($examen->precio_actual, 2) }}</td>
+                                <td class="px-6 py-4 font-bold text-blue-600 text-center">Bs.
+                                    {{ number_format($examen->precio_actual * $tasaBcv, 2, ',', '.') }}</td>
+                                <td class="px-6 py-4 text-center font-bold text-slate-700">
+                                    {{ $examen->tiempo_entrega ?? 'N/A' }}</td>
                                 <td class="px-6 py-4">
                                     <div class="flex items-center justify-center space-x-3">
                                         <button data-id="{{ $examen->id_examen }}" data-codigo="{{ $examen->codigo_examen }}"
@@ -107,7 +118,8 @@
                                             class="text-blue-500 hover:text-blue-700 hover:bg-blue-50 p-1.5 rounded-lg hover:ring-4 hover:ring-blue-200 transition-all active:scale-90 cursor-pointer">
                                             <i data-lucide="edit-2" class="w-4 h-4"></i>
                                         </button>
-                                        <button data-id="{{ $examen->id_examen }}" data-nombre="{{ $examen->nombre_examen }}" onclick="openDelete(this)"
+                                        <button data-id="{{ $examen->id_examen }}" data-nombre="{{ $examen->nombre_examen }}"
+                                            onclick="openDelete(this)"
                                             class="text-red-500 hover:text-red-700 hover:bg-red-50 p-1.5 rounded-lg hover:ring-4 hover:ring-red-200 transition-all active:scale-90 cursor-pointer">
                                             <i data-lucide="trash-2" class="w-4 h-4"></i>
                                         </button>
@@ -118,7 +130,8 @@
                             <tr>
                                 <td colspan="6" class="px-6 py-16 text-center">
                                     <div class="flex flex-col items-center justify-center space-y-2">
-                                        <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-2 border border-gray-100">
+                                        <div
+                                            class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-2 border border-gray-100">
                                             <i data-lucide="inbox" class="w-8 h-8 text-slate-300"></i>
                                         </div>
                                         <p class="text-slate-500 font-medium text-base">No hay exámenes registrados</p>
@@ -135,7 +148,8 @@
 
     <dialog id="deleteDialog" style="max-width:30rem;overflow:visible;">
         <div style="padding:2rem;text-align:center;">
-            <span style="display:inline-flex;align-items:center;justify-content:center;width:3.5rem;height:3.5rem;border-radius:9999px;background:#fee2e2;margin-bottom:1.25rem;">
+            <span
+                style="display:inline-flex;align-items:center;justify-content:center;width:3.5rem;height:3.5rem;border-radius:9999px;background:#fee2e2;margin-bottom:1.25rem;">
                 <i data-lucide="trash-2" style="width:1.6rem;height:1.6rem;color:#ef4444;"></i>
             </span>
             <h3 style="font-size:1.05rem;font-weight:700;color:#1e293b;margin:0 0 0.4rem;">¿Eliminar examen?</h3>
@@ -175,36 +189,43 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div class="md:col-span-1">
                         <label class="block text-sm font-semibold text-slate-700 mb-1">Código</label>
-                        <input type="text" id="f_codigo" name="codigo_examen" required maxlength="15" placeholder="Ej: HEM-01"
+                        <input type="text" id="f_codigo" name="codigo_examen" required maxlength="15"
+                            placeholder="Ej: HEM-01"
                             class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 transition-all uppercase text-slate-700 font-medium">
                     </div>
                     <div class="md:col-span-2">
                         <label class="block text-sm font-semibold text-slate-700 mb-1">Nombre del Examen</label>
-                        <input type="text" id="f_nombre" name="nombre_examen" required maxlength="50" placeholder="Ej: Hematología Completa"
+                        <input type="text" id="f_nombre" name="nombre_examen" required maxlength="50"
+                            placeholder="Ej: Hematología Completa"
                             class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 transition-all text-slate-700 font-medium">
                     </div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-1">Tiempo</label>
-                        <input type="text" id="f_tiempo" name="tiempo_entrega" maxlength="50" placeholder="Ej: 24 horas"
+                        <input type="text" id="f_tiempo" name="tiempo_entrega" required maxlength="4"
+                            placeholder="Ej: 24h o 2d" oninput="this.value = this.value.replace(/[^0-9hdm]/g, '')"
                             class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 transition-all text-slate-700 font-medium">
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-1">Precio (USD)</label>
-                        <div class="price-group flex items-center bg-white border border-gray-200 rounded-lg overflow-hidden">
+                        <div
+                            class="price-group flex items-center bg-white border border-gray-200 rounded-lg overflow-hidden">
                             <div class="flex-none bg-gray-50 px-3 py-2 text-slate-400 font-bold">$</div>
-                            <input type="number" step="0.01" id="f_usd" name="precio_actual" required max="1000" placeholder="0.00"
-                                oninput="calcVes(this.value,'f_ves')"
-                                class="price-input grow px-3 py-2 bg-transparent border-none outline-none text-slate-700 font-bold" spellcheck="false">
+                            <input type="number" step="0.01" id="f_usd" name="precio_actual" required max="1000"
+                                placeholder="0.00" oninput="calcVes(this.value,'f_ves')"
+                                class="price-input grow px-3 py-2 bg-transparent border-none outline-none text-slate-700 font-bold"
+                                spellcheck="false">
                         </div>
                     </div>
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-1">Equivalente (VES)</label>
-                        <div class="price-group flex items-center bg-blue-50/30 border border-gray-200 rounded-lg overflow-hidden transition-all">
+                        <div
+                            class="price-group flex items-center bg-blue-50/30 border border-gray-200 rounded-lg overflow-hidden transition-all">
                             <div class="flex-none bg-blue-50 px-3 py-2 text-blue-600 font-bold">Bs.</div>
                             <input type="text" id="f_ves" placeholder="0,00" oninput="calcUsd(this.value,'f_usd')"
-                                class="price-input grow px-3 py-2 bg-transparent border-none outline-none text-blue-700 font-bold" spellcheck="false">
+                                class="price-input grow px-3 py-2 bg-transparent border-none outline-none text-blue-700 font-bold"
+                                spellcheck="false">
                         </div>
                     </div>
                 </div>
