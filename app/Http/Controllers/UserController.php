@@ -7,14 +7,13 @@ use App\Models\Activity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
 
 class UserController extends Controller
 {
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
-            if (Auth::user()->rol !== 'admin' && Auth::user()->rol !== 'Administrador') {
+            if (!Auth::user() || !in_array(Auth::user()->rol, ['admin', 'Administrador'])) {
                 abort(403, 'Acceso denegado. Solo administradores pueden acceder a esta sección.');
             }
             return $next($request);
@@ -52,11 +51,12 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-        'nombres' => 'required|string|max:255',
-        'apellidos' => 'required|string|max:255',
-        'email' => 'required|email|unique:users,email,'.$id, 
-        'rol' => 'required|string',
-    ]);
+            'nombres' => 'required|string|max:255',
+            'apellidos' => 'required|string|max:255',
+            'cedula' => ['nullable', 'string', 'regex:/^V-[0-9]{1,8}$/', 'max:10', 'unique:users,cedula,'.$id],
+            'email' => 'required|email:rfc,dns|unique:users,email,'.$id, 
+            'rol' => 'required|string',
+        ]);
 
     $user = User::findOrFail($id);
     $user->update([
@@ -64,6 +64,7 @@ class UserController extends Controller
         'apellido' => $request->apellidos,
         'email' => $request->email,
         'rol' => $request->rol,
+        'cedula' => $request->cedula,
     ]);
 
     return redirect()->route('users.index')->with('success', 'Usuario actualizado');
@@ -89,7 +90,8 @@ class UserController extends Controller
         $request->validate([
             'nombres' => 'required|string|max:255',
             'apellidos' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'cedula' => ['nullable', 'string', 'regex:/^V-[0-9]+$/', 'max:10', 'unique:users,cedula'],
+            'email' => 'required|string|email:rfc,dns|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'rol' => 'required|string',
         ]);
@@ -100,6 +102,7 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'rol' => $request->rol,
+            'cedula' => $request->cedula,
             'estado' => 'Activo',
         ]);
 
@@ -111,5 +114,14 @@ class UserController extends Controller
         ]);
 
         return redirect()->route('users.index')->with('success', 'Usuario creado exitosamente');
+    }
+
+    public function toggleStatus($id)
+    {
+        $user = User::findOrFail($id);
+        $user->estado = $user->estado === 'Activo' ? 'Inactivo' : 'Activo';
+        $user->save();
+
+        return back()->with('success', "Estado del usuario actualizado a {$user->estado}");
     }
 }

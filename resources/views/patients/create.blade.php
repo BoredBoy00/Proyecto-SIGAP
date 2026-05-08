@@ -56,7 +56,7 @@
                     </div>
                     <div class="flex flex-col space-y-2">
                         <label class="text-sm font-semibold text-slate-700">Cédula de Identidad</label>
-                        <input type="text" name="cedula" value="{{ old('cedula') }}" placeholder="Ej. V-12345678" class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                        <input type="text" id="cedula-input" name="cedula" value="{{ old('cedula') }}" placeholder="Ejemplo 12345678" maxlength="10" class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                     </div>
                     <div class="flex flex-col space-y-2 relative">
                         <label class="text-sm font-semibold text-slate-700">Fecha de Nacimiento</label>
@@ -65,7 +65,7 @@
                     </div>
                     <div class="flex flex-col space-y-2">
                         <label class="text-sm font-semibold text-slate-700">Teléfono</label>
-                        <input type="text" name="telefono" value="{{ old('telefono') }}" placeholder="Ej. 0414-1234567" class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                        <input type="text" id="telefono-input" name="telefono" value="{{ old('telefono') }}" placeholder="Ej. 0414-1234567" maxlength="12" class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                     </div>
                     <div class="flex flex-col space-y-2">
                         <label class="text-sm font-semibold text-slate-700">Correo Electrónico (Opcional)</label>
@@ -85,4 +85,22 @@
             </form>
         </div>
     </div>
+    <script>
+        const formatField = (id, regex, fn) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            let last = el.value;
+            el.oninput = () => {
+                if (el.value.length < last.length) return last = el.value;
+                el.value = last = fn(el.value.replace(regex, '').toUpperCase());
+            };
+        };
+        formatField('cedula-input', /[^V\-0-9]/g, v => {
+            if (/^[0-9]/.test(v)) v = 'V-' + v;
+            return (v[0] === 'V' && v[1] !== '-' && v.length > 1 ? 'V-' + v.slice(1) : v).slice(0, 10);
+        });
+        formatField('telefono-input', /[^0-9\-]/g, v => {
+            return (v.length >= 4 && !v.includes('-') ? v.slice(0, 4) + '-' + v.slice(4) : v).slice(0, 12);
+        });
+    </script>
 @endsection

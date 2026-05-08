@@ -28,6 +28,8 @@ class User extends Authenticatable
         'id_empresa',
         'email',
         'password',
+        'cedula',
+        'last_login_at',
     ];
 
     public function empresa()
@@ -60,6 +62,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'last_login_at' => 'datetime',
         ];
     }
 }

@@ -35,9 +35,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/registro-individual', [PatientController::class, 'create'])->name('create');
         Route::post('/registro-individual', [PatientController::class, 'store'])->name('store');
         Route::get('/ver', [PatientController::class, 'look'])->name('look');
+        Route::get('/{id}/edit', [PatientController::class, 'edit'])->name('edit');
+        Route::patch('/{id}', [PatientController::class, 'update'])->name('update');
+        Route::delete('/{id}', [PatientController::class, 'destroy'])->name('destroy');
     });
-
-    Route::resource('patients', PatientController::class);
 
     Route::prefix('examenes')->name('exams.')->group(function () {
         Route::get('/', [ExamController::class, 'index'])->name('index');
@@ -52,6 +53,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/nuevo', [UserController::class, 'store'])->name('store');
         Route::get('/{id}/edit', [UserController::class, 'edit'])->name('edit');
         Route::patch('/{id}', [UserController::class, 'update'])->name('update');
+        Route::post('/{id}/toggle-status', [UserController::class, 'toggleStatus'])->name('toggle-status');
         Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy');
     });
 

@@ -30,6 +30,12 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            /** @var \App\Models\User $user */
+            $user = Auth::user();
+            $user->update([
+                'last_login_at' => now(),
+            ]);
+
             $request->session()->regenerate();
 
             // Handle different roles

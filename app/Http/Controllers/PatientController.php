@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Patient;
 use App\Models\Activity;
 use Illuminate\Http\Request;
@@ -19,10 +18,10 @@ class PatientController extends Controller
         $request->validate([
             'nombres' => 'required|string|max:255',
             'apellidos' => 'required|string|max:255',
-            'cedula' => 'required|string|unique:pacientes',
+            'cedula' => ['nullable', 'string', 'regex:/^V-[0-9]{1,8}$/', 'max:10', 'unique:pacientes'],
             'telefono' => 'nullable|string',
             'fecha_nacimiento' => 'nullable|date',
-            'email' => 'nullable|email|unique:pacientes',
+            'email' => 'nullable|email:rfc,dns|unique:pacientes',
         ]);
 
         $patient = Patient::create([
@@ -54,10 +53,10 @@ class PatientController extends Controller
         $request->validate([
             'nombres' => 'required|string|max:255',
             'apellidos' => 'required|string|max:255',
-            'cedula' => 'required|string|unique:pacientes,cedula,' . $id,
+            'cedula' => ['nullable', 'string', 'regex:/^V-[0-9]{1,8}$/', 'max:10', 'unique:pacientes,cedula,' . $id],
             'telefono' => 'nullable|string',
             'fecha_nacimiento' => 'nullable|date',
-            'email' => 'nullable|email|unique:pacientes,email,' . $id,
+            'email' => 'nullable|email:rfc,dns|unique:pacientes,email,' . $id,
         ]);
 
         $patient = Patient::findOrFail($id);
@@ -83,7 +82,7 @@ class PatientController extends Controller
     public function destroy($id)
     {
         $patient = Patient::findOrFail($id);
-        
+
         Activity::create([
             'user_id' => auth()->id(),
             'type' => 'Paciente',
@@ -99,30 +98,21 @@ class PatientController extends Controller
     public function index(Request $request)
     {
         $search = trim($request->input('search'));
-
         $patients = Patient::when($search, function ($query, $search) {
-            return $query->where('nombre', 'LIKE', "%{$search}%")
-                ->orWhere('apellido', 'LIKE', "%{$search}%")
-                ->orWhere('cedula', 'LIKE', "%{$search}%")
-                ->orWhere('telefono', 'LIKE', "%{$search}%")
-                ->orWhere('email', 'LIKE', "%{$search}%");
+            return $query->where(function($q) use ($search) {
+                $q->where('nombre', 'LIKE', "%{$search}%")
+                  ->orWhere('apellido', 'LIKE', "%{$search}%")
+                  ->orWhere('cedula', 'LIKE', "%{$search}%")
+                  ->orWhere('telefono', 'LIKE', "%{$search}%")
+                  ->orWhere('email', 'LIKE', "%{$search}%");
+            });
         })->get();
 
-        return view('patients.index', compact('patients', 'search'));
+        return view('patients.look', compact('patients', 'search'));
     }
 
     public function look(Request $request)
     {
-        $search = trim($request->input('search'));
-
-        $patients = Patient::when($search, function ($query, $search) {
-            return $query->where('nombre', 'LIKE', "%{$search}%")
-                ->orWhere('apellido', 'LIKE', "%{$search}%")
-                ->orWhere('cedula', 'LIKE', "%{$search}%")
-                ->orWhere('telefono', 'LIKE', "%{$search}%")
-                ->orWhere('email', 'LIKE', "%{$search}%");
-        })->get();
-
-        return view('patients.look', compact('patients', 'search'));
+        return $this->index($request);
     }
 }

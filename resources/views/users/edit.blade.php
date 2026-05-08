@@ -51,7 +51,13 @@
                     </div>
                 </div>
 
-                <!-- Row 2: Correo -->
+                <!-- Row 2: Cédula -->
+                <div class="flex flex-col space-y-2">
+                    <label class="text-sm font-semibold text-slate-700">Cédula de Identidad</label>
+                    <input type="text" id="cedula-input" name="cedula" value="{{ $user->cedula }}" placeholder="Ejemplo 12345678" maxlength="10" class="px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                </div>
+
+                <!-- Row 3: Correo -->
                 <div class="flex flex-col space-y-2">
                     <label class="text-sm font-semibold text-slate-700">Correo Electrónico (Usuario)</label>
                     <input type="email" name="email" value="{{ $user->email }}" required placeholder="usuario@sigap.com" class="px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
@@ -83,4 +89,19 @@
             
         </div>
     </div>
+    <script>
+        const formatField = (id, regex, fn) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            let last = el.value;
+            el.oninput = () => {
+                if (el.value.length < last.length) return last = el.value;
+                el.value = last = fn(el.value.replace(regex, '').toUpperCase());
+            };
+        };
+        formatField('cedula-input', /[^V\-0-9]/g, v => {
+            if (/^[0-9]/.test(v)) v = 'V-' + v;
+            return (v[0] === 'V' && v[1] !== '-' && v.length > 1 ? 'V-' + v.slice(1) : v).slice(0, 10);
+        });
+    </script>
 @endsection
