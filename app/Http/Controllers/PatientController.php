@@ -22,12 +22,8 @@ class PatientController extends Controller
             'cedula' => ['nullable', 'string', 'regex:/^V-[0-9]{1,8}$/', 'max:10', 'unique:pacientes'],
             'telefono' => 'nullable|string',
             'fecha_nacimiento' => 'nullable|date',
-<<<<<<< Updated upstream
-            'email' => 'nullable|email:rfc,dns|unique:pacientes',
-=======
             'email' => 'nullable|email|unique:pacientes',
             'id_empresa' => 'nullable|exists:empresas,id_empresa',
->>>>>>> Stashed changes
         ]);
 
         $patient = Patient::create([
