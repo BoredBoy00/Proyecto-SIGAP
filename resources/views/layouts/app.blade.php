@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="es">
 
 <head>
     <meta charset="utf-8">
@@ -81,20 +81,49 @@
         <!-- Navegacion -->
         <nav class="w-full px-4 flex flex-col space-y-1">
             @php
+                $rol = strtolower(Auth::user()->rol ?? '');
+                $isBioanalista = $rol === 'bioanalista';
+                $isAdmin = in_array($rol, ['admin', 'administrador', 'administrador principal']);
+                $isRecepcionista = in_array($rol, ['recepcionista', 'recepcion']);
+
                 $navItems = [
-                    ['name' => 'Inicio', 'icon' => 'layout-grid', 'route' => route('dashboard'), 'active' => request()->routeIs('dashboard'), 'hasDropdown' => false],
-                    ['name' => 'Facturación', 'icon' => 'file-text', 'route' => route('facturacion.index'), 'active' => request()->routeIs('facturacion.*'), 'hasDropdown' => false],
+                    ['name' => 'Inicio', 'icon' => 'layout-grid', 'route' => route('dashboard'), 'active' => request()->routeIs('dashboard')],
                 ];
 
-                if (Auth::check() && in_array(Auth::user()->rol, ['Administrador', 'admin'])) {
-                    $navItems[] = ['name' => 'Usuarios', 'icon' => 'users', 'route' => route('users.index'), 'active' => request()->routeIs('users.*'), 'hasDropdown' => false];
+                // Facturación: visible para todos EXCEPTO bioanalista
+                if (!$isBioanalista) {
+                    $navItems[] = ['name' => 'Facturación', 'icon' => 'file-text', 'route' => route('facturacion.index'), 'active' => request()->routeIs('facturacion.*')];
                 }
 
-                $navItems = array_merge($navItems, [
-                    ['name' => 'Pacientes', 'icon' => 'user-plus', 'route' => route('patients.create'), 'active' => request()->routeIs('patients.*'), 'hasDropdown' => false],
-                    ['name' => 'Convenios', 'icon' => 'handshake', 'route' => route('convens.index'), 'active' => request()->routeIs('convens.*'), 'hasDropdown' => false],
-                    ['name' => 'Exámenes', 'icon' => 'test-tube', 'route' => route('exams.index'), 'active' => request()->routeIs('exams.*'), 'hasDropdown' => false],
-                ]);
+                // Usuarios: solo para admin
+                if ($isAdmin) {
+                    $navItems[] = ['name' => 'Usuarios', 'icon' => 'users', 'route' => route('users.index'), 'active' => request()->routeIs('users.*')];
+                }
+
+                // Pacientes: NO visible para bioanalista
+                if (!$isBioanalista) {
+                    $navItems[] = ['name' => 'Pacientes', 'icon' => 'user-plus', 'route' => route('patients.create'), 'active' => request()->routeIs('patients.*')];
+                }
+
+                // Convenios: visible para todos excepto bioanalista
+                if (!$isBioanalista) {
+                    $navItems[] = ['name' => 'Convenios', 'icon' => 'handshake', 'route' => route('convens.index'), 'active' => request()->routeIs('convens.*')];
+                }
+
+                // Exámenes: visible para TODOS excepto Bioanalista (solo tiene Encargos)
+                if (!$isBioanalista) {
+                    $navItems[] = ['name' => 'Exámenes', 'icon' => 'test-tube', 'route' => route('exams.index'), 'active' => request()->routeIs('exams.*')];
+                }
+
+                // Encargos Pendientes: solo para bioanalista, admin y recepcionista
+                if ($isBioanalista || $isAdmin || $isRecepcionista) {
+                    $navItems[] = ['name' => 'Encargos', 'icon' => 'clipboard-list', 'route' => route('encargos.index'), 'active' => request()->routeIs('encargos.*')];
+                }
+
+                // Resultados Examen: para bioanalista, admin y recepcionista
+                if ($isBioanalista || $isAdmin || $isRecepcionista) {
+                    $navItems[] = ['name' => 'Resultados', 'icon' => 'microscope', 'route' => route('resulexamen.index'), 'active' => request()->routeIs('resulexamen.*')];
+                }
             @endphp
 
             @foreach($navItems as $item)
@@ -106,7 +135,7 @@
                             class="w-5 h-5 {{ $item['active'] ? 'text-white' : 'text-slate-400 group-hover:text-blue-600' }}"></i>
                         <span class="font-bold text-sm tracking-tight">{{ $item['name'] }}</span>
                     </div>
-                    @if($item['hasDropdown'])
+                    @if(!empty($item['hasDropdown']))
                         <i data-lucide="chevron-down"
                             class="w-4 h-4 {{ $item['active'] ? 'text-blue-100' : 'text-slate-400' }}"></i>
                     @endif

@@ -7,6 +7,7 @@ use App\Models\Facturacion;
 use App\Models\Orden;
 use App\Models\Patient;
 use App\Models\Examen;
+use App\Models\Encargo;
 use App\Services\BcvService;
 
 class FacturacionController extends Controller
@@ -77,17 +78,27 @@ class FacturacionController extends Controller
 
         // Crear la Facturación
         Facturacion::create([
-            'id_orden' => $orden->id_orden,
-            'fecha_emision' => now(),
-            'subtotal' => $validated['subtotal'],
+            'id_orden'        => $orden->id_orden,
+            'fecha_emision'   => now(),
+            'subtotal'        => $validated['subtotal'],
             'monto_descuento' => $validated['monto_descuento'],
-            'monto_total' => $validated['monto_total'],
-            'tipo_pago' => $validated['tipo_pago'],
-            'estatus' => $validated['estatus']
+            'monto_total'     => $validated['monto_total'],
+            'tipo_pago'       => $validated['tipo_pago'],
+            'estatus'         => $validated['estatus']
         ]);
 
-        // Además, si facturacion se asocia al paciente de alguna manera, actualmente 'facturacion' y 'ordenes' no tienen 'id_paciente'. 
-        // Sería ideal agregarlo a 'ordenes' o 'facturacion'. Pero por ahora se guardará la factura.
+        // Crear encargo para el bioanalista con los exámenes de la orden
+        $paciente = Patient::find($validated['id_paciente']);
+        $nombresExamenes = Examen::whereIn('id_examen', $validated['examenes'])
+            ->pluck('nombre_examen')->implode(', ');
+
+        Encargo::create([
+            'id_orden'        => $orden->id_orden,
+            'nombre_paciente' => ($paciente->nombre ?? '') . ' ' . ($paciente->apellido ?? ''),
+            'examenes'        => $nombresExamenes,
+            'estado'          => 'Pendiente',
+            'creado_por'      => auth()->user()->name . ' ' . auth()->user()->apellido,
+        ]);
 
         return redirect()->route('facturacion.index')->with('success', 'Factura registrada exitosamente.');
     }

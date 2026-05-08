@@ -9,9 +9,39 @@ use Illuminate\Http\Request;
 
 class ExamController extends Controller
 {
-    public function index(BcvService $bcvService)
+    public function index(Request $request, BcvService $bcvService)
     {
-        $examenes = Examen::all();
+        $query = Examen::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('nombre_examen', 'LIKE', "%{$search}%")
+                  ->orWhere('codigo_examen', 'LIKE', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('sort')) {
+            switch ($request->sort) {
+                case 'oldest':
+                    $query->orderBy('created_at', 'asc');
+                    break;
+                case 'az':
+                    $query->orderBy('nombre_examen', 'asc');
+                    break;
+                case 'za':
+                    $query->orderBy('nombre_examen', 'desc');
+                    break;
+                case 'newest':
+                default:
+                    $query->orderBy('created_at', 'desc');
+                    break;
+            }
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        $examenes = $query->paginate(15)->withQueryString();
         $tasaBcv = $bcvService->getRate();
 
         return view('exams.index', compact('examenes', 'tasaBcv'));

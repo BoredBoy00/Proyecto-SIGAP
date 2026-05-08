@@ -62,23 +62,39 @@
                             {{ number_format($tasaBcv, 2, ',', '.') }}</span>
                     </div>
                 </div>
+                @if(!in_array(strtolower(auth()->user()->rol), ['bioanalista']))
                 <button type="button" onclick="openCreate()"
-                    class="flex items-center space-x-2 px-5 py-2.5 bg-[#198754] text-white font-medium rounded-lg hover:bg-green-700 hover:ring-4 hover:ring-green-100 active:scale-95 transition-all shadow-sm cursor-pointer">
+                    class="flex items-center space-x-2 px-5 py-2.5 bg-[#0d6efd] text-white font-medium rounded-lg hover:bg-blue-700 hover:ring-4 hover:ring-blue-100 active:scale-95 transition-all shadow-sm cursor-pointer">
                     <i data-lucide="plus" class="w-4 h-4"></i>
                     <span>Nuevo Examen</span>
                 </button>
+                @endif
             </div>
         </div>
 
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
-            <div class="p-6 md:p-8 border-b border-gray-100 flex items-center gap-4">
-                <div class="relative w-full md:w-[450px]">
-                    <i data-lucide="search"
-                        class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400"></i>
-                    <input type="text" id="examSearch" placeholder="Buscar por código o nombre del examen"
-                        class="w-full pl-9 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-400 transition-all text-slate-700 placeholder-slate-400 font-medium">
+            <!-- Controls area -->
+            <form action="{{ route('exams.index') }}" method="GET" class="p-6 md:p-8 border-b border-gray-100 flex flex-col md:flex-row items-center justify-between gap-4">
+                <!-- Search -->
+                <div class="relative w-full md:w-[400px]">
+                    <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Buscar por código o nombre del examen..." 
+                           class="w-full pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all text-slate-700 placeholder-slate-400">
                 </div>
-            </div>
+
+                <!-- Right Control -->
+                <div class="relative min-w-[200px] w-full md:w-auto">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+                        <i data-lucide="list-filter" class="w-4 h-4 text-slate-500"></i>
+                    </div>
+                    <select name="sort" onchange="this.form.submit()" class="w-full text-center pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 hover:bg-gray-50 transition-colors focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 appearance-none cursor-pointer" style="text-align-last: center;">
+                        <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Más nuevos</option>
+                        <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Más viejos</option>
+                        <option value="az" {{ request('sort') == 'az' ? 'selected' : '' }}>Nombre (A-Z)</option>
+                        <option value="za" {{ request('sort') == 'za' ? 'selected' : '' }}>Nombre (Z-A)</option>
+                    </select>
+                </div>
+            </form>
 
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm text-slate-600 table-auto border-separate border-spacing-0">
@@ -111,6 +127,7 @@
                                     {{ $examen->tiempo_entrega ?? 'N/A' }}</td>
                                 <td class="px-6 py-4">
                                     <div class="flex items-center justify-center space-x-3">
+                                        @if(!in_array(strtolower(auth()->user()->rol), ['bioanalista']))
                                         <button data-id="{{ $examen->id_examen }}" data-codigo="{{ $examen->codigo_examen }}"
                                             data-nombre="{{ $examen->nombre_examen }}"
                                             data-precio="{{ $examen->precio_actual }}"
@@ -123,6 +140,11 @@
                                             class="text-red-500 hover:text-red-700 hover:bg-red-50 p-1.5 rounded-lg hover:ring-4 hover:ring-red-200 transition-all active:scale-90 cursor-pointer">
                                             <i data-lucide="trash-2" class="w-4 h-4"></i>
                                         </button>
+                                        @else
+                                        <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-semibold text-slate-500 bg-slate-100">
+                                            <i data-lucide="eye" class="w-3.5 h-3.5 mr-1"></i> Solo lectura
+                                        </span>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
@@ -143,6 +165,17 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- Footer / Pagination -->
+            @if($examenes->hasPages())
+            <div class="px-8 py-4 border-t border-gray-100 mt-auto bg-white">
+                {{ $examenes->links() }}
+            </div>
+            @else
+            <div class="px-8 py-4 border-t border-gray-100 mt-auto bg-white flex justify-between items-center">
+                <p class="text-sm text-slate-400">Mostrando todos los registros ({{ $examenes->total() }} en total)</p>
+            </div>
+            @endif
         </div>
     </div>
 
@@ -282,16 +315,6 @@
             document.getElementById(id).value = n > 0 ? (n / tasaBcv).toFixed(2) : '';
         }
 
-        document.getElementById('examSearch').addEventListener('input', function (e) {
-            const q = e.target.value.toLowerCase();
-            let count = 0;
-            document.querySelectorAll('.exam-row').forEach(row => {
-                const match = row.innerText.toLowerCase().includes(q);
-                row.classList.toggle('hidden', !match);
-                if (match) count++;
-            });
-            const info = document.getElementById('tableInfo');
-            if (info) info.innerText = `Total: ${count} exámenes registrados`;
-        });
+
     </script>
 @endsection
