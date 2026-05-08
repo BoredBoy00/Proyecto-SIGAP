@@ -15,8 +15,13 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         @keyframes highlight-fade {
-            0% { background-color: rgba(34, 197, 94, 0.2); }
-            100% { background-color: transparent; }
+            0% {
+                background-color: rgba(34, 197, 94, 0.2);
+            }
+
+            100% {
+                background-color: transparent;
+            }
         }
 
         .highlight-flash {
@@ -30,8 +35,15 @@
         }
 
         @keyframes toast-slide-up {
-            0% { transform: translateY(100%); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
+            0% {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .toast-container {
@@ -46,7 +58,7 @@
             pointer-events: none;
         }
 
-        .toast-container > div {
+        .toast-container>div {
             pointer-events: auto;
         }
     </style>
@@ -56,7 +68,7 @@
     style="background: linear-gradient(110deg, #f9fafb 55%, #e8f0fe 55%);">
 
     <!-- Sidebar -->
-    <aside class="w-64 border-r border-gray-100 flex flex-col items-center py-6 shrink-0 z-20" 
+    <aside class="w-64 border-r border-gray-100 flex flex-col items-center py-6 shrink-0 z-20"
         style="background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);">
         <!-- Logo -->
         <div class="mb-10 w-full px-8 flex items-center space-x-3">
@@ -70,7 +82,7 @@
         <nav class="w-full px-4 flex flex-col space-y-1">
             @php
                 $navItems = [
-                    ['name' => 'Dashboard', 'icon' => 'layout-grid', 'route' => route('dashboard'), 'active' => request()->routeIs('dashboard'), 'hasDropdown' => false],
+                    ['name' => 'Inicio', 'icon' => 'layout-grid', 'route' => route('dashboard'), 'active' => request()->routeIs('dashboard'), 'hasDropdown' => false],
                     ['name' => 'Facturación', 'icon' => 'file-text', 'route' => route('facturacion.index'), 'active' => request()->routeIs('facturacion.*'), 'hasDropdown' => false],
                 ];
 
@@ -95,7 +107,8 @@
                         <span class="font-bold text-sm tracking-tight">{{ $item['name'] }}</span>
                     </div>
                     @if($item['hasDropdown'])
-                        <i data-lucide="chevron-down" class="w-4 h-4 {{ $item['active'] ? 'text-blue-100' : 'text-slate-400' }}"></i>
+                        <i data-lucide="chevron-down"
+                            class="w-4 h-4 {{ $item['active'] ? 'text-blue-100' : 'text-slate-400' }}"></i>
                     @endif
                 </a>
             @endforeach
@@ -149,37 +162,54 @@
 
         <div class="toast-container">
             @php
-                $toastIcon = ''; $toastTitle = ''; $toastMsg = '';
-                $iconBg = '#fef2f2'; $iconColor = '#ef4444';
+                $toastIcon = '';
+                $toastTitle = '';
+                $toastMsg = '';
+                $iconBg = '#fef2f2';
+                $iconColor = '#ef4444';
 
                 if (session('success')) {
-                    $toastIcon = 'check-circle'; $toastTitle = '¡Éxito!'; $toastMsg = session('success');
-                    $iconBg = '#f0fdf4'; $iconColor = '#16a34a';
+                    $toastIcon = 'check-circle';
+                    $toastTitle = '¡Éxito!';
+                    $toastMsg = session('success');
+                    $iconBg = '#f0fdf4';
+                    $iconColor = '#16a34a';
                 } elseif (session('deleted')) {
-                    $toastIcon = 'trash-2'; $toastTitle = 'Eliminado'; $toastMsg = session('deleted');
+                    $toastIcon = 'trash-2';
+                    $toastTitle = 'Eliminado';
+                    $toastMsg = session('deleted');
                 } elseif (session('error')) {
-                    $toastIcon = 'alert-circle'; $toastTitle = 'Error'; $toastMsg = session('error');
+                    $toastIcon = 'alert-circle';
+                    $toastTitle = 'Error';
+                    $toastMsg = session('error');
                 } elseif ($errors->any()) {
-                    $toastIcon = 'alert-circle'; $toastTitle = 'Error';
+                    $toastIcon = 'alert-circle';
+                    $toastTitle = 'Error';
                     $toastMsg = implode('<br>', $errors->all());
                 }
             @endphp
 
             @if($toastMsg)
-                <div id="toast-message" style="background:white;border:1px solid #f1f5f9;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.12);min-width:320px;padding:1rem 1.25rem;animation:toast-slide-up 0.3s cubic-bezier(0.16,1,0.3,1) forwards;">
+                <div id="toast-message"
+                    style="background:white;border:1px solid #f1f5f9;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.12);min-width:320px;padding:1rem 1.25rem;animation:toast-slide-up 0.3s cubic-bezier(0.16,1,0.3,1) forwards;">
                     <div style="display:grid;grid-template-columns:4px 1fr 24px;align-items:center;">
                         <div></div>
                         <div style="display:flex;align-items:center;justify-content:center;gap:10px;">
-                            <div style="width:36px;height:36px;border-radius:50%;background:{{ $iconBg }};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                                <i data-lucide="{{ $toastIcon }}" style="width:16px;height:16px;color:{{ $iconColor }};"></i>
+                            <div
+                                style="width:36px;height:36px;border-radius:50%;background:{{ $iconBg }};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i data-lucide="{{ $toastIcon }}"
+                                    style="width:16px;height:16px;color:{{ $iconColor }};"></i>
                             </div>
                             <span style="font-weight:700;font-size:15px;color:#1e293b;">{{ $toastTitle }}</span>
                         </div>
-                        <button onclick="document.getElementById('toast-message').remove()" style="background:none;border:none;cursor:pointer;color:#94a3b8;padding:0;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.color='#475569'" onmouseout="this.style.color='#94a3b8'">
+                        <button onclick="document.getElementById('toast-message').remove()"
+                            style="background:none;border:none;cursor:pointer;color:#94a3b8;padding:0;display:flex;align-items:center;justify-content:center;"
+                            onmouseover="this.style.color='#475569'" onmouseout="this.style.color='#94a3b8'">
                             <i data-lucide="x" style="width:16px;height:16px;"></i>
                         </button>
                     </div>
-                    <p style="text-align:center;font-size:13.5px;color:#64748b;margin:0.3rem 0 0;line-height:1.4;">{!! $toastMsg !!}</p>
+                    <p style="text-align:center;font-size:13.5px;color:#64748b;margin:0.3rem 0 0;line-height:1.4;">
+                        {!! $toastMsg !!}</p>
                 </div>
                 <script>setTimeout(() => document.getElementById('toast-message')?.remove(), {{ $errors->any() ? 6000 : 4000 }});</script>
             @endif
