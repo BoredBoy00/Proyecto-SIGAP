@@ -17,12 +17,12 @@ class PatientController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombres' => 'required|string|max:255',
-            'apellidos' => 'required|string|max:255',
-            'cedula' => 'required|string|unique:pacientes',
-            'telefono' => 'nullable|string',
+            'nombres' => ['required', 'string', 'max:255', 'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/'],
+            'apellidos' => ['required', 'string', 'max:255', 'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/'],
+            'cedula' => 'required|string|regex:/^[0-9]+$/|max:9|unique:pacientes,cedula',
+            'telefono' => 'nullable|string|regex:/^[0-9]+$/|max:11',
             'fecha_nacimiento' => 'nullable|date',
-            'email' => 'nullable|email|unique:pacientes',
+            'email' => 'nullable|email|unique:pacientes,email',
         ]);
 
         $patient = Patient::create([
@@ -52,10 +52,10 @@ class PatientController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nombres' => 'required|string|max:255',
-            'apellidos' => 'required|string|max:255',
-            'cedula' => 'required|string|unique:pacientes,cedula,' . $id,
-            'telefono' => 'nullable|string',
+            'nombres' => ['required', 'string', 'max:255', 'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/'],
+            'apellidos' => ['required', 'string', 'max:255', 'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/'],
+            'cedula' => 'required|string|regex:/^[0-9]+$/|max:9|unique:pacientes,cedula,' . $id,
+            'telefono' => 'nullable|string|regex:/^[0-9]+$/|max:11',
             'fecha_nacimiento' => 'nullable|date',
             'email' => 'nullable|email|unique:pacientes,email,' . $id,
         ]);

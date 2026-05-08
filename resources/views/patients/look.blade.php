@@ -32,16 +32,12 @@
         </form>
 
         <!-- Tabs -->
-        <div class="border-b border-gray-200 w-full mb-6 flex">
-            <a href="{{ route('patients.create') }}">
-                <button class="text-blue-600 font-semibold border-b-2 pb-3 px-1">
-                    Registro Individual
-                </button>
+        <div class="flex items-center space-x-2 mb-6">
+            <a href="{{ route('patients.create') }}" class="px-5 py-2.5 rounded-full font-medium text-slate-500 hover:bg-gray-100 transition-all">
+                Registro Individual
             </a>
-            <a href="{{ route('patients.look') }}">
-                <button class="text-blue-600 font-semibold border-b-2 border-blue-600 pb-3 px-1">
-                    Ver Pacientes
-                </button>
+            <a href="{{ route('patients.look') }}" class="px-5 py-2.5 rounded-full font-bold bg-blue-50 text-blue-600 border border-blue-100 shadow-sm transition-all">
+                Ver Pacientes
             </a>
         </div>
     </section>
@@ -69,23 +65,22 @@
                                 <td class="px-6 py-4">{{ $patient->fecha_nacimiento ? \Carbon\Carbon::parse($patient->fecha_nacimiento)->format('d/m/Y') : '' }}</td>
                                 <td class="px-6 py-4">{{ $patient->telefono }}</td>
                                 <td class="px-6 py-4">{{ $patient->email }}</td>
-                                <td class="px-6 py-4 text-center">
-                                    <!-- Editar -->
-                                    <a href="{{ route('patients.edit', $patient->id) }}">
-                                        <button class="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-blue-500 hover:bg-blue-50 transition-colors">
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center justify-center space-x-2">
+                                        <!-- Editar -->
+                                        <a href="{{ route('patients.edit', $patient->id) }}" title="Editar" class="w-[28px] h-[28px] flex items-center justify-center bg-blue-50/50 hover:bg-blue-100 text-blue-500 rounded-md transition-all">
                                             <i data-lucide="edit-2" class="w-4 h-4"></i>
-                                        </button>
-                                    </a>
-                                </td>
-                                <td>
-                                    <!-- Eliminar -->
-                                    <form action="{{ route('patients.destroy', $patient->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="...">
-                                            <i data-lucide="trash-2"></i>
-                                        </button>
-                                    </form>
+                                        </a>
+
+                                        <!-- Eliminar -->
+                                        <form action="{{ route('patients.destroy', $patient->id) }}" method="POST" class="m-0 p-0 form-delete inline-block">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" title="Eliminar" class="w-[28px] h-[28px] flex items-center justify-center bg-red-50/50 hover:bg-red-100 text-red-500 rounded-md transition-all">
+                                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach

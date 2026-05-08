@@ -52,9 +52,11 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-        'nombres' => 'required|string|max:255',
-        'apellidos' => 'required|string|max:255',
+        'nombres' => ['required', 'string', 'max:255', 'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/'],
+        'apellidos' => ['required', 'string', 'max:255', 'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/'],
         'email' => 'required|email|unique:users,email,'.$id, 
+        'cedula' => 'required|string|regex:/^[0-9]+$/|max:9|unique:users,cedula,'.$id,
+        'telefono' => 'nullable|string|regex:/^[0-9]+$/|max:11',
         'rol' => 'required|string',
     ]);
 
@@ -63,7 +65,9 @@ class UserController extends Controller
         'name' => $request->nombres,
         'apellido' => $request->apellidos,
         'email' => $request->email,
-        'rol' => $request->rol,
+        'cedula' => $request->cedula,
+        'telefono' => $request->telefono,
+        'rol' => strtolower($request->rol),
     ]);
 
     return redirect()->route('users.index')->with('success', 'Usuario actualizado');
@@ -87,9 +91,11 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombres' => 'required|string|max:255',
-            'apellidos' => 'required|string|max:255',
+            'nombres' => ['required', 'string', 'max:255', 'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/'],
+            'apellidos' => ['required', 'string', 'max:255', 'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/'],
             'email' => 'required|string|email|max:255|unique:users',
+            'cedula' => 'required|string|regex:/^[0-9]+$/|max:9|unique:users',
+            'telefono' => 'nullable|string|regex:/^[0-9]+$/|max:11',
             'password' => 'required|string|min:8|confirmed',
             'rol' => 'required|string',
         ]);
@@ -98,8 +104,10 @@ class UserController extends Controller
             'name' => $request->nombres,
             'apellido' => $request->apellidos,
             'email' => $request->email,
+            'cedula' => $request->cedula,
+            'telefono' => $request->telefono,
             'password' => Hash::make($request->password),
-            'rol' => $request->rol,
+            'rol' => strtolower($request->rol),
             'estado' => 'Activo',
         ]);
 
