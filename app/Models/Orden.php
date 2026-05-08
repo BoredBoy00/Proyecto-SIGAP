@@ -16,7 +16,13 @@ class Orden extends Model
         'fecha',
         'total_monto',
         'id_usuario',
+        'id_paciente'
     ];
+
+    public function paciente()
+    {
+        return $this->belongsTo(Patient::class, 'id_paciente', 'id');
+    }
 
     public function usuario()
     {
