@@ -80,12 +80,12 @@
             
 
             <div class="bg-blue-50/50 border-t border-blue-100 p-6 flex items-center justify-end space-x-3 mt-auto">
-                <a href=" {{ route('patients.look') }}">
-                    <button type="button" class="px-6 py-2.5 bg-white text-slate-700 font-medium rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                <a href="{{ route('patients.look') }}">
+                    <button type="button" class="px-6 py-2.5 bg-white text-slate-700 font-medium rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer">
                     Cancelar
                 </button>
                 </a>
-                <button type="submit" class="flex items-center space-x-2 px-6 py-2.5 bg-[#198754] text-white font-medium rounded-lg hover:bg-green-700 transition-colors shadow-sm">
+                <button type="submit" class="flex items-center space-x-2 px-6 py-2.5 bg-[#198754] text-white font-medium rounded-lg hover:bg-green-700 transition-colors shadow-sm cursor-pointer">
                     <i data-lucide="save" class="w-4 h-4"></i>
                     <span>Actualizar Registro</span>
                 </button>

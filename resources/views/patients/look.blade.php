@@ -36,7 +36,7 @@
                     style="padding-left: 2.75rem;"
                 >
             </div>
-            <button type="submit" class="px-6 py-2.5 bg-blue-600 text-white font-semibold text-sm rounded-xl hover:bg-blue-700 shadow-sm hover:shadow-md hover:shadow-blue-500/20 transition-all">
+            <button type="submit" class="px-6 py-2.5 bg-blue-600 text-white font-semibold text-sm rounded-xl hover:bg-blue-700 shadow-sm hover:shadow-md hover:shadow-blue-500/20 transition-all cursor-pointer">
                 Buscar
             </button>
         </form>
@@ -68,14 +68,14 @@
                                 <td class="px-6 py-4">
                                     <div class="flex items-center justify-center space-x-4">
                                         <!-- Editar -->
-                                        <a href="{{ route('patients.edit', $patient->id) }}" class="text-blue-500 hover:text-blue-700 hover:scale-110 transition-transform" title="Editar paciente">
+                                        <a href="{{ route('patients.edit', $patient->id) }}" class="text-blue-500 hover:text-blue-700 hover:scale-110 transition-transform cursor-pointer" title="Editar paciente">
                                             <i data-lucide="edit-2" class="w-5 h-5"></i>
                                         </a>
                                         <!-- Eliminar -->
                                         <form action="{{ route('patients.destroy', $patient->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este paciente?');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="text-red-500 hover:text-red-700 hover:scale-110 transition-transform" title="Eliminar paciente">
+                                            <button type="submit" class="text-red-500 hover:text-red-700 hover:scale-110 transition-transform cursor-pointer" title="Eliminar paciente">
                                                 <i data-lucide="trash-2" class="w-5 h-5"></i>
                                             </button>
                                         </form>
