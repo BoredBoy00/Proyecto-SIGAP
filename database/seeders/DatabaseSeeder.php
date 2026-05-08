@@ -19,11 +19,11 @@ class DatabaseSeeder extends Seeder
         User::updateOrCreate(
             ['email' => 'admin@sigap.com'],
             [
-                'name' => 'Ana',
-                'apellido' => 'López',
+                'name' => 'Administrador',
+                'apellido' => 'SIGAP',
                 'telefono' => '1234567890',
                 'fecha_de_nacimiento' => '1985-05-15',
-                'rol' => 'admin',
+                'rol' => 'Administrador',
                 'estado' => 'Activo',
                 'password' => bcrypt('password123'), // Contraseña: password123
             ]
@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder
                 'apellido' => 'García',
                 'telefono' => '0987654321',
                 'fecha_de_nacimiento' => '1990-10-20',
-                'rol' => 'recept',
+                'rol' => 'Recepcionista',
                 'estado' => 'Activo',
                 'password' => bcrypt('password123'), // Contraseña: password123
             ]

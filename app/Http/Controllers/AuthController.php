@@ -14,7 +14,7 @@ class AuthController extends Controller
     {
         // If the user is already authenticated, redirect them
         if (Auth::check()) {
-            return Auth::user()->rol === 'admin' 
+            return Auth::user()->rol === 'Administrador' 
                 ? redirect()->route('users.index') 
                 : redirect()->route('patients.create');
         }
@@ -37,7 +37,7 @@ class AuthController extends Controller
             // Handle different roles
             // You can check Auth::user()->rol here to redirect appropriately.
             // For now, redirecting everyone to intended or default route.
-            $redirect = Auth::user()->rol === 'admin' 
+            $redirect = Auth::user()->rol === 'Administrador' 
                 ? route('users.index') 
                 : route('patients.create');
 

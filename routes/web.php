@@ -5,8 +5,6 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ConvController;
-
 
 // Rutas de Autenticación
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -16,7 +14,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // Redirección de la raíz
 Route::get('/', function () {
     if (auth()->check()) {
-        return auth()->user()->rol === 'admin'
+        return auth()->user()->rol === 'Administrador'
             ? redirect()->route('users.index')
             : redirect()->route('patients.create');
     }
@@ -45,21 +43,12 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [ExamController::class, 'destroy'])->name('destroy');
     });
 
-    Route::prefix('usuarios')->name('users.')->middleware('role:admin')->group(function () {
+    Route::prefix('usuarios')->name('users.')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index');
         Route::get('/nuevo', [UserController::class, 'create'])->name('create');
         Route::post('/nuevo', [UserController::class, 'store'])->name('store');
         Route::get('/{id}/edit', [UserController::class, 'edit'])->name('edit');
         Route::patch('/{id}', [UserController::class, 'update'])->name('update');
         Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy');
-    });
-
-    Route::prefix('convenios')->name('convens.')->group(function() {
-        Route::get('/',[ConvController::class, 'index']) ->name('index');
-        Route::get('/crear',[ConvController::class, 'create']) ->name('create');
-        Route::post('/', [ConvController::class, 'store']) ->name('store');
-        Route::get('/{id}/edit', [ConvController::class, 'edit']) ->name('edit');
-        Route::patch('{id}',[ConvController::class, 'update']) ->name ('update');
-        Route::delete('{id}', [ConvController::class, 'destroy']) ->name ('destroy');
     });
 });
