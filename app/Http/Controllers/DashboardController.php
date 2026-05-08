@@ -22,6 +22,15 @@ class DashboardController extends Controller
             ->take(10)
             ->get();
 
-        return view('dashboard', compact('facturasHoy', 'pacientesTotal', 'examenesTotal', 'recentActivity'));
+        $recentPatients = Patient::orderBy('created_at', 'desc')->take(3)->get();
+        $recentExams = Examen::orderBy('created_at', 'desc')->take(3)->get();
+
+        $examenesHoy = Examen::whereDate('created_at', Carbon::today())->count();
+        $examenesSemana = Examen::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->count();
+        $examenesMes = Examen::whereMonth('created_at', Carbon::now()->month)
+                            ->whereYear('created_at', Carbon::now()->year)
+                            ->count();
+
+        return view('dashboard', compact('facturasHoy', 'pacientesTotal', 'examenesTotal', 'recentActivity', 'recentPatients', 'recentExams', 'examenesHoy', 'examenesSemana', 'examenesMes'));
     }
 }

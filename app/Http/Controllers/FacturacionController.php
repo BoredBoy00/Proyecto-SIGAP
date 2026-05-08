@@ -7,12 +7,14 @@ use App\Models\Facturacion;
 use App\Models\Orden;
 use App\Models\Patient;
 use App\Models\Examen;
+use App\Services\BcvService;
 
 class FacturacionController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, BcvService $bcvService)
     {
-        $query = Facturacion::with('orden');
+        $query = Facturacion::with(['orden.paciente', 'orden.detalles.examen']);
+        $tasaBcv = $bcvService->getRate();
 
         // Búsqueda (opcional, si hay filtros)
         if ($request->has('search')) {
@@ -29,15 +31,16 @@ class FacturacionController extends Controller
 
         $facturas = $query->orderBy($sort, $direction)->paginate(10);
 
-        return view('facturacion.index', compact('facturas', 'sort', 'direction'));
+        return view('facturacion.index', compact('facturas', 'sort', 'direction', 'tasaBcv'));
     }
 
-    public function create()
+    public function create(BcvService $bcvService)
     {
         // Load patients with their associated 'empresa' to get the discount
         $pacientes = Patient::with('empresa')->get();
         $examenes = Examen::all();
-        return view('facturacion.create', compact('pacientes', 'examenes'));
+        $tasaBcv = $bcvService->getRate();
+        return view('facturacion.create', compact('pacientes', 'examenes', 'tasaBcv'));
     }
 
     public function store(Request $request)
@@ -87,5 +90,52 @@ class FacturacionController extends Controller
         // Sería ideal agregarlo a 'ordenes' o 'facturacion'. Pero por ahora se guardará la factura.
 
         return redirect()->route('facturacion.index')->with('success', 'Factura registrada exitosamente.');
+    }
+
+    public function edit($id)
+    {
+        if (!in_array(strtolower(auth()->user()->rol), ['admin', 'administrador', 'administrador principal', 'recepcionista'])) {
+            return redirect()->route('facturacion.index')->with('error', 'No tienes permisos para editar facturas.');
+        }
+
+        $factura = Facturacion::with('orden.paciente')->findOrFail($id);
+        return view('facturacion.edit', compact('factura'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        if (!in_array(strtolower(auth()->user()->rol), ['admin', 'administrador', 'administrador principal', 'recepcionista'])) {
+            return redirect()->route('facturacion.index')->with('error', 'No tienes permisos para editar facturas.');
+        }
+
+        $factura = Facturacion::findOrFail($id);
+
+        $validated = $request->validate([
+            'tipo_pago' => 'nullable|string|max:255',
+            'estatus' => 'required|string|max:255'
+        ]);
+
+        $factura->update($validated);
+
+        return redirect()->route('facturacion.index')->with('success', 'Factura actualizada exitosamente.');
+    }
+
+    public function destroy($id)
+    {
+        if (!in_array(strtolower(auth()->user()->rol), ['admin', 'administrador', 'administrador principal', 'recepcionista'])) {
+            return redirect()->route('facturacion.index')->with('error', 'No tienes permisos para eliminar facturas.');
+        }
+
+        $factura = Facturacion::findOrFail($id);
+        
+        if ($factura->orden) {
+            // Eliminar la orden en cascada eliminará la factura y los detalles automáticamente en la BD
+            $factura->orden->delete();
+        } else {
+            // Si por alguna razón no hay orden, eliminar solo la factura
+            $factura->delete();
+        }
+
+        return redirect()->route('facturacion.index')->with('success', 'Factura y orden asociada eliminadas exitosamente.');
     }
 }

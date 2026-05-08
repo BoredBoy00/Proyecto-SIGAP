@@ -142,7 +142,10 @@
                             <!-- Total -->
                             <div class="flex justify-between items-center">
                                 <span class="font-bold text-slate-800 text-base">MONTO TOTAL</span>
-                                <div class="font-black text-blue-600 text-2xl tracking-tight">$<span id="txt_total">0.00</span></div>
+                                <div class="text-right">
+                                    <div class="font-black text-blue-600 text-2xl tracking-tight">$<span id="txt_total">0.00</span></div>
+                                    <div class="text-sm font-semibold text-slate-500">Bs. <span id="txt_total_ves">0.00</span></div>
+                                </div>
                                 <input type="hidden" name="monto_total" id="val_total" value="0.00">
                             </div>
                         </div>
@@ -170,6 +173,7 @@
             const buscarExamen = document.getElementById('buscarExamen');
             const examCheckboxes = document.querySelectorAll('.exam-checkbox');
             const btnSubmit = document.getElementById('btnSubmit');
+            const tasaBcv = {{ $tasaBcv ?? 1 }};
 
             // Search Patient
             buscarPaciente.addEventListener('input', function(e) {
@@ -224,11 +228,13 @@
                 const porcentaje = parseFloat(document.getElementById('porcentaje_aplicado').value) || 0;
                 const descuento = subtotal * (porcentaje / 100);
                 const total = subtotal - descuento;
+                const totalVES = total * tasaBcv;
 
                 // Update UI values
                 document.getElementById('txt_subtotal').textContent = subtotal.toFixed(2);
                 document.getElementById('txt_descuento').textContent = descuento.toFixed(2);
                 document.getElementById('txt_total').textContent = total.toFixed(2);
+                document.getElementById('txt_total_ves').textContent = totalVES.toFixed(2);
 
                 // Update Hidden Inputs for submission
                 document.getElementById('val_subtotal').value = subtotal.toFixed(2);

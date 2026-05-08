@@ -56,8 +56,114 @@
             </div>
         </div>
 
+        <!-- Dashboard Recepcionista -->
+        @if(in_array(strtolower(auth()->user()->rol), ['recepcionista', 'recepcion']))
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+            <!-- Últimos 3 Pacientes -->
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
+                <div class="p-6 border-b border-gray-100 bg-slate-50/50">
+                    <h2 class="text-lg font-bold text-slate-800 flex items-center">
+                        <i data-lucide="users" class="w-5 h-5 mr-2 text-blue-600"></i> Últimos 3 Pacientes Nuevos
+                    </h2>
+                </div>
+                <div class="p-4">
+                    <div class="space-y-4">
+                        @foreach($recentPatients as $paciente)
+                        <div class="flex items-center justify-between p-3 bg-white border border-gray-100 rounded-xl hover:shadow-md transition-shadow">
+                            <div class="flex flex-col">
+                                <span class="font-bold text-slate-800">{{ $paciente->name }} {{ $paciente->apellido }}</span>
+                                <span class="text-xs text-slate-500 font-mono">V-{{ $paciente->cedula }}</span>
+                            </div>
+                            <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded-md">{{ $paciente->created_at->diffForHumans() }}</span>
+                        </div>
+                        @endforeach
+                        @if($recentPatients->isEmpty())
+                        <p class="text-sm text-slate-400 text-center py-4">No hay pacientes registrados recientemente.</p>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            <!-- Últimos 3 Exámenes -->
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
+                <div class="p-6 border-b border-gray-100 bg-slate-50/50">
+                    <h2 class="text-lg font-bold text-slate-800 flex items-center">
+                        <i data-lucide="flask-conical" class="w-5 h-5 mr-2 text-green-600"></i> Últimos 3 Exámenes
+                    </h2>
+                </div>
+                <div class="p-4">
+                    <div class="space-y-4">
+                        @foreach($recentExams as $examen)
+                        <div class="flex items-center justify-between p-3 bg-white border border-gray-100 rounded-xl hover:shadow-md transition-shadow">
+                            <div class="flex flex-col">
+                                <span class="font-bold text-slate-800">{{ $examen->nombre_del_examen }}</span>
+                                <span class="text-xs text-slate-500">ID: {{ str_pad($examen->id_examen, 4, '0', STR_PAD_LEFT) }}</span>
+                            </div>
+                            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-md">{{ $examen->created_at->diffForHumans() }}</span>
+                        </div>
+                        @endforeach
+                        @if($recentExams->isEmpty())
+                        <p class="text-sm text-slate-400 text-center py-4">No hay exámenes registrados recientemente.</p>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
+
+        <!-- Dashboard Bioanalista -->
+        @if(in_array(strtolower(auth()->user()->rol), ['bioanalista']))
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col mt-8">
+            <div class="p-6 md:p-8 border-b border-gray-100">
+                <h2 class="text-xl font-bold text-slate-800">Métricas de Exámenes Realizados</h2>
+                <p class="text-sm text-slate-500 mt-1">Gráficos de rendimiento y cantidad de pruebas procesadas.</p>
+            </div>
+            <div class="p-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Gráfico Día -->
+                <div class="flex flex-col items-center">
+                    <div class="relative w-32 h-32 flex items-center justify-center rounded-full border-8 border-blue-50 shadow-inner">
+                        <svg class="absolute inset-0 w-full h-full transform -rotate-90">
+                            <circle cx="64" cy="64" r="56" stroke="currentColor" stroke-width="8" fill="transparent" class="text-blue-500" stroke-dasharray="351.8" stroke-dashoffset="{{ 351.8 - (351.8 * min($examenesHoy / 50, 1)) }}"></circle>
+                        </svg>
+                        <div class="flex flex-col items-center justify-center">
+                            <span class="text-3xl font-black text-slate-800">{{ $examenesHoy }}</span>
+                        </div>
+                    </div>
+                    <span class="mt-4 font-bold text-slate-700">Hoy</span>
+                </div>
+
+                <!-- Gráfico Semana -->
+                <div class="flex flex-col items-center">
+                    <div class="relative w-32 h-32 flex items-center justify-center rounded-full border-8 border-green-50 shadow-inner">
+                        <svg class="absolute inset-0 w-full h-full transform -rotate-90">
+                            <circle cx="64" cy="64" r="56" stroke="currentColor" stroke-width="8" fill="transparent" class="text-green-500" stroke-dasharray="351.8" stroke-dashoffset="{{ 351.8 - (351.8 * min($examenesSemana / 300, 1)) }}"></circle>
+                        </svg>
+                        <div class="flex flex-col items-center justify-center">
+                            <span class="text-3xl font-black text-slate-800">{{ $examenesSemana }}</span>
+                        </div>
+                    </div>
+                    <span class="mt-4 font-bold text-slate-700">Esta Semana</span>
+                </div>
+
+                <!-- Gráfico Mes -->
+                <div class="flex flex-col items-center">
+                    <div class="relative w-32 h-32 flex items-center justify-center rounded-full border-8 border-purple-50 shadow-inner">
+                        <svg class="absolute inset-0 w-full h-full transform -rotate-90">
+                            <circle cx="64" cy="64" r="56" stroke="currentColor" stroke-width="8" fill="transparent" class="text-purple-500" stroke-dasharray="351.8" stroke-dashoffset="{{ 351.8 - (351.8 * min($examenesMes / 1000, 1)) }}"></circle>
+                        </svg>
+                        <div class="flex flex-col items-center justify-center">
+                            <span class="text-3xl font-black text-slate-800">{{ $examenesMes }}</span>
+                        </div>
+                    </div>
+                    <span class="mt-4 font-bold text-slate-700">Este Mes</span>
+                </div>
+            </div>
+        </div>
+        @endif
+
         <!-- Recent Activity -->
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
+        @if(in_array(strtolower(auth()->user()->rol), ['admin', 'administrador', 'administrador principal']))
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col mt-8">
             <div class="p-6 md:p-8 border-b border-gray-100">
                 <h2 class="text-xl font-bold text-slate-800">Actividad Reciente</h2>
                 <p class="text-sm text-slate-500 mt-1">Últimos movimientos realizados en el sistema por los usuarios.</p>
@@ -71,7 +177,6 @@
                             <th class="px-6 py-4 w-48">USUARIO</th>
                             <th class="px-6 py-4 w-32 text-center">TIPO</th>
                             <th class="px-6 py-4 text-center">DESCRIPCIÓN</th>
-                            <th class="px-6 py-4 w-32 text-center">ACCIONES</th>
                             <th class="px-6 py-4 w-48 text-center">HORA / FECHA</th>
                         </tr>
                     </thead>
@@ -109,35 +214,6 @@
                             </td>
                             <td class="px-6 py-4 text-center text-slate-700">{{ $activity->description }}</td>
                             <td class="px-6 py-4 text-center">
-                                @php
-                                    $targetName = match(strtolower($activity->type)) {
-                                        'paciente' => 'Pacientes',
-                                        'examen' => 'Exámenes',
-                                        'convenio' => 'Convenios',
-                                        'usuario' => 'Usuarios',
-                                        default => 'Detalle'
-                                    };
-                                    $viewRoute = match(strtolower($activity->type)) {
-                                        'paciente' => route('patients.look'),
-                                        'examen' => route('exams.index'),
-                                        'convenio' => route('convens.index'),
-                                        'usuario' => route('users.index'),
-                                        default => '#'
-                                    };
-                                @endphp
-                                @if($viewRoute !== '#' && !str_contains($activity->description, 'Eliminó'))
-                                    <a href="{{ $viewRoute . '?highlight=' . $activity->identifier }}" 
-                                       class="inline-flex items-center justify-center px-4 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white rounded-xl font-bold text-[11px] whitespace-nowrap transition-all duration-300 group shadow-sm hover:shadow-md hover:shadow-blue-500/20">
-                                        <span>Ver {{ $targetName }}</span>
-                                        <i data-lucide="arrow-right" class="w-3.5 h-3.5 ml-1.5 opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
-                                    </a>
-                                @else
-                                    <span class="inline-flex items-center justify-center px-3 py-1.5 bg-gray-50 text-slate-400 rounded-xl font-bold text-[10px] whitespace-nowrap border border-dashed border-gray-200">
-                                        No Disponible
-                                    </span>
-                                @endif
-                            </td>
-                            <td class="px-6 py-4 text-center">
                                 <div class="flex flex-col text-xs text-slate-500">
                                     <span class="font-bold text-slate-700">{{ $activity->created_at->format('d/m/Y') }}</span>
                                     <span>{{ $activity->created_at->format('h:i A') }}</span>
@@ -146,7 +222,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-10 text-center text-slate-400 italic">
+                            <td colspan="5" class="px-6 py-10 text-center text-slate-400 italic">
                                 No se han registrado actividades recientemente.
                             </td>
                         </tr>
@@ -161,5 +237,6 @@
             </div>
             @endif
         </div>
+        @endif
     </div>
 @endsection

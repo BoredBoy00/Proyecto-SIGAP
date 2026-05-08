@@ -71,5 +71,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [FacturacionController::class, 'index'])->name('index');
         Route::get('/crear', [FacturacionController::class, 'create'])->name('create');
         Route::post('/', [FacturacionController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [FacturacionController::class, 'edit'])->name('edit');
+        Route::patch('/{id}', [FacturacionController::class, 'update'])->name('update');
+        Route::delete('/{id}', [FacturacionController::class, 'destroy'])->name('destroy');
     });
 });

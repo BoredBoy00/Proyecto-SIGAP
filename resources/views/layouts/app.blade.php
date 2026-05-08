@@ -115,28 +115,18 @@
 
             <div class="flex items-center space-x-4">
                 @auth
-                    <div class="text-right flex flex-col justify-center">
+                    <div class="text-right flex flex-col justify-center mr-2">
                         <span class="text-sm font-semibold text-slate-800 leading-tight">{{ Auth::user()->name }}
                             {{ Auth::user()->apellido }}</span>
                         <span class="text-xs text-slate-500 leading-tight capitalize">{{ Auth::user()->rol }}</span>
                     </div>
-                    <div class="relative group">
-                        <div
-                            class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 cursor-pointer">
-                            <i data-lucide="user" class="w-5 h-5"></i>
-                        </div>
-                        <div class="absolute right-0 pt-2 w-48 hidden group-hover:block z-50">
-                            <div class="bg-white rounded-xl shadow-lg py-2 border border-gray-100">
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button type="submit"
-                                        class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center transition-colors">
-                                        <i data-lucide="log-out" class="w-4 h-4 mr-2"></i> Cerrar Sesión
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+                    <form method="POST" action="{{ route('logout') }}" class="m-0 p-0 flex items-center">
+                        @csrf
+                        <button type="submit" class="flex items-center justify-center px-4 py-2 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-lg font-medium transition-all shadow-sm active:scale-95" title="Cerrar Sesión">
+                            <i data-lucide="log-out" class="w-4 h-4 mr-2"></i>
+                            <span class="text-sm">Salir</span>
+                        </button>
+                    </form>
                 @endauth
             </div>
         </header>

@@ -83,7 +83,7 @@
     </div>
     @endpush
 
-    <div class="flex flex-col max-w-[1400px] w-full mt-2">
+    <div class="flex flex-col max-w-7xl w-full mx-auto mt-2">
         
         <!-- Header -->
         <div class="mb-6">
@@ -119,32 +119,32 @@
                 <table class="w-full text-left text-sm text-slate-600">
                     <thead class="bg-slate-50 text-slate-500 font-bold text-xs uppercase tracking-wider border-b border-gray-200">
                         <tr>
-                            <th class="px-6 py-4 w-16">ID</th>
-                            <th class="px-6 py-4 w-48">USUARIO</th>
-                            <th class="px-6 py-4">CORREO ELECTRÓNICO</th>
-                            <th class="px-6 py-4 text-center">CÉDULA</th>
-                            <th class="px-6 py-4 w-52 text-center">ROL / NIVEL DE ACCESO</th>
-                            <th class="px-6 py-4 w-32 text-center">ESTADO</th>
-                            <th class="px-6 py-4 w-48 text-center">ÚLTIMO ACCESO</th>
-                            <th class="px-6 py-4 w-28 text-center">ACCIONES</th>
+                            <th class="px-4 py-3 w-16">ID</th>
+                            <th class="px-4 py-3 w-48">USUARIO</th>
+                            <th class="px-4 py-3">CORREO ELECTRÓNICO</th>
+                            <th class="px-4 py-3 text-center">CÉDULA</th>
+                            <th class="px-4 py-3 w-52 text-center">ROL / NIVEL DE ACCESO</th>
+                            <th class="px-4 py-3 w-32 text-center">ESTADO</th>
+                            <th class="px-4 py-3 w-48 text-center">ÚLTIMO ACCESO</th>
+                            <th class="px-4 py-3 w-28 text-center">ACCIONES</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100 text-[15px]">
                         @foreach($usuarios as $user)
                         <tr id="item-{{ $user->id }}" class="hover:bg-gray-50/50 transition-colors {{ (request('highlight') == $user->id) ? 'highlight-flash' : '' }}">
-                            <td class="px-6 py-4 text-slate-500 font-medium">#{{ $user->id }}</td>
-                            <td class="px-6 py-4">
+                            <td class="px-4 py-3 text-slate-500 font-medium">#{{ $user->id }}</td>
+                            <td class="px-4 py-3">
                                 <div class="font-bold text-slate-800">{{ $user->name }} {{ $user->apellido }}</div>
                             </td>
-                            <td class="px-6 py-4 text-slate-500">{{ $user->email }}</td>
-                            <td class="px-6 py-4 text-center text-slate-700 font-medium">{{ $user->cedula ?? 'N/A' }}</td>
-                            <td class="px-6 py-4 text-center">
+                            <td class="px-4 py-3 text-slate-500">{{ $user->email }}</td>
+                            <td class="px-4 py-3 text-center text-slate-700 font-medium">{{ $user->cedula ?? 'N/A' }}</td>
+                            <td class="px-4 py-3 text-center">
                                 <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold text-white shadow-sm" 
                                     style="background-color: {{ in_array(strtolower($user->rol), ['admin', 'administrador']) ? '#dc2626' : '#fff7ed' }}; color: {{ in_array(strtolower($user->rol), ['admin', 'administrador']) ? 'white' : '#ea580c' }}; {{ in_array(strtolower($user->rol), ['admin', 'administrador']) ? '' : 'border: 1px solid #ffedd5;' }}">
                                     {{ in_array(strtolower($user->rol), ['admin', 'administrador']) ? 'Administrador' : ucfirst(strtolower($user->rol)) }}
                                 </span>
                             </td>
-                             <td class="px-6 py-4 text-center font-semibold">
+                             <td class="px-4 py-3 text-center font-semibold">
                                  <form action="{{ route('users.toggle-status', $user->id) }}" method="POST">
                                      @csrf
                                      <button type="submit" class="cursor-pointer transition-transform active:scale-95" title="Cambiar estado">
@@ -154,10 +154,10 @@
                                      </button>
                                  </form>
                              </td>
-                            <td class="px-6 py-4 text-center text-slate-500">
+                            <td class="px-4 py-3 text-center text-slate-500">
                                 {{ $user->last_login_at ? $user->last_login_at->diffForHumans() : 'Nunca' }}
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-4 py-3">
                                 <div class="flex items-center justify-center space-x-2"> 
 
                                     <!-- Editar -->
