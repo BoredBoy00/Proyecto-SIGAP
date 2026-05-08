@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Examen;
+use App\Models\Activity;
 use App\Services\BcvService;
 use Illuminate\Http\Request;
 
@@ -18,7 +19,14 @@ class ExamController extends Controller
 
     public function store(Request $request)
     {
-        Examen::create($this->validateExamen($request));
+        $examen = Examen::create($this->validateExamen($request));
+
+        Activity::create([
+            'user_id' => auth()->id(),
+            'type' => 'Examen',
+            'description' => "Creó el examen: {$examen->nombre_examen}",
+            'identifier' => $examen->codigo_examen,
+        ]);
 
         return redirect()->route('exams.index')->with('success', 'Examen creado exitosamente.');
     }
@@ -28,12 +36,28 @@ class ExamController extends Controller
         $examen = Examen::findOrFail($id);
         $examen->update($this->validateExamen($request, $id));
 
+        Activity::create([
+            'user_id' => auth()->id(),
+            'type' => 'Examen',
+            'description' => "Actualizó el examen: {$examen->nombre_examen}",
+            'identifier' => $examen->codigo_examen,
+        ]);
+
         return redirect()->route('exams.index')->with('success', 'Examen actualizado exitosamente.');
     }
 
     public function destroy($id)
     {
-        Examen::findOrFail($id)->delete();
+        $examen = Examen::findOrFail($id);
+        
+        Activity::create([
+            'user_id' => auth()->id(),
+            'type' => 'Examen',
+            'description' => "Eliminó el examen: {$examen->nombre_examen}",
+            'identifier' => $examen->codigo_examen,
+        ]);
+
+        $examen->delete();
 
         return redirect()->route('exams.index')->with('deleted', 'Examen eliminado correctamente.');
     }

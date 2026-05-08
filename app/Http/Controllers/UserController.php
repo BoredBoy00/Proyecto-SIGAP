@@ -28,11 +28,7 @@ class UserController extends Controller
         ->orderBy('id', 'desc')
         ->get();
 
-    $facturasHoy = Facturacion::whereDate('created_at', Carbon::today())->count();
-    $pacientesTotal = Patient::count();
-    $examenesTotal = Examen::count();
-
-    return view('users.index', compact('usuarios', 'facturasHoy', 'pacientesTotal', 'examenesTotal'));
+    return view('users.index', compact('usuarios'));
 }
 
     public function create()

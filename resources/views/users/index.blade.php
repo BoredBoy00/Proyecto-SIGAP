@@ -90,51 +90,6 @@
             <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Gestión de Usuarios</h1>
         </div>
 
-        <!-- KPI Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <!-- Card 1 -->
-            <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm flex flex-col relative">
-                <div class="flex justify-between items-start">
-                    <span class="text-slate-400 font-medium text-sm">Facturas Generadas Hoy</span>
-                    <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-sm">
-                        <i data-lucide="receipt" class="w-5 h-5"></i>
-                    </div>
-                </div>
-                <div class="mt-4">
-                    <h3 class="text-4xl font-bold text-slate-800">{{ $facturasHoy }}</h3>
-                    <p class="text-green-500 font-medium text-sm mt-2">Facturas del día</p>
-                </div>
-            </div>
-
-            <!-- Card 2 -->
-            <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm flex flex-col relative">
-                <div class="flex justify-between items-start">
-                    <span class="text-slate-400 font-medium text-sm">Pacientes Atendidos</span>
-                    <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-sm">
-                        <i data-lucide="users" class="w-5 h-5"></i>
-                    </div>
-                </div>
-                <div class="mt-4">
-                    <h3 class="text-4xl font-bold text-slate-800">{{ $pacientesTotal }}</h3>
-                    <p class="text-green-500 font-medium text-sm mt-2">Registrados en total</p>
-                </div>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm flex flex-col relative">
-                <div class="flex justify-between items-start">
-                    <span class="text-slate-400 font-medium text-sm">Exámenes Procesados</span>
-                    <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-sm">
-                        <!-- Use flask or test-tube -->
-                        <i data-lucide="flask-conical" class="w-5 h-5"></i>
-                    </div>
-                </div>
-                <div class="mt-4">
-                    <h3 class="text-4xl font-bold text-slate-800">{{ $examenesTotal }}</h3>
-                    <p class="text-slate-400 font-medium text-sm mt-2">Pruebas en sistema</p>
-                </div>
-            </div>
-        </div>
 
         <!-- Main Card -->
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">

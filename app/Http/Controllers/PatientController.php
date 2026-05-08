@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Patient;
+use App\Models\Activity;
 use Illuminate\Http\Request;
 
 class PatientController extends Controller
@@ -24,13 +25,20 @@ class PatientController extends Controller
             'email' => 'nullable|email|unique:pacientes',
         ]);
 
-        Patient::create([
+        $patient = Patient::create([
             'nombre' => $request->nombres,
             'apellido' => $request->apellidos,
             'cedula' => $request->cedula,
             'fecha_nacimiento' => $request->fecha_nacimiento,
             'telefono' => $request->telefono,
             'email' => $request->email,
+        ]);
+
+        Activity::create([
+            'user_id' => auth()->id(),
+            'type' => 'Paciente',
+            'description' => "Registró al paciente {$patient->nombre} {$patient->apellido}",
+            'identifier' => $patient->cedula,
         ]);
 
         return redirect()->route('patients.create')->with('success', 'Paciente registrado exitosamente');
@@ -62,12 +70,27 @@ class PatientController extends Controller
             'email' => $request->email,
         ]);
 
+        Activity::create([
+            'user_id' => auth()->id(),
+            'type' => 'Paciente',
+            'description' => "Actualizó los datos del paciente {$patient->nombre} {$patient->apellido}",
+            'identifier' => $patient->cedula,
+        ]);
+
         return redirect()->route('patients.look')->with('success', 'Paciente actualizado exitosamente');
     }
 
     public function destroy($id)
     {
         $patient = Patient::findOrFail($id);
+        
+        Activity::create([
+            'user_id' => auth()->id(),
+            'type' => 'Paciente',
+            'description' => "Eliminó al paciente {$patient->nombre} {$patient->apellido}",
+            'identifier' => $patient->cedula,
+        ]);
+
         $patient->delete();
 
         return redirect()->route('patients.look')->with('deleted', 'Paciente eliminado exitosamente');

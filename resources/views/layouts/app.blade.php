@@ -26,6 +26,7 @@
             <nav class="w-full px-4 flex flex-col space-y-1">
                 @php
                     $navItems = [
+                        ['name' => 'Dashboard', 'icon' => 'layout-grid', 'route' => route('dashboard'), 'active' => request()->routeIs('dashboard'), 'hasDropdown' => false],
                         ['name' => 'Facturación', 'icon' => 'file-text', 'route' => '#', 'active' => false, 'hasDropdown' => true],
                     ];
 

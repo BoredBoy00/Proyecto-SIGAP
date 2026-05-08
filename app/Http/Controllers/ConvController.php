@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Empresa;
+use App\Models\Activity;
 
 class ConvController extends Controller
 {
@@ -58,11 +59,18 @@ class ConvController extends Controller
             'porcentaje_descuento' => 'required|numeric|min:1|max:20',
         ]);
 
-        Empresa::create([
+        $empresa = Empresa::create([
             'nombre_empresa' => $request->nombre_empresa,
             'rif' => $request->rif,
             'direccion' => $request->direccion,
             'porcentaje_descuento' => $request->porcentaje_descuento,
+        ]);
+
+        Activity::create([
+            'user_id' => auth()->id(),
+            'type' => 'Convenio',
+            'description' => "Registró un nuevo convenio con: {$empresa->nombre_empresa}",
+            'identifier' => $empresa->rif,
         ]);
 
         return redirect()->route('convens.index')->with('success', 'Convenio creado exitosamente.');
@@ -92,12 +100,27 @@ class ConvController extends Controller
             'porcentaje_descuento' => $request->porcentaje_descuento,
         ]);
 
+        Activity::create([
+            'user_id' => auth()->id(),
+            'type' => 'Convenio',
+            'description' => "Actualizó el convenio de: {$empresa->nombre_empresa}",
+            'identifier' => $empresa->rif,
+        ]);
+
         return redirect()->route('convens.index')->with('success', 'Convenio actualizado exitosamente.');
     }
 
     public function destroy($id)
     {
         $empresa = Empresa::findOrFail($id);
+        
+        Activity::create([
+            'user_id' => auth()->id(),
+            'type' => 'Convenio',
+            'description' => "Eliminó el convenio de: {$empresa->nombre_empresa}",
+            'identifier' => $empresa->rif,
+        ]);
+
         $empresa->delete();
         return redirect()->route('convens.index')->with('deleted', 'Convenio eliminado exitosamente.');
     }

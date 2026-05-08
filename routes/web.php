@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -13,12 +13,12 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+use App\Http\Controllers\DashboardController;
+
 // Redirección de la raíz
 Route::get('/', function () {
     if (auth()->check()) {
-        return auth()->user()->rol === 'admin'
-            ? redirect()->route('users.index')
-            : redirect()->route('patients.create');
+        return redirect()->route('dashboard');
     }
 
     return redirect()->route('login');
@@ -26,6 +26,7 @@ Route::get('/', function () {
 
 // Rutas Protegidas
 Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/auditoria', function () {
         return view('audit');
     })->name('audit');
