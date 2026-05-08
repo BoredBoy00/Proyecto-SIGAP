@@ -38,7 +38,66 @@
             border-color: #93c5fd !important;
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
         }
+
+        .toast-container {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            pointer-events: none;
+        }
+
+        .toast-container > div {
+            pointer-events: auto;
+        }
+
+        @keyframes toast-slide-up {
+            0% { transform: translateY(100%); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
     </style>
+
+    @push('modals')
+    <div class="toast-container">
+        @php
+            $toastIcon = ''; $toastTitle = ''; $toastMsg = '';
+            $iconBg = '#fef2f2'; $iconColor = '#ef4444';
+
+            if (session('success')) {
+                $toastIcon = 'check-circle'; $toastTitle = '¡Éxito!'; $toastMsg = session('success');
+                $iconBg = '#f0fdf4'; $iconColor = '#16a34a';
+            } elseif (session('deleted')) {
+                $toastIcon = 'trash-2'; $toastTitle = 'Eliminado'; $toastMsg = session('deleted');
+            } elseif ($errors->any()) {
+                $toastIcon = 'alert-circle'; $toastTitle = 'Error';
+                $toastMsg = implode('<br>', $errors->all());
+            }
+        @endphp
+
+        @if($toastMsg)
+            <div id="toast-message" style="background:white;border:1px solid #f1f5f9;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.12);min-width:320px;padding:1rem 1.25rem;animation:toast-slide-up 0.3s cubic-bezier(0.16,1,0.3,1) forwards;">
+                <div style="display:grid;grid-template-columns:4px 1fr 24px;align-items:center;">
+                    <div></div>
+                    <div style="display:flex;align-items:center;justify-content:center;gap:10px;">
+                        <div style="width:36px;height:36px;border-radius:50%;background:{{ $iconBg }};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i data-lucide="{{ $toastIcon }}" style="width:16px;height:16px;color:{{ $iconColor }};"></i>
+                        </div>
+                        <span style="font-weight:700;font-size:15px;color:#1e293b;">{{ $toastTitle }}</span>
+                    </div>
+                    <button onclick="document.getElementById('toast-message').remove()" style="background:none;border:none;cursor:pointer;color:#94a3b8;padding:0;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.color='#475569'" onmouseout="this.style.color='#94a3b8'">
+                        <i data-lucide="x" style="width:16px;height:16px;"></i>
+                    </button>
+                </div>
+                <p style="text-align:center;font-size:13.5px;color:#64748b;margin:0.3rem 0 0;line-height:1.4;">{!! $toastMsg !!}</p>
+            </div>
+            <script>setTimeout(() => document.getElementById('toast-message')?.remove(), {{ $errors->any() ? 6000 : 4000 }});</script>
+        @endif
+    </div>
+    @endpush
 
     <div class="flex flex-col max-w-[1400px] w-full mt-2 mx-auto">
         <div class="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -87,7 +146,7 @@
                     </thead>
                     <tbody class="divide-y divide-gray-100 text-[15px]" id="examTableBody">
                         @forelse($examenes as $examen)
-                            <tr class="hover:bg-gray-50/50 transition-colors exam-row">
+                            <tr id="item-{{ $examen->id_examen }}" class="hover:bg-gray-50/50 transition-colors exam-row {{ (request('highlight') == $examen->id_examen || request('highlight') == $examen->codigo_examen) ? 'highlight-flash' : '' }}">
                                 <td class="px-6 py-4 text-center">
                                     <span class="bg-blue-50/50 font-mono text-blue-600 text-xs font-semibold px-2.5 py-1 rounded-md">{{ $examen->codigo_examen }}</span>
                                 </td>
@@ -101,18 +160,13 @@
                                             data-nombre="{{ $examen->nombre_examen }}"
                                             data-precio="{{ $examen->precio_actual }}"
                                             data-tiempo="{{ $examen->tiempo_entrega }}" onclick="openEdit(this)"
-                                            class="w-8 h-8 flex items-center justify-center bg-blue-50 text-blue-500 hover:text-blue-700 hover:bg-blue-100 rounded-lg transition-colors cursor-pointer">
+                                            class="text-blue-500 hover:text-blue-700 hover:bg-blue-50 p-1.5 rounded-lg hover:ring-4 hover:ring-blue-200 transition-all active:scale-90 cursor-pointer">
                                             <i data-lucide="edit-2" class="w-4 h-4"></i>
                                         </button>
-                                        
-                                        <!-- Eliminar -->
-                                        <form id="delete-exam-{{ $examen->id_examen }}" action="/examenes/{{ $examen->id_examen }}" method="POST" class="m-0">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="button" onclick="confirmDelete('delete-exam-{{ $examen->id_examen }}', '{{ $examen->nombre_examen }}')" class="w-8 h-8 flex items-center justify-center bg-red-50 text-red-500 hover:text-red-700 hover:bg-red-100 rounded-lg transition-colors cursor-pointer">
-                                                <i data-lucide="trash-2" class="w-4 h-4"></i>
-                                            </button>
-                                        </form>
+                                        <button data-id="{{ $examen->id_examen }}" data-nombre="{{ $examen->nombre_examen }}" onclick="openDelete(this)"
+                                            class="text-red-500 hover:text-red-700 hover:bg-red-50 p-1.5 rounded-lg hover:ring-4 hover:ring-red-200 transition-all active:scale-90 cursor-pointer">
+                                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -135,7 +189,32 @@
         </div>
     </div>
 
-
+    <dialog id="deleteDialog" style="max-width:30rem;overflow:visible;">
+        <div style="padding:2rem;text-align:center;">
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:3.5rem;height:3.5rem;border-radius:9999px;background:#fee2e2;margin-bottom:1.25rem;">
+                <i data-lucide="trash-2" style="width:1.6rem;height:1.6rem;color:#ef4444;"></i>
+            </span>
+            <h3 style="font-size:1.05rem;font-weight:700;color:#1e293b;margin:0 0 0.4rem;">¿Eliminar examen?</h3>
+            <p style="font-size:0.85rem;color:#64748b;margin:0 0 0.25rem;">Estás a punto de eliminar:</p>
+            <p id="deleteNombre" style="font-weight:700;color:#334155;font-size:0.95rem;margin:0 0 1.75rem;"></p>
+            <form id="deleteForm" method="POST">
+                @csrf
+                @method('DELETE')
+                <div style="display:flex;gap:0.75rem;">
+                    <button type="button" onclick="document.getElementById('deleteDialog').close()"
+                        style="flex:1;padding:0.6rem 0;font-size:0.875rem;font-weight:600;color:#475569;background:#f1f5f9;border:none;border-radius:0.5rem;cursor:pointer;"
+                        onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='#f1f5f9'">
+                        Cancelar
+                    </button>
+                    <button type="submit"
+                        style="flex:1;padding:0.6rem 0;font-size:0.875rem;font-weight:700;color:white;background:#ef4444;border:none;border-radius:0.5rem;cursor:pointer;"
+                        onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='#ef4444'">
+                        Sí, eliminar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </dialog>
 
     <dialog id="examDialog">
         <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
@@ -222,7 +301,11 @@
             document.getElementById('examDialog').showModal();
         }
 
-
+        function openDelete(btn) {
+            document.getElementById('deleteForm').action = '/examenes/' + btn.dataset.id;
+            document.getElementById('deleteNombre').textContent = btn.dataset.nombre;
+            document.getElementById('deleteDialog').showModal();
+        }
 
         function calcVes(usd, id) {
             const n = parseFloat(usd);

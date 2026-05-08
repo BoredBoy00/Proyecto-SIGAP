@@ -28,7 +28,6 @@ class User extends Authenticatable
         'id_empresa',
         'email',
         'password',
-        'cedula',
     ];
 
     public function empresa()

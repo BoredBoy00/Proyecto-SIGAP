@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Activity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -13,8 +14,7 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
-            $userRol = strtolower(Auth::user()->rol);
-            if ($userRol !== 'admin' && $userRol !== 'administrador') {
+            if (Auth::user()->rol !== 'admin' && Auth::user()->rol !== 'Administrador') {
                 abort(403, 'Acceso denegado. Solo administradores pueden acceder a esta sección.');
             }
             return $next($request);
@@ -52,23 +52,19 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nombres' => 'required|string|regex:/^[\pL\s\-]+$/u|max:255',
-            'apellidos' => 'required|string|regex:/^[\pL\s\-]+$/u|max:255',
-            'cedula' => 'required|string|regex:/^[0-9]{1,9}$/|unique:users,cedula,'.$id,
-            'telefono' => 'nullable|string|regex:/^[0-9]{1,11}$/',
-            'email' => 'required|email|unique:users,email,'.$id, 
-            'rol' => 'required|string',
-        ]);
+        'nombres' => 'required|string|max:255',
+        'apellidos' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email,'.$id, 
+        'rol' => 'required|string',
+    ]);
 
-        $user = User::findOrFail($id);
-        $user->update([
-            'name' => $request->nombres,
-            'apellido' => $request->apellidos,
-            'cedula' => $request->cedula,
-            'telefono' => $request->telefono,
-            'email' => $request->email,
-            'rol' => strtolower($request->rol),
-        ]);
+    $user = User::findOrFail($id);
+    $user->update([
+        'name' => $request->nombres,
+        'apellido' => $request->apellidos,
+        'email' => $request->email,
+        'rol' => $request->rol,
+    ]);
 
     return redirect()->route('users.index')->with('success', 'Usuario actualizado');
     }
@@ -76,34 +72,43 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
+        
+        Activity::create([
+            'user_id' => auth()->id(),
+            'type' => 'Usuario',
+            'description' => "Eliminó al usuario: {$user->name} {$user->apellido}",
+            'identifier' => $user->id,
+        ]);
+
         $user->delete();
-        return redirect(to: '/usuarios');
+        return redirect()->route('users.index')->with('success', 'Usuario eliminado exitosamente');
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'nombres' => 'required|string|regex:/^[\pL\s\-]+$/u|max:255',
-            'apellidos' => 'required|string|regex:/^[\pL\s\-]+$/u|max:255',
-            'cedula' => 'required|string|regex:/^[0-9]{1,9}$/|unique:users,cedula',
-            'telefono' => 'nullable|string|regex:/^[0-9]{1,11}$/',
+            'nombres' => 'required|string|max:255',
+            'apellidos' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'rol' => 'required|string',
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request->nombres,
             'apellido' => $request->apellidos,
-            'cedula' => $request->cedula,
-            'telefono' => $request->telefono,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'rol' => strtolower($request->rol),
+            'rol' => $request->rol,
             'estado' => 'Activo',
         ]);
 
-    
+        Activity::create([
+            'user_id' => auth()->id(),
+            'type' => 'Usuario',
+            'description' => "Creó al usuario: {$user->name} {$user->apellido}",
+            'identifier' => $user->id,
+        ]);
 
         return redirect()->route('users.index')->with('success', 'Usuario creado exitosamente');
     }

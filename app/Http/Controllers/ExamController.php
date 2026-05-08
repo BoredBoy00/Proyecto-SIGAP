@@ -25,7 +25,7 @@ class ExamController extends Controller
             'user_id' => auth()->id(),
             'type' => 'Examen',
             'description' => "Creó el examen: {$examen->nombre_examen}",
-            'identifier' => $examen->codigo_examen,
+            'identifier' => $examen->id_examen,
         ]);
 
         return redirect()->route('exams.index')->with('success', 'Examen creado exitosamente.');
@@ -40,7 +40,7 @@ class ExamController extends Controller
             'user_id' => auth()->id(),
             'type' => 'Examen',
             'description' => "Actualizó el examen: {$examen->nombre_examen}",
-            'identifier' => $examen->codigo_examen,
+            'identifier' => $examen->id_examen,
         ]);
 
         return redirect()->route('exams.index')->with('success', 'Examen actualizado exitosamente.');

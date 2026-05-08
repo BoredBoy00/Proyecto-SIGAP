@@ -16,8 +16,8 @@ class ConvController extends Controller
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where('nombre_empresa', 'LIKE', "%{$search}%")
-                  ->orWhere('id_empresa', 'LIKE', "%{$search}%")
-                  ->orWhere('rif', 'LIKE', "%{$search}%");
+                ->orWhere('id_empresa', 'LIKE', "%{$search}%")
+                ->orWhere('rif', 'LIKE', "%{$search}%");
         }
 
         if ($request->filled('sort')) {
@@ -121,7 +121,7 @@ class ConvController extends Controller
     public function destroy($id)
     {
         $empresa = Empresa::findOrFail($id);
-        
+
         Activity::create([
             'user_id' => auth()->id(),
             'type' => 'Convenio',

@@ -42,18 +42,12 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="flex flex-col space-y-2">
                         <label class="text-sm font-semibold text-slate-700">Nombres</label>
-                        <input type="text" name="nombres" value="{{ old('nombres') }}" required placeholder="Ej. Carlos Andrés" maxlength="25" oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ ]/g, '')" class="px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                        <input type="text" name="nombres" value="{{ old('nombres') }}" required placeholder="Ej. Carlos Andrés" class="px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                     </div>
                     <div class="flex flex-col space-y-2">
                         <label class="text-sm font-semibold text-slate-700">Apellidos</label>
-                        <input type="text" name="apellidos" value="{{ old('apellidos') }}" required placeholder="Ej. Gómez Silva" maxlength="25" oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ ]/g, '')" class="px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                        <input type="text" name="apellidos" value="{{ old('apellidos') }}" required placeholder="Ej. Gómez Silva" class="px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                     </div>
-                </div>
-
-                <!-- Row 1.1: CI -->
-                <div class="flex flex-col space-y-2">
-                    <label class="text-sm font-semibold text-slate-700">Cédula de identidad</label>
-                    <input type="text" name="CI" value="{{ old('rif') }}" required placeholder="Ej. 30476937" maxlength="9" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                 </div>
 
                 <!-- Row 2: Correo -->
@@ -82,9 +76,9 @@
                     <i data-lucide="chevron-down" class="absolute right-4 top-[38px] w-4 h-4 text-slate-400"></i>
                     <select name="rol" required class="px-4 py-3 pr-10 bg-white border border-gray-200 rounded-xl text-sm text-slate-700 appearance-none focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                         <option value="" disabled selected>Seleccionar rol</option>
-                        <option value="admin">Administrador</option>
-                        <option value="recepcionista">Recepcionista</option>
-                        <option value="bioanalista">Bioanalista</option>
+                        <option value="Administrador">Administrador</option>
+                        <option value="Recepcionista">Recepcionista</option>
+                        <option value="Bioanalista">Bioanalista</option>
                     </select>
                 </div>
             

@@ -12,14 +12,30 @@
 
         <!-- Styles / Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <style>
+            @keyframes highlight-fade {
+                0% { background-color: rgba(34, 197, 94, 0.2); }
+                100% { background-color: transparent; }
+            }
+            .highlight-flash {
+                animation: highlight-fade 3s ease-out forwards;
+                border-left: 4px solid #22c55e !important;
+            }
+        </style>
     </head>
-    <body class="bg-gray-50 text-slate-800 font-sans antialiased flex h-screen overflow-hidden">
+    <body class="text-slate-800 font-sans antialiased flex h-screen overflow-hidden" 
+          style="background: 
+                 linear-gradient(110deg, #f9fafb 55%, rgba(239, 246, 255, 0.9) 55%),
+                 url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop') right center / cover no-repeat;">
 
         <!-- Sidebar -->
         <aside class="w-64 bg-white border-r border-gray-100 flex flex-col items-center py-6 shrink-0 z-20">
             <!-- Logo -->
-            <div class="mb-10 w-full px-8">
-                <h1 class="text-2xl font-bold text-blue-600 tracking-wide">SIGAP</h1>
+            <div class="mb-10 w-full px-8 flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
+                    <i data-lucide="activity" class="w-6 h-6 text-blue-600"></i>
+                </div>
+                <h1 class="text-2xl font-black text-blue-600 tracking-tighter">SIGAP</h1>
             </div>
 
             <!-- Navigation -->
@@ -30,7 +46,7 @@
                         ['name' => 'Facturación', 'icon' => 'file-text', 'route' => '#', 'active' => false, 'hasDropdown' => true],
                     ];
 
-                    if (Auth::check() && in_array(strtolower(Auth::user()->rol), ['admin', 'administrador'])) {
+                    if (Auth::check() && in_array(Auth::user()->rol, ['Administrador', 'admin'])) {
                         $navItems[] = ['name' => 'Usuarios', 'icon' => 'users', 'route' => route('users.index'), 'active' => request()->routeIs('users.*'), 'hasDropdown' => false];
                     }
 
@@ -59,12 +75,10 @@
         <!-- Main Content -->
         <main class="flex-1 flex flex-col h-screen relative items-center">
             <!-- Header wrapper -->
-            <header class="w-full max-w-[1400px] h-20 bg-white md:bg-transparent border-b md:border-none border-gray-100 flex items-center justify-between px-8 shrink-0 relative top-0 z-10 pt-4 pb-2">
+            <header class="w-full max-w-[1400px] h-16 bg-white md:bg-transparent border-b md:border-none border-gray-100 flex items-center justify-between px-8 shrink-0 relative top-0 z-10">
                 <div class="flex items-center space-x-4">
                     @hasSection('header_left')
                         @yield('header_left')
-                    @else
-                        <!-- Default empty space to push user profile to right -->
                     @endif
                 </div>
 
@@ -74,86 +88,68 @@
                             <span class="text-sm font-semibold text-slate-800 leading-tight">{{ Auth::user()->name }} {{ Auth::user()->apellido }}</span>
                             <span class="text-xs text-slate-500 leading-tight capitalize">{{ Auth::user()->rol }}</span>
                         </div>
-                        <div class="flex items-center space-x-2">
-                            <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
+                        <div class="relative group">
+                            <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 cursor-pointer">
                                 <i data-lucide="user" class="w-5 h-5"></i>
                             </div>
-                            <form method="POST" action="{{ route('logout') }}" class="m-0">
-                                @csrf
-                                <button type="submit" title="Cerrar Sesión" class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-slate-500 hover:bg-red-50 hover:text-red-600 transition-colors cursor-pointer">
-                                    <i data-lucide="log-out" class="w-5 h-5"></i>
-                                </button>
-                            </form>
+                            <div class="absolute right-0 pt-2 w-48 hidden group-hover:block z-50">
+                                <div class="bg-white rounded-xl shadow-lg py-2 border border-gray-100">
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center transition-colors">
+                                            <i data-lucide="log-out" class="w-4 h-4 mr-2"></i> Cerrar Sesión
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     @endauth
                 </div>
             </header>
 
-            <div class="w-full max-w-[1400px] px-8 py-4">
-                @yield('search_form')
-            </div>
+            @hasSection('search_form')
+                <div class="w-full max-w-[1400px] px-8 py-4">
+                    @yield('search_form')
+                </div>
+            @endif
 
             <div class="w-full max-w-[1400px] px-8">
-                <!-- Toasts are handled by SweetAlert2 -->
+                @if(session('success'))
+                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                        <strong class="font-bold">¡Éxito! </strong>
+                        <span class="block sm:inline">{{ session('success') }}</span>
+                    </div>
+                @endif
             </div>
 
-            <div class="w-full max-w-[1400px] flex-1 overflow-y-auto px-8 pb-8 pt-4">
+            <div class="w-full max-w-[1400px] flex-1 overflow-y-auto px-8 pb-8 pt-0">
                 @yield('content')
             </div>
         </main>
 
         @stack('modals')
 
-        <!-- SweetAlert2 -->
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        
         <!-- Lucide Icons -->
         <script src="https://unpkg.com/lucide@latest"></script>
         <script>
             lucide.createIcons();
 
-            // Global Toast setup
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'bottom-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+            // Highlight logic
+            document.addEventListener('DOMContentLoaded', () => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const highlightId = urlParams.get('highlight');
+                console.log('Highlighting ID:', highlightId);
+                if (highlightId) {
+                    const element = document.getElementById('item-' + highlightId);
+                    if (element) {
+                        console.log('Found element:', element);
+                        element.classList.add('highlight-flash');
+                        setTimeout(() => {
+                            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }, 500);
+                    }
                 }
             });
-
-            @if(session('success'))
-                Toast.fire({
-                    icon: 'success',
-                    title: '{{ session('success') }}'
-                });
-            @endif
-
-            // Global function for Delete Confirmation
-            function confirmDelete(formId, itemName) {
-                Swal.fire({
-                    title: '¿Estás seguro?',
-                    text: `Vas a eliminar ${itemName}. Esta acción no se puede deshacer.`,
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#ef4444',
-                    cancelButtonColor: '#64748b',
-                    confirmButtonText: 'Sí, eliminar',
-                    cancelButtonText: 'Cancelar',
-                    customClass: {
-                        popup: 'rounded-2xl',
-                        confirmButton: 'rounded-xl',
-                        cancelButton: 'rounded-xl'
-                    }
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        document.getElementById(formId).submit();
-                    }
-                });
-            }
         </script>
     </body>
 </html>
