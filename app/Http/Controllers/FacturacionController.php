@@ -8,6 +8,7 @@ use App\Models\Orden;
 use App\Models\Patient;
 use App\Models\Examen;
 use App\Models\Encargo;
+use App\Models\Activity;
 use App\Services\BcvService;
 
 class FacturacionController extends Controller
@@ -77,7 +78,7 @@ class FacturacionController extends Controller
         }
 
         // Crear la Facturación
-        Facturacion::create([
+        $factura = Facturacion::create([
             'id_orden'        => $orden->id_orden,
             'fecha_emision'   => now(),
             'subtotal'        => $validated['subtotal'],
@@ -85,6 +86,13 @@ class FacturacionController extends Controller
             'monto_total'     => $validated['monto_total'],
             'tipo_pago'       => $validated['tipo_pago'],
             'estatus'         => $validated['estatus']
+        ]);
+
+        Activity::create([
+            'user_id' => auth()->id(),
+            'type' => 'Factura',
+            'description' => "Generó la factura #{$factura->id_facturacion} para la orden ORD-{$orden->id_orden}",
+            'identifier' => $factura->id_facturacion,
         ]);
 
         // Crear encargo para el bioanalista con los exámenes de la orden
@@ -139,6 +147,13 @@ class FacturacionController extends Controller
 
         $factura = Facturacion::findOrFail($id);
         
+        Activity::create([
+            'user_id' => auth()->id(),
+            'type' => 'Factura',
+            'description' => "Eliminó la factura #{$factura->id_facturacion}",
+            'identifier' => $factura->id_facturacion,
+        ]);
+
         if ($factura->orden) {
             // Eliminar la orden en cascada eliminará la factura y los detalles automáticamente en la BD
             $factura->orden->delete();

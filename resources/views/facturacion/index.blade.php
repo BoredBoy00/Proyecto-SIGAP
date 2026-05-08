@@ -69,7 +69,7 @@
                     </thead>
                     <tbody class="divide-y divide-gray-100 text-[15px]">
                         @forelse($facturas as $factura)
-                        <tr class="hover:bg-blue-50/50 transition-colors group">
+                        <tr id="item-{{ $factura->id_facturacion }}" class="hover:bg-blue-50/50 transition-colors group {{ request('highlight') == $factura->id_facturacion ? 'highlight-flash' : '' }}">
                             <td class="px-4 py-3 text-center font-bold text-slate-800">ORD-{{ str_pad($factura->id_orden, 4, '0', STR_PAD_LEFT) }}</td>
                             <td class="px-4 py-3 text-center text-slate-600">{{ $factura->tipo_pago ?? 'No especificado' }}</td>
                             <td class="px-4 py-3 text-center font-medium">

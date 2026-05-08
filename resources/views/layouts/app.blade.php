@@ -16,17 +16,20 @@
     <style>
         @keyframes highlight-fade {
             0% {
+                background-color: rgba(34, 197, 94, 0.4);
+            }
+            50% {
                 background-color: rgba(34, 197, 94, 0.2);
             }
-
             100% {
                 background-color: transparent;
             }
         }
 
         .highlight-flash {
-            animation: highlight-fade 3s ease-out forwards;
-            border-left: 4px solid #22c55e !important;
+            animation: highlight-fade 4s ease-in-out forwards;
+            border-left: 5px solid #16a34a !important;
+            outline: 2px solid rgba(22, 163, 74, 0.3);
         }
 
         .nav-item-hover:hover {

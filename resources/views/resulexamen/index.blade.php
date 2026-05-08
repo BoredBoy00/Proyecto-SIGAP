@@ -65,7 +65,7 @@
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @forelse($resultados as $r)
-                    <tr class="hover:bg-gray-50/50 transition-colors">
+                    <tr id="item-{{ $r->id }}" class="hover:bg-gray-50/50 transition-colors {{ request('highlight') == $r->id ? 'highlight-flash' : '' }}">
                         <td class="px-4 py-3 text-center">
                             <span class="font-mono text-blue-600 text-xs font-semibold bg-blue-50 px-2 py-1 rounded-md">#{{ str_pad($r->id, 4, '0', STR_PAD_LEFT) }}</span>
                         </td>

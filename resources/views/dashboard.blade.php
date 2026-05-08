@@ -245,10 +245,12 @@
                                      $iconColor = 'text-slate-400';
 
                                      if (!$isDeletion) {
-                                         if($activity->type == 'Paciente') { $route = route('patients.look'); $btnText = 'Ver Paciente'; }
-                                         elseif($activity->type == 'Examen') { $route = route('exams.index'); $btnText = 'Ver Examen'; }
-                                         elseif($activity->type == 'Factura') { $route = route('facturacion.index'); $btnText = 'Ver Factura'; }
-                                         elseif($activity->type == 'Convenio') { $route = route('convens.index'); $btnText = 'Ver Convenio'; }
+                                         if($activity->type == 'Paciente') { $route = route('patients.look') . '?highlight=' . $activity->identifier; $btnText = 'Ver Paciente'; }
+                                         elseif($activity->type == 'Examen') { $route = route('exams.index') . '?highlight=' . $activity->identifier; $btnText = 'Ver Examen'; }
+                                         elseif($activity->type == 'Factura') { $route = route('facturacion.index') . '?highlight=' . $activity->identifier; $btnText = 'Ver Factura'; }
+                                         elseif($activity->type == 'Convenio') { $route = route('convens.index') . '?highlight=' . $activity->identifier; $btnText = 'Ver Convenio'; }
+                                         elseif($activity->type == 'Usuario') { $route = route('users.index') . '?highlight=' . $activity->identifier; $btnText = 'Ver Usuario'; }
+                                         elseif($activity->type == 'Resultado') { $route = route('resulexamen.index') . '?highlight=' . $activity->identifier; $btnText = 'Ver Resultado'; }
                                      } else {
                                          $btnText = 'No disponible';
                                          $btnClass = 'bg-slate-50 border-slate-200 text-slate-400 cursor-not-allowed opacity-70';

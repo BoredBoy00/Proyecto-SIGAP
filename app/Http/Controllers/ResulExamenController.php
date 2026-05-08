@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ResulExamen;
 use App\Models\Encargo;
+use App\Models\Activity;
 
 class ResulExamenController extends Controller
 {
@@ -78,7 +79,7 @@ class ResulExamenController extends Controller
 
         $pdfPath = $request->file('pdf')->store('resultados', 'public');
 
-        ResulExamen::create([
+        $resultado = ResulExamen::create([
             'id_orden'        => $encargo->id_orden,
             'nombre_paciente' => $encargo->nombre_paciente,
             'nombre_examen'   => $encargo->examenes,
@@ -86,6 +87,13 @@ class ResulExamenController extends Controller
             'imagen_path'     => $pdfPath,
             'bioanalista'     => auth()->user()->name . ' ' . auth()->user()->apellido,
             'fecha_resultado' => now(),
+        ]);
+
+        Activity::create([
+            'user_id' => auth()->id(),
+            'type' => 'Resultado',
+            'description' => "Registró resultados para el paciente {$encargo->nombre_paciente}",
+            'identifier' => $resultado->id,
         ]);
 
         // Marcar el encargo como Completado automáticamente
@@ -149,6 +157,14 @@ class ResulExamenController extends Controller
         if ($resultado->imagen_path) {
             \Storage::disk('public')->delete($resultado->imagen_path);
         }
+
+        Activity::create([
+            'user_id' => auth()->id(),
+            'type' => 'Resultado',
+            'description' => "Eliminó los resultados del paciente {$resultado->nombre_paciente}",
+            'identifier' => $resultado->id,
+        ]);
+
         $resultado->delete();
 
         return redirect()->route('resulexamen.index')->with('deleted', 'Resultado y encargo asociado eliminados.');
