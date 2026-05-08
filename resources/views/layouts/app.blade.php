@@ -28,6 +28,11 @@
             animation: highlight-fade 3s ease-out forwards;
             border-left: 4px solid #22c55e !important;
         }
+
+        .nav-item-hover:hover {
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4), 0 0 20px rgba(37, 99, 235, 0.15) !important;
+            background-color: white !important;
+        }
     </style>
 </head>
 
@@ -35,10 +40,11 @@
     style="background: linear-gradient(110deg, #f9fafb 55%, #e8f0fe 55%);">
 
     <!-- Sidebar -->
-    <aside class="w-64 bg-white border-r border-gray-100 flex flex-col items-center py-6 shrink-0 z-20">
+    <aside class="w-64 border-r border-gray-100 flex flex-col items-center py-6 shrink-0 z-20" 
+        style="background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);">
         <!-- Logo -->
         <div class="mb-10 w-full px-8 flex items-center space-x-3">
-            <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
+            <div class="w-10 h-10 rounded-full bg-blue-600/10 flex items-center justify-center">
                 <i data-lucide="activity" class="w-6 h-6 text-blue-600"></i>
             </div>
             <h1 class="text-2xl font-black text-blue-600 tracking-tighter">SIGAP</h1>
@@ -65,14 +71,15 @@
 
             @foreach($navItems as $item)
                 <a href="{{ $item['route'] }}"
-                    class="flex items-center justify-between px-4 py-3 rounded-xl transition-colors {{ $item['active'] ? 'bg-blue-50 text-blue-600 font-medium' : 'text-slate-500 hover:bg-gray-50 hover:text-slate-800' }}">
+                    class="flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 group nav-item-hover {{ $item['active'] ? 'text-white shadow-lg shadow-blue-500/30' : 'text-slate-500 hover:bg-white hover:text-blue-600 hover:-translate-y-0.5' }}"
+                    style="{{ $item['active'] ? 'background: linear-gradient(110deg, #2563eb 55%, #1d4ed8 55%);' : '' }}">
                     <div class="flex items-center space-x-3">
                         <i data-lucide="{{ $item['icon'] }}"
-                            class="w-5 h-5 {{ $item['active'] ? 'text-blue-600' : 'text-slate-400' }}"></i>
-                        <span>{{ $item['name'] }}</span>
+                            class="w-5 h-5 {{ $item['active'] ? 'text-white' : 'text-slate-400 group-hover:text-blue-600' }}"></i>
+                        <span class="font-bold text-sm tracking-tight">{{ $item['name'] }}</span>
                     </div>
                     @if($item['hasDropdown'])
-                        <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400"></i>
+                        <i data-lucide="chevron-down" class="w-4 h-4 {{ $item['active'] ? 'text-blue-100' : 'text-slate-400' }}"></i>
                     @endif
                 </a>
             @endforeach
