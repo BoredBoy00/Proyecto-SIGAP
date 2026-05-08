@@ -12,14 +12,30 @@
 
         <!-- Styles / Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <style>
+            @keyframes highlight-fade {
+                0% { background-color: rgba(34, 197, 94, 0.2); }
+                100% { background-color: transparent; }
+            }
+            .highlight-flash {
+                animation: highlight-fade 3s ease-out forwards;
+                border-left: 4px solid #22c55e !important;
+            }
+        </style>
     </head>
-    <body class="bg-gray-50 text-slate-800 font-sans antialiased flex h-screen overflow-hidden">
+    <body class="text-slate-800 font-sans antialiased flex h-screen overflow-hidden" 
+          style="background: 
+                 linear-gradient(110deg, #f9fafb 55%, rgba(239, 246, 255, 0.9) 55%),
+                 url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop') right center / cover no-repeat;">
 
         <!-- Sidebar -->
         <aside class="w-64 bg-white border-r border-gray-100 flex flex-col items-center py-6 shrink-0 z-20">
             <!-- Logo -->
-            <div class="mb-10 w-full px-8">
-                <h1 class="text-2xl font-bold text-blue-600 tracking-wide">SIGAP</h1>
+            <div class="mb-10 w-full px-8 flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
+                    <i data-lucide="activity" class="w-6 h-6 text-blue-600"></i>
+                </div>
+                <h1 class="text-2xl font-black text-blue-600 tracking-tighter">SIGAP</h1>
             </div>
 
             <!-- Navigation -->
@@ -59,12 +75,10 @@
         <!-- Main Content -->
         <main class="flex-1 flex flex-col h-screen relative items-center">
             <!-- Header wrapper -->
-            <header class="w-full max-w-[1400px] h-20 bg-white md:bg-transparent border-b md:border-none border-gray-100 flex items-center justify-between px-8 shrink-0 relative top-0 z-10 pt-4 pb-2">
+            <header class="w-full max-w-[1400px] h-16 bg-white md:bg-transparent border-b md:border-none border-gray-100 flex items-center justify-between px-8 shrink-0 relative top-0 z-10">
                 <div class="flex items-center space-x-4">
                     @hasSection('header_left')
                         @yield('header_left')
-                    @else
-                        <!-- Default empty space to push user profile to right -->
                     @endif
                 </div>
 
@@ -93,9 +107,11 @@
                 </div>
             </header>
 
-            <div class="w-full max-w-[1400px] px-8 py-4">
-                @yield('search_form')
-            </div>
+            @hasSection('search_form')
+                <div class="w-full max-w-[1400px] px-8 py-4">
+                    @yield('search_form')
+                </div>
+            @endif
 
             <div class="w-full max-w-[1400px] px-8">
                 @if(session('success'))
@@ -106,7 +122,7 @@
                 @endif
             </div>
 
-            <div class="w-full max-w-[1400px] flex-1 overflow-y-auto px-8 pb-8 pt-4">
+            <div class="w-full max-w-[1400px] flex-1 overflow-y-auto px-8 pb-8 pt-0">
                 @yield('content')
             </div>
         </main>
@@ -117,6 +133,23 @@
         <script src="https://unpkg.com/lucide@latest"></script>
         <script>
             lucide.createIcons();
+
+            // Highlight logic
+            document.addEventListener('DOMContentLoaded', () => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const highlightId = urlParams.get('highlight');
+                console.log('Highlighting ID:', highlightId);
+                if (highlightId) {
+                    const element = document.getElementById('item-' + highlightId);
+                    if (element) {
+                        console.log('Found element:', element);
+                        element.classList.add('highlight-flash');
+                        setTimeout(() => {
+                            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }, 500);
+                    }
+                }
+            });
         </script>
     </body>
 </html>

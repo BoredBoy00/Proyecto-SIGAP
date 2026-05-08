@@ -62,7 +62,7 @@
                     </thead>
                     <tbody class="divide-y divide-gray-100 text-[15px]">
                         @foreach($patients as $patient)
-                            <tr>
+                            <tr id="item-{{ $patient->id }}" class="hover:bg-gray-50/50 transition-colors {{ (request('highlight') == $patient->id || request('highlight') == $patient->cedula) ? 'highlight-flash' : '' }}">
                                 <td class="px-6 py-4">{{ $patient->nombre }}</td>
                                 <td class="px-6 py-4">{{ $patient->apellido }}</td>
                                 <td class="px-6 py-4">{{ $patient->cedula }}</td>

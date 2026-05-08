@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Activity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -71,8 +72,16 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
+        
+        Activity::create([
+            'user_id' => auth()->id(),
+            'type' => 'Usuario',
+            'description' => "Eliminó al usuario: {$user->name} {$user->apellido}",
+            'identifier' => $user->id,
+        ]);
+
         $user->delete();
-        return redirect(to: '/usuarios');
+        return redirect()->route('users.index')->with('success', 'Usuario eliminado exitosamente');
     }
 
     public function store(Request $request)
@@ -85,7 +94,7 @@ class UserController extends Controller
             'rol' => 'required|string',
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request->nombres,
             'apellido' => $request->apellidos,
             'email' => $request->email,
@@ -94,7 +103,12 @@ class UserController extends Controller
             'estado' => 'Activo',
         ]);
 
-    
+        Activity::create([
+            'user_id' => auth()->id(),
+            'type' => 'Usuario',
+            'description' => "Creó al usuario: {$user->name} {$user->apellido}",
+            'identifier' => $user->id,
+        ]);
 
         return redirect()->route('users.index')->with('success', 'Usuario creado exitosamente');
     }

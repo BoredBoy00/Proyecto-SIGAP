@@ -146,7 +146,7 @@
                     </thead>
                     <tbody class="divide-y divide-gray-100 text-[15px]" id="examTableBody">
                         @forelse($examenes as $examen)
-                            <tr class="hover:bg-gray-50/50 transition-colors exam-row">
+                            <tr id="item-{{ $examen->id_examen }}" class="hover:bg-gray-50/50 transition-colors exam-row {{ (request('highlight') == $examen->id_examen || request('highlight') == $examen->codigo_examen) ? 'highlight-flash' : '' }}">
                                 <td class="px-6 py-4 text-center">
                                     <span class="bg-blue-50/50 font-mono text-blue-600 text-xs font-semibold px-2.5 py-1 rounded-md">{{ $examen->codigo_examen }}</span>
                                 </td>

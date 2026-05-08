@@ -38,7 +38,7 @@ class PatientController extends Controller
             'user_id' => auth()->id(),
             'type' => 'Paciente',
             'description' => "Registró al paciente {$patient->nombre} {$patient->apellido}",
-            'identifier' => $patient->cedula,
+            'identifier' => $patient->id,
         ]);
 
         return redirect()->route('patients.create')->with('success', 'Paciente registrado exitosamente');
@@ -74,7 +74,7 @@ class PatientController extends Controller
             'user_id' => auth()->id(),
             'type' => 'Paciente',
             'description' => "Actualizó los datos del paciente {$patient->nombre} {$patient->apellido}",
-            'identifier' => $patient->cedula,
+            'identifier' => $patient->id,
         ]);
 
         return redirect()->route('patients.look')->with('success', 'Paciente actualizado exitosamente');

@@ -140,7 +140,7 @@
                     </thead>
                     <tbody class="divide-y divide-gray-100 text-[15px]">
                         @forelse($empresas as $empresa)
-                        <tr class="hover:bg-blue-50/50 transition-colors group">
+                        <tr id="item-{{ $empresa->id_empresa }}" class="hover:bg-blue-50/50 transition-colors group {{ (request('highlight') == $empresa->id_empresa || request('highlight') == $empresa->rif) ? 'highlight-flash' : '' }}">
                             <td class="px-6 py-4 text-slate-500 font-medium">#{{ str_pad($empresa->id_empresa, 4, '0', STR_PAD_LEFT) }}</td>
                             <td class="px-6 py-4 font-medium text-slate-700">{{ $empresa->rif }}</td>
                             <td class="px-6 py-4 text-slate-600">{{ $empresa->nombre_empresa }}</td>

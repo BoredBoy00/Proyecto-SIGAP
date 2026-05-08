@@ -131,7 +131,7 @@
                     </thead>
                     <tbody class="divide-y divide-gray-100 text-[15px]">
                         @foreach($usuarios as $user)
-                        <tr class="hover:bg-gray-50/50 transition-colors">
+                        <tr id="item-{{ $user->id }}" class="hover:bg-gray-50/50 transition-colors {{ (request('highlight') == $user->id) ? 'highlight-flash' : '' }}">
                             <td class="px-6 py-4 text-slate-500 font-medium">#{{ $user->id }}</td>
                             <td class="px-6 py-4">
                                 <div class="font-bold text-slate-800">{{ $user->name }} {{ $user->apellido }}</div>
