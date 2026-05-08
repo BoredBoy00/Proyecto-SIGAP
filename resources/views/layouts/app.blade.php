@@ -24,9 +24,7 @@
         </style>
     </head>
     <body class="text-slate-800 font-sans antialiased flex h-screen overflow-hidden" 
-          style="background: 
-                 linear-gradient(110deg, #f9fafb 55%, rgba(239, 246, 255, 0.9) 55%),
-                 url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop') right center / cover no-repeat;">
+          style="background: linear-gradient(110deg, #f9fafb 55%, #e8f0fe 55%);">
 
         <!-- Sidebar -->
         <aside class="w-64 bg-white border-r border-gray-100 flex flex-col items-center py-6 shrink-0 z-20">

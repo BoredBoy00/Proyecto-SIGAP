@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'Gestión de Pacientes')
 
@@ -9,12 +9,16 @@
             <p class="text-slate-400 mt-1">Administra los registros de pacientes individuales o realiza cargas masivas.</p>
         </div>
 
-        <div class="flex items-center justify-between mb-8">
-            
-            <div class="flex space-x-2">
-                <a href="{{ route('patients.create') }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">Registro Individual</a>
-                <a href="{{ route('patients.look') }}" class="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors">Ver Pacientes</a>
-            </div>
+        <!-- Navigation Buttons -->
+        <div class="flex items-center space-x-4 mb-8">
+            <a href="{{ route('patients.create') }}" class="inline-flex items-center px-5 py-2.5 text-sm font-bold rounded-xl bg-blue-600 text-white shadow-md shadow-blue-500/20 hover:bg-blue-700 hover:-translate-y-0.5 transition-all duration-200">
+                <i data-lucide="user-plus" class="w-4 h-4 mr-2"></i>
+                Registro Individual
+            </a>
+            <a href="{{ route('patients.look') }}" class="inline-flex items-center px-5 py-2.5 text-sm font-bold rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-blue-600 hover:border-blue-200 hover:shadow-sm hover:-translate-y-0.5 transition-all duration-200">
+                <i data-lucide="users" class="w-4 h-4 mr-2"></i>
+                Ver Pacientes
+            </a>
         </div>
 
         <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden flex flex-col">
