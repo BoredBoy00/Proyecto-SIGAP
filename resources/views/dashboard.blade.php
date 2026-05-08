@@ -71,8 +71,8 @@
                         @foreach($recentPatients as $paciente)
                         <div class="flex items-center justify-between p-3 bg-white border border-gray-100 rounded-xl hover:shadow-md transition-shadow">
                             <div class="flex flex-col">
-                                <span class="font-bold text-slate-800">{{ $paciente->name }} {{ $paciente->apellido }}</span>
-                                <span class="text-xs text-slate-500 font-mono">V-{{ $paciente->cedula }}</span>
+                                <span class="font-bold text-slate-800">{{ $paciente->nombre }} {{ $paciente->apellido }}</span>
+                                <span class="text-xs text-slate-500 font-mono">{{ str_starts_with(strtoupper($paciente->cedula), 'V-') ? $paciente->cedula : 'V-' . $paciente->cedula }}</span>
                             </div>
                             <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded-md">{{ $paciente->created_at->diffForHumans() }}</span>
                         </div>
@@ -96,8 +96,8 @@
                         @foreach($recentExams as $examen)
                         <div class="flex items-center justify-between p-3 bg-white border border-gray-100 rounded-xl hover:shadow-md transition-shadow">
                             <div class="flex flex-col">
-                                <span class="font-bold text-slate-800">{{ $examen->nombre_del_examen }}</span>
-                                <span class="text-xs text-slate-500">ID: {{ str_pad($examen->id_examen, 4, '0', STR_PAD_LEFT) }}</span>
+                                <span class="font-bold text-slate-800">{{ $examen->examen->nombre_examen }}</span>
+                                <span class="text-xs text-slate-500">Paciente: {{ $examen->orden->paciente->nombre ?? 'N/A' }}</span>
                             </div>
                             <span class="text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-md">{{ $examen->created_at->diffForHumans() }}</span>
                         </div>
@@ -113,56 +113,60 @@
 
         <!-- Dashboard Bioanalista -->
         @if(in_array(strtolower(auth()->user()->rol), ['bioanalista']))
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col mt-8">
-            <div class="p-6 md:p-8 border-b border-gray-100">
-                <h2 class="text-xl font-bold text-slate-800">Métricas de Exámenes Realizados</h2>
-                <p class="text-sm text-slate-500 mt-1">Gráficos de rendimiento y cantidad de pruebas procesadas.</p>
+        <div class="mt-8">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-slate-800">Panel de Rendimiento</h2>
+                <p class="text-slate-500">Exámenes procesados por periodos de tiempo.</p>
             </div>
-            <div class="p-8 grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Gráfico Día -->
-                <div class="flex flex-col items-center">
-                    <div class="relative w-32 h-32 flex items-center justify-center rounded-full border-8 border-blue-50 shadow-inner">
-                        <svg class="absolute inset-0 w-full h-full transform -rotate-90">
-                            <circle cx="64" cy="64" r="56" stroke="currentColor" stroke-width="8" fill="transparent" class="text-blue-500" stroke-dasharray="351.8" stroke-dashoffset="{{ 351.8 - (351.8 * min($examenesHoy / 50, 1)) }}"></circle>
-                        </svg>
-                        <div class="flex flex-col items-center justify-center">
-                            <span class="text-3xl font-black text-slate-800">{{ $examenesHoy }}</span>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Hoy -->
+                <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm flex flex-col justify-between min-h-[160px]">
+                    <div class="flex justify-between items-start">
+                        <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                            <i data-lucide="clock" class="w-6 h-6"></i>
                         </div>
+                        <span class="text-[10px] font-black uppercase tracking-widest text-indigo-400 bg-indigo-50 px-2 py-1 rounded-md">Hoy</span>
                     </div>
-                    <span class="mt-4 font-bold text-slate-700">Hoy</span>
+                    <div class="mt-4">
+                        <div class="text-4xl font-bold text-slate-800">{{ $examenesHoy }}</div>
+                        <div class="text-sm font-medium text-slate-400 mt-1 uppercase tracking-tight">Exámenes Realizados</div>
+                    </div>
                 </div>
 
-                <!-- Gráfico Semana -->
-                <div class="flex flex-col items-center">
-                    <div class="relative w-32 h-32 flex items-center justify-center rounded-full border-8 border-green-50 shadow-inner">
-                        <svg class="absolute inset-0 w-full h-full transform -rotate-90">
-                            <circle cx="64" cy="64" r="56" stroke="currentColor" stroke-width="8" fill="transparent" class="text-green-500" stroke-dasharray="351.8" stroke-dashoffset="{{ 351.8 - (351.8 * min($examenesSemana / 300, 1)) }}"></circle>
-                        </svg>
-                        <div class="flex flex-col items-center justify-center">
-                            <span class="text-3xl font-black text-slate-800">{{ $examenesSemana }}</span>
+                <!-- Semana -->
+                <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm flex flex-col justify-between min-h-[160px]">
+                    <div class="flex justify-between items-start">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                            <i data-lucide="calendar" class="w-6 h-6"></i>
                         </div>
+                        <span class="text-[10px] font-black uppercase tracking-widest text-emerald-400 bg-emerald-50 px-2 py-1 rounded-md">Semana</span>
                     </div>
-                    <span class="mt-4 font-bold text-slate-700">Esta Semana</span>
+                    <div class="mt-4">
+                        <div class="text-4xl font-bold text-slate-800">{{ $examenesSemana }}</div>
+                        <div class="text-sm font-medium text-slate-400 mt-1 uppercase tracking-tight">Pruebas Procesadas</div>
+                    </div>
                 </div>
 
-                <!-- Gráfico Mes -->
-                <div class="flex flex-col items-center">
-                    <div class="relative w-32 h-32 flex items-center justify-center rounded-full border-8 border-purple-50 shadow-inner">
-                        <svg class="absolute inset-0 w-full h-full transform -rotate-90">
-                            <circle cx="64" cy="64" r="56" stroke="currentColor" stroke-width="8" fill="transparent" class="text-purple-500" stroke-dasharray="351.8" stroke-dashoffset="{{ 351.8 - (351.8 * min($examenesMes / 1000, 1)) }}"></circle>
-                        </svg>
-                        <div class="flex flex-col items-center justify-center">
-                            <span class="text-3xl font-black text-slate-800">{{ $examenesMes }}</span>
+                <!-- Mes -->
+                <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm flex flex-col justify-between min-h-[160px]">
+                    <div class="flex justify-between items-start">
+                        <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+                            <i data-lucide="trending-up" class="w-6 h-6"></i>
                         </div>
+                        <span class="text-[10px] font-black uppercase tracking-widest text-purple-400 bg-purple-50 px-2 py-1 rounded-md">Mes</span>
                     </div>
-                    <span class="mt-4 font-bold text-slate-700">Este Mes</span>
+                    <div class="mt-4">
+                        <div class="text-4xl font-bold text-slate-800">{{ $examenesMes }}</div>
+                        <div class="text-sm font-medium text-slate-400 mt-1 uppercase tracking-tight">Volumen Mensual</div>
+                    </div>
                 </div>
             </div>
         </div>
         @endif
 
         <!-- Recent Activity -->
-        @if(in_array(strtolower(auth()->user()->rol), ['admin', 'administrador', 'administrador principal']))
+        @if(in_array(strtolower(auth()->user()->rol), ['admin', 'administrador', 'administrador principal', 'recepcionista', 'recepcion']))
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col mt-8">
             <div class="p-6 md:p-8 border-b border-gray-100">
                 <h2 class="text-xl font-bold text-slate-800">Actividad Reciente</h2>

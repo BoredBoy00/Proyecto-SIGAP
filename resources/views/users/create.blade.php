@@ -66,17 +66,29 @@
 
                 <!-- Row 3: Contraseñas -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="flex flex-col space-y-2 relative">
+                    <div class="flex flex-col space-y-2">
                         <label class="text-sm font-semibold text-slate-700">Contraseña</label>
-                        <i data-lucide="eye" class="absolute right-4 top-[38px] w-4 h-4 text-slate-400 cursor-pointer"></i>
-                        <input type="password" name="password" required placeholder="••••••••"
-                            class="px-4 py-3 pr-10 bg-white border border-gray-200 rounded-xl text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                        <div class="relative w-full" style="position: relative;">
+                            <input type="password" id="password" name="password" required placeholder="••••••••"
+                                class="w-full px-4 py-3 pr-12 bg-white border border-gray-200 rounded-xl text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                            <button type="button" onclick="togglePassword('password', this)" 
+                                class="text-slate-400 hover:text-blue-600 transition-colors cursor-pointer flex items-center justify-center"
+                                style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); border: none; background: none; padding: 4px; z-index: 10; margin: 0;">
+                                <i data-lucide="eye" style="width: 20px; height: 20px;"></i>
+                            </button>
+                        </div>
                     </div>
-                    <div class="flex flex-col space-y-2 relative">
+                    <div class="flex flex-col space-y-2">
                         <label class="text-sm font-semibold text-slate-700">Confirmar Contraseña</label>
-                        <i data-lucide="eye" class="absolute right-4 top-[38px] w-4 h-4 text-slate-400 cursor-pointer"></i>
-                        <input type="password" name="password_confirmation" required placeholder="••••••••"
-                            class="px-4 py-3 pr-10 bg-white border border-gray-200 rounded-xl text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                        <div class="relative w-full" style="position: relative;">
+                            <input type="password" id="password_confirmation" name="password_confirmation" required placeholder="••••••••"
+                                class="w-full px-4 py-3 pr-12 bg-white border border-gray-200 rounded-xl text-sm text-slate-700 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                            <button type="button" onclick="togglePassword('password_confirmation', this)" 
+                                class="text-slate-400 hover:text-blue-600 transition-colors cursor-pointer flex items-center justify-center"
+                                style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); border: none; background: none; padding: 4px; z-index: 10; margin: 0;">
+                                <i data-lucide="eye" style="width: 20px; height: 20px;"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -124,5 +136,18 @@
             if (/^[0-9]/.test(v)) v = 'V-' + v;
             return (v[0] === 'V' && v[1] !== '-' && v.length > 1 ? 'V-' + v.slice(1) : v).slice(0, 10);
         });
+
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const icon = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.setAttribute('data-lucide', 'eye-off');
+            } else {
+                input.type = 'password';
+                icon.setAttribute('data-lucide', 'eye');
+            }
+            lucide.createIcons();
+        }
     </script>
 @endsection

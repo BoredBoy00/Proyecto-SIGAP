@@ -164,7 +164,7 @@
                     </div>
                     <form method="POST" action="{{ route('logout') }}" class="m-0 p-0 flex items-center">
                         @csrf
-                        <button type="submit" class="flex items-center justify-center px-4 py-2 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-lg font-medium transition-all shadow-sm active:scale-95" title="Cerrar Sesión">
+                        <button type="submit" class="flex items-center justify-center px-4 py-2 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-lg font-medium transition-all shadow-sm active:scale-95 cursor-pointer" title="Cerrar Sesión">
                             <i data-lucide="log-out" class="w-4 h-4 mr-2"></i>
                             <span class="text-sm">Salir</span>
                         </button>
