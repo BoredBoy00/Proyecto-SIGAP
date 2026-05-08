@@ -43,24 +43,18 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="flex flex-col space-y-2">
                         <label class="text-sm font-semibold text-slate-700">Nombres</label>
-                        <input type="text" name="nombres" value="{{ $user->name }}" required placeholder="Ej. Carlos Andrés" maxlength="25" oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ ]/g, '')" class="px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                        <input type="text" name="nombres" value="{{ $user->name }}" required placeholder="Ej. Carlos Andrés" class="px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                     </div>
                     <div class="flex flex-col space-y-2">
                         <label class="text-sm font-semibold text-slate-700">Apellidos</label>
-                        <input type="text" name="apellidos" value="{{ $user->apellido }}" required placeholder="Ej. Gómez Silva" maxlength="25" oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ ]/g, '')" class="px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                        <input type="text" name="apellidos" value="{{ $user->apellido }}" required placeholder="Ej. Gómez Silva" class="px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                     </div>
                 </div>
 
-                <!-- Row 2: Cédula y Correo -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="flex flex-col space-y-2">
-                        <label class="text-sm font-semibold text-slate-700">Cédula de Identidad</label>
-                        <input type="text" name="cedula" value="{{ $user->cedula }}" required placeholder="Ej. 12345678" maxlength="9" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
-                    </div>
-                    <div class="flex flex-col space-y-2">
-                        <label class="text-sm font-semibold text-slate-700">Correo Electrónico (Usuario)</label>
-                        <input type="email" name="email" value="{{ $user->email }}" required placeholder="usuario@sigap.com" class="px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
-                    </div>
+                <!-- Row 2: Correo -->
+                <div class="flex flex-col space-y-2">
+                    <label class="text-sm font-semibold text-slate-700">Correo Electrónico (Usuario)</label>
+                    <input type="email" name="email" value="{{ $user->email }}" required placeholder="usuario@sigap.com" class="px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                 </div>
 
 
@@ -68,11 +62,11 @@
                 <div class="flex flex-col space-y-2 relative pb-2">
                     <label class="text-sm font-semibold text-slate-700">Rol / Nivel de Acceso</label>
                     <i data-lucide="chevron-down" class="absolute right-4 top-[38px] w-4 h-4 text-slate-400"></i>
-                    <select name="rol" required class="px-4 py-3 pr-10 bg-white border border-gray-200 rounded-xl text-sm text-slate-700 appearance-none focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
-                        <option value="" disabled>Seleccionar rol</option>
-                        <option value="admin" {{ strtolower($user->rol) == 'admin' ? 'selected' : '' }}>Administrador</option>
-                        <option value="recepcionista" {{ strtolower($user->rol) == 'recepcionista' ? 'selected' : '' }}>Recepcionista</option>
-                        <option value="bioanalista" {{ strtolower($user->rol) == 'bioanalista' ? 'selected' : '' }}>Bioanalista</option>
+                    <select name="rol" value="{{ $user->rol }}" required class="px-4 py-3 pr-10 bg-white border border-gray-200 rounded-xl text-sm text-slate-700 appearance-none focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                        <option value="" disabled selected>Seleccionar rol</option>
+                        <option value="Administrador">Administrador</option>
+                        <option value="Recepcionista">Recepcionista</option>
+                        <option value="Bioanalista">Bioanalista</option>
                     </select>
                 </div>
             

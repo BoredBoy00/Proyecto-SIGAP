@@ -6,6 +6,7 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ConvController;
+use App\Http\Controllers\DashboardController;
 
 
 // Rutas de Autenticación
@@ -13,7 +14,6 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-use App\Http\Controllers\DashboardController;
 
 // Redirección de la raíz
 Route::get('/', function () {

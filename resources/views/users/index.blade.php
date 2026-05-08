@@ -90,7 +90,6 @@
             <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Gestión de Usuarios</h1>
         </div>
 
-
         <!-- Main Card -->
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
             
@@ -104,15 +103,10 @@
                         class="w-full pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all text-slate-700 placeholder-slate-400"
                         name="search">
                     </form>
-                    
                 </div>
 
                 <!-- Right Controls -->
                 <div class="flex items-center space-x-3 w-full md:w-auto">
-                    <button class="flex items-center space-x-2 px-5 py-2.5 bg-gray-50 border border-gray-200 text-slate-700 font-medium rounded-lg hover:bg-gray-100 transition-colors">
-                        <i data-lucide="history" class="w-4 h-4"></i>
-                        <span>Ver movimientos realizados</span>
-                    </button>
                     <a href="{{ route('users.create') }}" class="flex items-center space-x-2 px-5 py-2.5 bg-[#0d6efd] text-white font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
                         <i data-lucide="plus" class="w-4 h-4"></i>
                         <span>Nuevo Usuario</span>
