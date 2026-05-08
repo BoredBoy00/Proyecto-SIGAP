@@ -63,7 +63,7 @@
                     </div>
                     <div class="flex flex-col space-y-2">
                         <label class="text-sm font-semibold text-slate-700">Cédula de Identidad</label>
-                        <input type="text" name="cedula" value="{{ old('cedula') }}" placeholder="Ej. V-12345678"
+                        <input type="text" id="cedula-input" name="cedula" value="{{ old('cedula') }}" placeholder="Ej. V-12345678" maxlength="10"
                             class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                     </div>
                     <div class="flex flex-col space-y-2 relative">
@@ -74,7 +74,7 @@
                     </div>
                     <div class="flex flex-col space-y-2">
                         <label class="text-sm font-semibold text-slate-700">Teléfono</label>
-                        <input type="text" name="telefono" value="{{ old('telefono') }}" placeholder="Ej. 0414-1234567"
+                        <input type="text" id="telefono-input" name="telefono" value="{{ old('telefono') }}" placeholder="Ej. 0414-1234567" maxlength="12"
                             class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                     </div>
                     <div class="flex flex-col space-y-2">
