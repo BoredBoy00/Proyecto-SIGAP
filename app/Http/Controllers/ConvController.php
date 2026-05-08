@@ -55,6 +55,8 @@ class ConvController extends Controller
         $request->validate([
             'nombre_empresa' => 'required|string|max:255',
             'rif' => 'required|string|max:20|unique:empresas,rif',
+            'email_empresa' => 'required|email|max:255',
+            'telefono' => 'required|string|max:20',
             'direccion' => 'required|string|max:255',
             'porcentaje_descuento' => 'required|numeric|min:1|max:20',
         ]);
@@ -62,6 +64,8 @@ class ConvController extends Controller
         $empresa = Empresa::create([
             'nombre_empresa' => $request->nombre_empresa,
             'rif' => $request->rif,
+            'email' => $request->email_empresa,
+            'telefono' => $request->telefono,
             'direccion' => $request->direccion,
             'porcentaje_descuento' => $request->porcentaje_descuento,
         ]);
@@ -89,6 +93,8 @@ class ConvController extends Controller
         $request->validate([
             'nombre_empresa' => 'required|string|max:255',
             'rif' => 'required|string|max:20|unique:empresas,rif,' . $id . ',id_empresa',
+            'email_empresa' => 'required|email|max:255',
+            'telefono' => 'required|string|max:20',
             'direccion' => 'required|string|max:255',
             'porcentaje_descuento' => 'required|numeric|min:1|max:20',
         ]);
@@ -96,6 +102,8 @@ class ConvController extends Controller
         $empresa->update([
             'nombre_empresa' => $request->nombre_empresa,
             'rif' => $request->rif,
+            'email' => $request->email_empresa,
+            'telefono' => $request->telefono,
             'direccion' => $request->direccion,
             'porcentaje_descuento' => $request->porcentaje_descuento,
         ]);

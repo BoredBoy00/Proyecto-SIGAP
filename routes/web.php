@@ -60,7 +60,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/crear',[ConvController::class, 'create']) ->name('create');
         Route::post('/', [ConvController::class, 'store']) ->name('store');
         Route::get('/{id}/edit', [ConvController::class, 'edit']) ->name('edit');
-        Route::patch('{id}',[ConvController::class, 'update']) ->name ('update');
-        Route::delete('{id}', [ConvController::class, 'destroy']) ->name ('destroy');
+        Route::patch('/{id}',[ConvController::class, 'update']) ->name ('update');
+        Route::delete('/{id}', [ConvController::class, 'destroy']) ->name ('destroy');
     });
 });

@@ -77,7 +77,7 @@
             
 
             <div class="bg-gray-50 border-t border-gray-100 p-6 flex flex-col md:flex-row items-center justify-end space-y-3 md:space-y-0 md:space-x-3">
-                <a href="{{ route('users.index') }}" class="w-full text-center md:w-auto px-6 py-2.5 bg-white text-slate-700 font-medium rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
+                <a href="{{ route('convens.index') }}" class="w-full text-center md:w-auto px-6 py-2.5 bg-white text-slate-700 font-medium rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
                     Cancelar
                 </a>
                 <button type="submit" class="w-full md:w-auto px-6 py-2.5 bg-[#0d6efd] text-white font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm">

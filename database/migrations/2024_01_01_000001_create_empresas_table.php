@@ -12,6 +12,8 @@ return new class extends Migration
             $table->id('id_empresa');
             $table->string('nombre_empresa');
             $table->string('rif')->unique();
+            $table->string('email')->nullable();
+            $table->string('telefono')->nullable();
             $table->string('direccion')->nullable();
             $table->decimal('porcentaje_descuento', 5, 2)->default(0);
             $table->timestamps();
