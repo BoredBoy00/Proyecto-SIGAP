@@ -68,6 +68,18 @@
                         <input type="email" name="email" value="{{ old('email') }}" placeholder="ejemplo@correo.com"
                             class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                     </div>
+                    
+                    <div class="flex flex-col space-y-2">
+                        <label class="text-sm font-semibold text-slate-700">Convenio / Empresa (Opcional)</label>
+                        <select name="id_empresa" class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all cursor-pointer">
+                            <option value="">Sin convenio</option>
+                            @foreach($empresas as $empresa)
+                                <option value="{{ $empresa->id_empresa }}" {{ old('id_empresa') == $empresa->id_empresa ? 'selected' : '' }}>
+                                    {{ $empresa->nombre_empresa }} (-{{ $empresa->porcentaje_descuento }}%)
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
 
                 <div class="bg-blue-50/50 border-t border-blue-100 p-6 flex items-center justify-end space-x-3 mt-auto">

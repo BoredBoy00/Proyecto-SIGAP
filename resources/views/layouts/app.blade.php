@@ -71,7 +71,7 @@
             @php
                 $navItems = [
                     ['name' => 'Dashboard', 'icon' => 'layout-grid', 'route' => route('dashboard'), 'active' => request()->routeIs('dashboard'), 'hasDropdown' => false],
-                    ['name' => 'Facturación', 'icon' => 'file-text', 'route' => '#', 'active' => false, 'hasDropdown' => true],
+                    ['name' => 'Facturación', 'icon' => 'file-text', 'route' => route('facturacion.index'), 'active' => request()->routeIs('facturacion.*'), 'hasDropdown' => false],
                 ];
 
                 if (Auth::check() && in_array(Auth::user()->rol, ['Administrador', 'admin'])) {

@@ -7,6 +7,7 @@ use App\Http\Controllers\ExamController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ConvController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FacturacionController;
 
 
 // Rutas de Autenticación
@@ -64,5 +65,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}/edit', [ConvController::class, 'edit']) ->name('edit');
         Route::patch('/{id}',[ConvController::class, 'update']) ->name ('update');
         Route::delete('/{id}', [ConvController::class, 'destroy']) ->name ('destroy');
+    });
+
+    Route::prefix('facturacion')->name('facturacion.')->group(function() {
+        Route::get('/', [FacturacionController::class, 'index'])->name('index');
+        Route::get('/crear', [FacturacionController::class, 'create'])->name('create');
+        Route::post('/', [FacturacionController::class, 'store'])->name('store');
     });
 });

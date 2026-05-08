@@ -83,7 +83,7 @@
     </div>
     @endpush
 
-    <div class="flex flex-col max-w-5xl w-full mt-2 mx-auto">
+    <div class="flex flex-col max-w-[1400px] w-full mt-2 mx-auto">
         
         <!-- Header -->
         <div class="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -127,23 +127,25 @@
 
             <!-- Table -->
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm text-slate-600">
-                    <thead class="bg-blue-50 text-slate-500 font-bold text-xs uppercase tracking-wider border-b border-blue-100">
+                <table class="w-full text-left text-sm text-slate-600 table-auto border-separate border-spacing-0">
+                    <thead class="bg-[#f1f7ff] text-slate-500 font-bold text-[11px] uppercase tracking-wider border-b border-blue-100">
                         <tr>
-                            <th class="px-6 py-4 w-32">CÓDIGO</th>
-                            <th class="px-6 py-4 w-48">RIF</th>
-                            <th class="px-6 py-4">NOMBRE DE LA EMPRESA</th>
-                            <th class="px-6 py-4 w-32 text-center">DIRECCIÓN</th>
-                            <th class="px-6 py-4 w-40 text-center">% DE DESCUENTO</th>
-                            <th class="px-6 py-4 w-28 text-center">ACCIONES</th>
+                            <th class="px-6 py-4 w-32 border-b border-blue-100 text-center">CÓDIGO</th>
+                            <th class="px-6 py-4 w-48 border-b border-blue-100 text-center">RIF</th>
+                            <th class="px-6 py-4 border-b border-blue-100 text-center">NOMBRE DE LA EMPRESA</th>
+                            <th class="px-6 py-4 w-32 text-center border-b border-blue-100">DIRECCIÓN</th>
+                            <th class="px-6 py-4 w-40 text-center border-b border-blue-100">% DE DESCUENTO</th>
+                            <th class="px-6 py-4 w-28 text-center border-b border-blue-100">ACCIONES</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100 text-[15px]">
                         @forelse($empresas as $empresa)
                         <tr id="item-{{ $empresa->id_empresa }}" class="hover:bg-blue-50/50 transition-colors group {{ (request('highlight') == $empresa->id_empresa || request('highlight') == $empresa->rif) ? 'highlight-flash' : '' }}">
-                            <td class="px-6 py-4 text-slate-500 font-medium">#{{ str_pad($empresa->id_empresa, 4, '0', STR_PAD_LEFT) }}</td>
-                            <td class="px-6 py-4 font-medium text-slate-700">{{ $empresa->rif }}</td>
-                            <td class="px-6 py-4 text-slate-600">{{ $empresa->nombre_empresa }}</td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="bg-blue-50/50 font-mono text-blue-600 text-xs font-semibold px-2.5 py-1 rounded-md">#{{ str_pad($empresa->id_empresa, 4, '0', STR_PAD_LEFT) }}</span>
+                            </td>
+                            <td class="px-6 py-4 font-semibold text-slate-800 text-center">{{ $empresa->rif }}</td>
+                            <td class="px-6 py-4 font-semibold text-slate-800 text-center">{{ $empresa->nombre_empresa }}</td>
                             <td class="px-6 py-4 text-center text-slate-600">{{ $empresa->direccion }}</td>
                             <td class="px-6 py-4 text-center">
                                 <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">

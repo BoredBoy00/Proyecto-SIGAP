@@ -10,7 +10,8 @@ class PatientController extends Controller
 {
     public function create()
     {
-        return view('patients.create');
+        $empresas = \App\Models\Empresa::all();
+        return view('patients.create', compact('empresas'));
     }
 
     public function store(Request $request)
@@ -21,7 +22,12 @@ class PatientController extends Controller
             'cedula' => ['nullable', 'string', 'regex:/^V-[0-9]{1,8}$/', 'max:10', 'unique:pacientes'],
             'telefono' => 'nullable|string',
             'fecha_nacimiento' => 'nullable|date',
+<<<<<<< Updated upstream
             'email' => 'nullable|email:rfc,dns|unique:pacientes',
+=======
+            'email' => 'nullable|email|unique:pacientes',
+            'id_empresa' => 'nullable|exists:empresas,id_empresa',
+>>>>>>> Stashed changes
         ]);
 
         $patient = Patient::create([
@@ -31,6 +37,7 @@ class PatientController extends Controller
             'fecha_nacimiento' => $request->fecha_nacimiento,
             'telefono' => $request->telefono,
             'email' => $request->email,
+            'id_empresa' => $request->id_empresa,
         ]);
 
         Activity::create([
@@ -45,7 +52,9 @@ class PatientController extends Controller
 
     public function edit($id)
     {
-        return view('patients.edit', ['patient' => Patient::findOrFail($id)]);
+        $patient = Patient::findOrFail($id);
+        $empresas = \App\Models\Empresa::all();
+        return view('patients.edit', compact('patient', 'empresas'));
     }
 
     public function update(Request $request, $id)
@@ -57,6 +66,7 @@ class PatientController extends Controller
             'telefono' => 'nullable|string',
             'fecha_nacimiento' => 'nullable|date',
             'email' => 'nullable|email:rfc,dns|unique:pacientes,email,' . $id,
+            'id_empresa' => 'nullable|exists:empresas,id_empresa',
         ]);
 
         $patient = Patient::findOrFail($id);
@@ -67,6 +77,7 @@ class PatientController extends Controller
             'fecha_nacimiento' => $request->fecha_nacimiento,
             'telefono' => $request->telefono,
             'email' => $request->email,
+            'id_empresa' => $request->id_empresa,
         ]);
 
         Activity::create([

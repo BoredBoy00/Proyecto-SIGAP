@@ -53,10 +53,21 @@
                         <input type="text" id="telefono-input" name="telefono" value="{{ $patient->telefono }}" placeholder="Ej. 0414-1234567" maxlength="12" class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                     </div>
 
-                    <!-- Correo -->
                     <div class="flex flex-col space-y-2">
                         <label class="text-sm font-semibold text-slate-700">Correo Electrónico (Opcional)</label>
                         <input type="email" name="email" value="{{ $patient->email }}" placeholder="ejemplo@correo.com" class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                    </div>
+                    
+                    <div class="flex flex-col space-y-2">
+                        <label class="text-sm font-semibold text-slate-700">Convenio / Empresa (Opcional)</label>
+                        <select name="id_empresa" class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all cursor-pointer">
+                            <option value="">Sin convenio</option>
+                            @foreach($empresas as $empresa)
+                                <option value="{{ $empresa->id_empresa }}" {{ $patient->id_empresa == $empresa->id_empresa ? 'selected' : '' }}>
+                                    {{ $empresa->nombre_empresa }} (-{{ $empresa->porcentaje_descuento }}%)
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
 
                 </div>

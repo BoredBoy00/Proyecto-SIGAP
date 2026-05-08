@@ -17,6 +17,12 @@ class Patient extends Model
         'cedula',
         'fecha_nacimiento',
         'telefono',
-        'email'
+        'email',
+        'id_empresa'
     ];
+
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class, 'id_empresa', 'id_empresa');
+    }
 }
