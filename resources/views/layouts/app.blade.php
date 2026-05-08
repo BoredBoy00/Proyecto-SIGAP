@@ -15,13 +15,8 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         @keyframes highlight-fade {
-            0% {
-                background-color: rgba(34, 197, 94, 0.2);
-            }
-
-            100% {
-                background-color: transparent;
-            }
+            0% { background-color: rgba(34, 197, 94, 0.2); }
+            100% { background-color: transparent; }
         }
 
         .highlight-flash {
@@ -32,6 +27,27 @@
         .nav-item-hover:hover {
             box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4), 0 0 20px rgba(37, 99, 235, 0.15) !important;
             background-color: white !important;
+        }
+
+        @keyframes toast-slide-up {
+            0% { transform: translateY(100%); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        .toast-container {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            pointer-events: none;
+        }
+
+        .toast-container > div {
+            pointer-events: auto;
         }
     </style>
 </head>
@@ -131,12 +147,41 @@
             </div>
         @endif
 
-        <div class="w-full max-w-[1400px] px-8">
-            @if(session('success'))
-                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-                    <strong class="font-bold">¡Éxito! </strong>
-                    <span class="block sm:inline">{{ session('success') }}</span>
+        <div class="toast-container">
+            @php
+                $toastIcon = ''; $toastTitle = ''; $toastMsg = '';
+                $iconBg = '#fef2f2'; $iconColor = '#ef4444';
+
+                if (session('success')) {
+                    $toastIcon = 'check-circle'; $toastTitle = '¡Éxito!'; $toastMsg = session('success');
+                    $iconBg = '#f0fdf4'; $iconColor = '#16a34a';
+                } elseif (session('deleted')) {
+                    $toastIcon = 'trash-2'; $toastTitle = 'Eliminado'; $toastMsg = session('deleted');
+                } elseif (session('error')) {
+                    $toastIcon = 'alert-circle'; $toastTitle = 'Error'; $toastMsg = session('error');
+                } elseif ($errors->any()) {
+                    $toastIcon = 'alert-circle'; $toastTitle = 'Error';
+                    $toastMsg = implode('<br>', $errors->all());
+                }
+            @endphp
+
+            @if($toastMsg)
+                <div id="toast-message" style="background:white;border:1px solid #f1f5f9;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.12);min-width:320px;padding:1rem 1.25rem;animation:toast-slide-up 0.3s cubic-bezier(0.16,1,0.3,1) forwards;">
+                    <div style="display:grid;grid-template-columns:4px 1fr 24px;align-items:center;">
+                        <div></div>
+                        <div style="display:flex;align-items:center;justify-content:center;gap:10px;">
+                            <div style="width:36px;height:36px;border-radius:50%;background:{{ $iconBg }};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i data-lucide="{{ $toastIcon }}" style="width:16px;height:16px;color:{{ $iconColor }};"></i>
+                            </div>
+                            <span style="font-weight:700;font-size:15px;color:#1e293b;">{{ $toastTitle }}</span>
+                        </div>
+                        <button onclick="document.getElementById('toast-message').remove()" style="background:none;border:none;cursor:pointer;color:#94a3b8;padding:0;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.color='#475569'" onmouseout="this.style.color='#94a3b8'">
+                            <i data-lucide="x" style="width:16px;height:16px;"></i>
+                        </button>
+                    </div>
+                    <p style="text-align:center;font-size:13.5px;color:#64748b;margin:0.3rem 0 0;line-height:1.4;">{!! $toastMsg !!}</p>
                 </div>
+                <script>setTimeout(() => document.getElementById('toast-message')?.remove(), {{ $errors->any() ? 6000 : 4000 }});</script>
             @endif
         </div>
 

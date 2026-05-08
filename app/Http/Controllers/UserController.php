@@ -82,7 +82,7 @@ class UserController extends Controller
         ]);
 
         $user->delete();
-        return redirect()->route('users.index')->with('success', 'Usuario eliminado exitosamente');
+        return redirect()->route('users.index')->with('deleted', 'Usuario eliminado exitosamente');
     }
 
     public function store(Request $request)

@@ -92,7 +92,7 @@ class PatientController extends Controller
 
         $patient->delete();
 
-        return redirect()->route('patients.look')->with('success', 'Paciente eliminado exitosamente');
+        return redirect()->route('patients.look')->with('deleted', 'Paciente eliminado exitosamente');
     }
 
     public function index(Request $request)

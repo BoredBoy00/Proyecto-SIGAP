@@ -27,22 +27,6 @@
             <div class="p-6 md:p-8 border-b border-gray-100">
                 <h2 class="text-xl font-bold text-slate-800">Nuevo Paciente</h2>
                 <p class="text-slate-400 text-sm mt-1">Ingresa los datos personales para registrar un nuevo paciente.</p>
-
-                @if ($errors->any())
-                    <div class="mt-4 p-4 bg-red-50 text-red-600 rounded-lg text-sm">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                @if (session('success'))
-                    <div class="mt-4 p-4 bg-green-50 text-green-600 rounded-lg text-sm">
-                        {{ session('success') }}
-                    </div>
-                @endif
             </div>
 
             <form action="{{ route('patients.store') }}" method="POST" class="p-6 md:p-8 flex flex-col space-y-6 flex-1">
@@ -63,7 +47,8 @@
                     </div>
                     <div class="flex flex-col space-y-2">
                         <label class="text-sm font-semibold text-slate-700">Cédula de Identidad</label>
-                        <input type="text" id="cedula-input" name="cedula" value="{{ old('cedula') }}" placeholder="Ej. V-12345678" maxlength="10"
+                        <input type="text" id="cedula-input" name="cedula" value="{{ old('cedula') }}"
+                            placeholder="Ej. V-12345678" maxlength="10"
                             class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                     </div>
                     <div class="flex flex-col space-y-2 relative">
@@ -74,7 +59,8 @@
                     </div>
                     <div class="flex flex-col space-y-2">
                         <label class="text-sm font-semibold text-slate-700">Teléfono</label>
-                        <input type="text" id="telefono-input" name="telefono" value="{{ old('telefono') }}" placeholder="Ej. 0414-1234567" maxlength="12"
+                        <input type="text" id="telefono-input" name="telefono" value="{{ old('telefono') }}"
+                            placeholder="Ej. 0414-1234567" maxlength="12"
                             class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                     </div>
                     <div class="flex flex-col space-y-2">

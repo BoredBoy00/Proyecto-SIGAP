@@ -2,14 +2,7 @@
 
 @section('title', 'Editar Usuario')
 
-@section('header_left')
-<a href="{{ route('users.index') }}">
-    <button class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center hover:bg-blue-100 transition-colors">
-        <i data-lucide="arrow-left" class="w-5 h-5"></i>
-    </button>
-    <h2 class="text-xl font-bold text-slate-800 tracking-tight">Editar Usuario</h2>
-</a>
-@endsection
+
 
 @section('content')
     <div class="flex flex-col items-center justify-center w-full mt-8 pb-12">
@@ -81,7 +74,7 @@
                 <a href="{{ route('users.index') }}" class="w-full text-center md:w-auto px-6 py-2.5 bg-white text-slate-700 font-medium rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
                     Cancelar
                 </a>
-                <button type="submit" class="w-full md:w-auto px-6 py-2.5 bg-[#0d6efd] text-white font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+                <button type="submit" class="w-full md:w-auto px-6 py-2.5 bg-[#0d6efd] text-white font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm cursor-pointer">
                     Guardar Cambios
                 </button>
             </div>
