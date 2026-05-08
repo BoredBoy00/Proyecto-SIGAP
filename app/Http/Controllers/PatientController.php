@@ -113,7 +113,7 @@ class PatientController extends Controller
                   ->orWhere('telefono', 'LIKE', "%{$search}%")
                   ->orWhere('email', 'LIKE', "%{$search}%");
             });
-        })->get();
+        })->paginate(10)->withQueryString();
 
         return view('patients.look', compact('patients', 'search'));
     }

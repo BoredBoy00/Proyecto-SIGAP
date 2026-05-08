@@ -166,16 +166,12 @@
                 </table>
             </div>
 
-            <!-- Footer / Pagination -->
-            @if($examenes->hasPages())
-            <div class="px-8 py-4 border-t border-gray-100 mt-auto bg-white">
-                {{ $examenes->links() }}
+            <!-- Pagination Footer -->
+            <div class="px-8 py-4 border-t border-gray-100 bg-white flex flex-col md:flex-row justify-between items-center gap-4">
+                <span class="text-xs font-semibold text-slate-500">Mostrando {{ $examenes->count() }} de {{ $examenes->total() }} exámenes</span>
+                
+                <x-pagination :paginator="$examenes" />
             </div>
-            @else
-            <div class="px-8 py-4 border-t border-gray-100 mt-auto bg-white flex justify-between items-center">
-                <p class="text-sm text-slate-400">Mostrando todos los registros ({{ $examenes->total() }} en total)</p>
-            </div>
-            @endif
         </div>
     </div>
 

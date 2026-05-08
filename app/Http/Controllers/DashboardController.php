@@ -19,14 +19,12 @@ class DashboardController extends Controller
 
         $recentActivity = Activity::with('user')
             ->orderBy('created_at', 'desc')
-            ->take(10)
-            ->get();
+            ->paginate(10);
 
-        $recentPatients = Patient::orderBy('created_at', 'desc')->take(3)->get();
+        $recentPatients = Patient::orderBy('created_at', 'desc')->paginate(5, ['*'], 'patients_page');
         $recentExams = \App\Models\Detalle::with(['examen', 'orden.paciente'])
             ->orderBy('created_at', 'desc')
-            ->take(3)
-            ->get();
+            ->paginate(5, ['*'], 'exams_page');
 
         $examenesHoy = \App\Models\Detalle::whereDate('created_at', Carbon::today())->count();
         $examenesSemana = \App\Models\Detalle::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->count();

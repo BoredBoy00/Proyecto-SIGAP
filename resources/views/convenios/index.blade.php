@@ -46,41 +46,6 @@
     </style>
 
     @push('modals')
-    <div class="toast-container">
-        @php
-            $toastIcon = ''; $toastTitle = ''; $toastMsg = '';
-            $iconBg = '#fef2f2'; $iconColor = '#ef4444';
-
-            if (session('success')) {
-                $toastIcon = 'check-circle'; $toastTitle = '¡Éxito!'; $toastMsg = session('success');
-                $iconBg = '#f0fdf4'; $iconColor = '#16a34a';
-            } elseif (session('deleted')) {
-                $toastIcon = 'trash-2'; $toastTitle = 'Eliminado'; $toastMsg = session('deleted');
-            } elseif ($errors->any()) {
-                $toastIcon = 'alert-circle'; $toastTitle = 'Error';
-                $toastMsg = implode('<br>', $errors->all());
-            }
-        @endphp
-
-        @if($toastMsg)
-            <div id="toast-message" style="background:white;border:1px solid #f1f5f9;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.12);min-width:320px;padding:1rem 1.25rem;animation:toast-slide-up 0.3s cubic-bezier(0.16,1,0.3,1) forwards;">
-                <div style="display:grid;grid-template-columns:4px 1fr 24px;align-items:center;">
-                    <div></div>
-                    <div style="display:flex;align-items:center;justify-content:center;gap:10px;">
-                        <div style="width:36px;height:36px;border-radius:50%;background:{{ $iconBg }};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                            <i data-lucide="{{ $toastIcon }}" style="width:16px;height:16px;color:{{ $iconColor }};"></i>
-                        </div>
-                        <span style="font-weight:700;font-size:15px;color:#1e293b;">{{ $toastTitle }}</span>
-                    </div>
-                    <button onclick="document.getElementById('toast-message').remove()" style="background:none;border:none;cursor:pointer;color:#94a3b8;padding:0;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.color='#475569'" onmouseout="this.style.color='#94a3b8'">
-                        <i data-lucide="x" style="width:16px;height:16px;"></i>
-                    </button>
-                </div>
-                <p style="text-align:center;font-size:13.5px;color:#64748b;margin:0.3rem 0 0;line-height:1.4;">{!! $toastMsg !!}</p>
-            </div>
-            <script>setTimeout(() => document.getElementById('toast-message')?.remove(), {{ $errors->any() ? 6000 : 4000 }});</script>
-        @endif
-    </div>
     @endpush
 
     <div class="flex flex-col max-w-[1400px] w-full mt-2 mx-auto">
@@ -182,16 +147,12 @@
                 </table>
             </div>
 
-            <!-- Footer / Pagination -->
-            @if($empresas->hasPages())
-            <div class="px-8 py-4 border-t border-gray-100 mt-auto bg-white">
-                {{ $empresas->links() }}
+            <!-- Pagination Footer -->
+            <div class="px-8 py-4 border-t border-gray-100 bg-white flex flex-col md:flex-row justify-between items-center gap-4">
+                <span class="text-xs font-semibold text-slate-500">Mostrando {{ $empresas->count() }} de {{ $empresas->total() }} convenios</span>
+                
+                <x-pagination :paginator="$empresas" />
             </div>
-            @else
-            <div class="px-8 py-4 border-t border-gray-100 mt-auto bg-white flex justify-between items-center">
-                <p class="text-sm text-slate-400">Mostrando todos los registros ({{ $empresas->total() }} en total)</p>
-            </div>
-            @endif
         </div>
     </div>
 

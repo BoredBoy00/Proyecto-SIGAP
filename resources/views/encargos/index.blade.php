@@ -110,11 +110,12 @@
             </table>
         </div>
 
-        @if($encargos->hasPages())
-        <div class="px-8 py-4 border-t border-gray-100 bg-white">
-            {{ $encargos->links() }}
+        <!-- Pagination Footer -->
+        <div class="px-8 py-4 border-t border-gray-100 bg-white flex flex-col md:flex-row justify-between items-center gap-4">
+            <span class="text-xs font-semibold text-slate-500">Mostrando {{ $encargos->count() }} de {{ $encargos->total() }} encargos</span>
+            
+            <x-pagination :paginator="$encargos" />
         </div>
-        @endif
     </div>
 </div>
 

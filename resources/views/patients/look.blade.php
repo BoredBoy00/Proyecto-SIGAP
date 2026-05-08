@@ -36,7 +36,7 @@
                        placeholder="Buscar por nombre, apellido o cédula..."
                        class="w-full pl-9 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all text-slate-700 placeholder-slate-400">
             </form>
-            <span class="text-sm text-slate-400">Total: <span class="font-semibold text-slate-700">{{ count($patients) }}</span> paciente(s)</span>
+            <span class="text-sm text-slate-400">Total: <span class="font-semibold text-slate-700">{{ $patients->total() }}</span> paciente(s)</span>
         </div>
 
         <!-- Table -->
@@ -95,10 +95,11 @@
             </table>
         </div>
 
-        <!-- Footer -->
-        <div class="px-6 py-4 border-t border-gray-100 bg-slate-50/50 flex justify-between items-center">
-            <span class="text-xs text-slate-400">Mostrando todos los resultados</span>
-            <span class="text-xs font-semibold text-slate-600">{{ count($patients) }} paciente(s)</span>
+        <!-- Pagination Footer -->
+        <div class="px-6 py-4 border-t border-gray-100 bg-white flex flex-col md:flex-row justify-between items-center gap-4">
+            <span class="text-xs font-semibold text-slate-500">Mostrando {{ $patients->count() }} de {{ $patients->total() }} pacientes</span>
+            
+            <x-pagination :paginator="$patients" />
         </div>
     </div>
 </div>

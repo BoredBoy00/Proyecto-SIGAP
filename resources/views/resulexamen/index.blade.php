@@ -123,9 +123,12 @@
             </table>
         </div>
 
-        @if($resultados->hasPages())
-        <div class="px-8 py-4 border-t border-gray-100 bg-white">{{ $resultados->links() }}</div>
-        @endif
+        <!-- Pagination Footer -->
+        <div class="px-8 py-4 border-t border-gray-100 bg-white flex flex-col md:flex-row justify-between items-center gap-4">
+            <span class="text-xs font-semibold text-slate-500">Mostrando {{ $resultados->count() }} de {{ $resultados->total() }} resultados</span>
+            
+            <x-pagination :paginator="$resultados" />
+        </div>
     </div>
 </div>
 

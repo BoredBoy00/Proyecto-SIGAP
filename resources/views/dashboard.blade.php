@@ -67,19 +67,24 @@
                     </h2>
                 </div>
                 <div class="p-4">
-                    <div class="space-y-4">
+                    <div class="flex flex-col space-y-3">
                         @foreach($recentPatients as $paciente)
-                        <div class="flex items-center justify-between p-3 bg-white border border-gray-100 rounded-xl hover:shadow-md transition-shadow">
+                        <a href="{{ route('patients.look') }}" class="flex items-center justify-between p-3 bg-white border border-gray-100 rounded-xl hover:shadow-md hover:border-blue-200 hover:bg-blue-50/10 transition-all group">
                             <div class="flex flex-col">
-                                <span class="font-bold text-slate-800">{{ $paciente->nombre }} {{ $paciente->apellido }}</span>
+                                <span class="font-bold text-slate-800 group-hover:text-blue-600 transition-colors">{{ $paciente->nombre }} {{ $paciente->apellido }}</span>
                                 <span class="text-xs text-slate-500 font-mono">{{ str_starts_with(strtoupper($paciente->cedula), 'V-') ? $paciente->cedula : 'V-' . $paciente->cedula }}</span>
                             </div>
-                            <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded-md">{{ $paciente->created_at->diffForHumans() }}</span>
-                        </div>
+                            <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded-md">Ver Perfil</span>
+                        </a>
                         @endforeach
                         @if($recentPatients->isEmpty())
                         <p class="text-sm text-slate-400 text-center py-4">No hay pacientes registrados recientemente.</p>
                         @endif
+                    </div>
+
+                    {{-- Pagination for Patients --}}
+                    <div class="mt-6 flex justify-center">
+                        <x-pagination :paginator="$recentPatients" />
                     </div>
                 </div>
             </div>
@@ -92,19 +97,24 @@
                     </h2>
                 </div>
                 <div class="p-4">
-                    <div class="space-y-4">
+                    <div class="flex flex-col space-y-3">
                         @foreach($recentExams as $examen)
-                        <div class="flex items-center justify-between p-3 bg-white border border-gray-100 rounded-xl hover:shadow-md transition-shadow">
+                        <a href="{{ route('exams.index') }}" class="flex items-center justify-between p-3 bg-white border border-gray-100 rounded-xl hover:shadow-md hover:border-green-200 hover:bg-green-50/10 transition-all group">
                             <div class="flex flex-col">
-                                <span class="font-bold text-slate-800">{{ $examen->examen->nombre_examen }}</span>
+                                <span class="font-bold text-slate-800 group-hover:text-green-600 transition-colors">{{ $examen->examen->nombre_examen }}</span>
                                 <span class="text-xs text-slate-500">Paciente: {{ $examen->orden->paciente->nombre ?? 'N/A' }}</span>
                             </div>
-                            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-md">{{ $examen->created_at->diffForHumans() }}</span>
-                        </div>
+                            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-md">Ver Examen</span>
+                        </a>
                         @endforeach
                         @if($recentExams->isEmpty())
                         <p class="text-sm text-slate-400 text-center py-4">No hay exámenes registrados recientemente.</p>
                         @endif
+                    </div>
+
+                    {{-- Pagination for Exams --}}
+                    <div class="mt-6 flex justify-center">
+                        <x-pagination :paginator="$recentExams" />
                     </div>
                 </div>
             </div>
@@ -182,6 +192,7 @@
                             <th class="px-6 py-4 w-32 text-center">TIPO</th>
                             <th class="px-6 py-4 text-center">DESCRIPCIÓN</th>
                             <th class="px-6 py-4 w-48 text-center">HORA / FECHA</th>
+                            <th class="px-6 py-4 w-32 text-center">ACCIONES</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100 text-[15px]">
@@ -222,11 +233,45 @@
                                     <span class="font-bold text-slate-700">{{ $activity->created_at->format('d/m/Y') }}</span>
                                     <span>{{ $activity->created_at->format('h:i A') }}</span>
                                 </div>
-                            </td>
+                                                  <td class="px-6 py-4 text-center">
+                                 @php
+                                     $isDeletion = str_contains(strtolower($activity->description), 'eliminó') || 
+                                                  str_contains(strtolower($activity->description), 'borró') || 
+                                                  str_contains(strtolower($activity->description), 'eliminado');
+                                     
+                                     $route = '#';
+                                     $btnText = 'Ver Detalle';
+                                     $btnClass = 'bg-white border-gray-200 text-slate-700 hover:bg-slate-50 hover:border-blue-300 hover:text-blue-600';
+                                     $iconColor = 'text-slate-400';
+
+                                     if (!$isDeletion) {
+                                         if($activity->type == 'Paciente') { $route = route('patients.look'); $btnText = 'Ver Paciente'; }
+                                         elseif($activity->type == 'Examen') { $route = route('exams.index'); $btnText = 'Ver Examen'; }
+                                         elseif($activity->type == 'Factura') { $route = route('facturacion.index'); $btnText = 'Ver Factura'; }
+                                         elseif($activity->type == 'Convenio') { $route = route('convens.index'); $btnText = 'Ver Convenio'; }
+                                     } else {
+                                         $btnText = 'No disponible';
+                                         $btnClass = 'bg-slate-50 border-slate-200 text-slate-400 cursor-not-allowed opacity-70';
+                                         $iconColor = 'text-slate-300';
+                                     }
+                                 @endphp
+
+                                 @if($isDeletion)
+                                     <div class="inline-flex items-center px-3 py-1.5 border {{ $btnClass }} rounded-lg text-xs font-bold shadow-sm">
+                                         <i data-lucide="eye-off" class="w-3.5 h-3.5 mr-1.5 {{ $iconColor }}"></i>
+                                         {{ $btnText }}
+                                     </div>
+                                 @else
+                                     <a href="{{ $route }}" class="inline-flex items-center px-3 py-1.5 bg-white border {{ $btnClass }} rounded-lg text-xs font-bold transition-all shadow-sm group">
+                                         <i data-lucide="eye" class="w-3.5 h-3.5 mr-1.5 {{ $iconColor }} group-hover:text-blue-500"></i>
+                                         {{ $btnText }}
+                                     </a>
+                                 @endif
+                             </td>        </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" class="px-6 py-10 text-center text-slate-400 italic">
+                            <td colspan="6" class="px-6 py-10 text-center text-slate-400 italic">
                                 No se han registrado actividades recientemente.
                             </td>
                         </tr>
@@ -235,11 +280,9 @@
                 </table>
             </div>
             
-            @if($recentActivity->count() > 0)
-            <div class="p-4 border-t border-gray-100 text-center">
-                <a href="#" class="text-sm font-semibold text-blue-600 hover:text-blue-700">Ver todas las actividades</a>
+            <div class="px-6 py-4 bg-white border-t border-gray-100 flex justify-center">
+                <x-pagination :paginator="$recentActivity" />
             </div>
-            @endif
         </div>
         @endif
     </div>
