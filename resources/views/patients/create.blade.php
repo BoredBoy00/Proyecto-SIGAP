@@ -48,24 +48,24 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="flex flex-col space-y-2">
                         <label class="text-sm font-semibold text-slate-700">Nombre</label>
-                        <input type="text" name="nombres" value="{{ old('nombres') }}" required placeholder="Ej. Carlos" class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                        <input type="text" name="nombres" value="{{ old('nombres') }}" required placeholder="Ej. Carlos" maxlength="25" oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ ]/g, '')" class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                     </div>
                     <div class="flex flex-col space-y-2">
                         <label class="text-sm font-semibold text-slate-700">Apellido</label>
-                        <input type="text" name="apellidos" value="{{ old('apellidos') }}" required placeholder="Ej. Rodriguez" class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                        <input type="text" name="apellidos" value="{{ old('apellidos') }}" required placeholder="Ej. Rodriguez" maxlength="25" oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ ]/g, '')" class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                     </div>
                     <div class="flex flex-col space-y-2">
                         <label class="text-sm font-semibold text-slate-700">Cédula de Identidad</label>
-                        <input type="text" name="cedula" value="{{ old('cedula') }}" placeholder="Ej. V-12345678" class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                        <input type="text" name="cedula" value="{{ old('cedula') }}" placeholder="Ej. V-12345678" maxlength="9" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                     </div>
                     <div class="flex flex-col space-y-2 relative">
                         <label class="text-sm font-semibold text-slate-700">Fecha de Nacimiento</label>
                         <i data-lucide="calendar" class="absolute right-4 top-[38px] w-4 h-4 text-slate-400"></i>
-                        <input type="date" name="fecha_nacimiento" value="{{ old('fecha_nacimiento') }}" class="px-4 py-3 pr-10 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                        <input type="date" name="fecha_nacimiento" required value="{{ old('fecha_nacimiento') }}" class="px-4 py-3 pr-10 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                     </div>
                     <div class="flex flex-col space-y-2">
                         <label class="text-sm font-semibold text-slate-700">Teléfono</label>
-                        <input type="text" name="telefono" value="{{ old('telefono') }}" placeholder="Ej. 0414-1234567" class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                        <input type="text" name="telefono" value="{{ old('telefono') }}" placeholder="Ej. 0414-1234567" maxlength="11" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                     </div>
                     <div class="flex flex-col space-y-2">
                         <label class="text-sm font-semibold text-slate-700">Correo Electrónico (Opcional)</label>
@@ -74,10 +74,10 @@
                 </div>
 
                 <div class="bg-blue-50/50 border-t border-blue-100 p-6 flex items-center justify-end space-x-3 mt-auto">
-                    <button type="button" class="px-6 py-2.5 bg-white text-slate-700 font-medium rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer">
+                    <button type="button" class="px-6 py-2.5 bg-white text-slate-700 font-medium rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
                         Cancelar
                     </button>
-                    <button type="submit" class="flex items-center space-x-2 px-6 py-2.5 bg-[#198754] text-white font-medium rounded-lg hover:bg-green-700 transition-colors shadow-sm cursor-pointer">
+                    <button type="submit" class="flex items-center space-x-2 px-6 py-2.5 bg-[#198754] text-white font-medium rounded-lg hover:bg-green-700 transition-colors shadow-sm">
                         <i data-lucide="save" class="w-4 h-4"></i>
                         <span>Guardar Paciente</span>
                     </button>

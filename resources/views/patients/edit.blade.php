@@ -42,19 +42,19 @@
                     <!-- Nombre -->
                     <div class="flex flex-col space-y-2">
                         <label class="text-sm font-semibold text-slate-700">Nombre</label>
-                        <input type="text" name="nombres" value="{{ $patient->nombre }}" required placeholder="Ej. Carlos" class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                        <input type="text" name="nombres" value="{{ $patient->nombre }}" required placeholder="Ej. Carlos" maxlength="15" oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ ]/g, '')" class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                     </div>
 
                     <!-- Apellido -->
                     <div class="flex flex-col space-y-2">
                         <label class="text-sm font-semibold text-slate-700">Apellido</label>
-                        <input type="text" name="apellidos" value="{{ $patient->apellido }}" required placeholder="Ej. Rodriguez" class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                        <input type="text" name="apellidos" value="{{ $patient->apellido }}" required placeholder="Ej. Rodriguez" maxlength="15" oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ ]/g, '')" class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                     </div>
 
                     <!-- Cédula -->
                     <div class="flex flex-col space-y-2">
                         <label class="text-sm font-semibold text-slate-700">Cédula de Identidad</label>
-                        <input type="text" name="cedula" value="{{ $patient->cedula }}" placeholder="Ej. V-12345678" class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                        <input type="text" name="cedula" value="{{ $patient->cedula }}" placeholder="Ej. V-12345678" maxlength="9" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                     </div>
 
                     <!-- Fecha de Nacimiento -->
@@ -67,7 +67,7 @@
                     <!-- Teléfono -->
                     <div class="flex flex-col space-y-2">
                         <label class="text-sm font-semibold text-slate-700">Teléfono</label>
-                        <input type="text" name="telefono" value="{{ $patient->telefono }}" placeholder="Ej. 0414-1234567" class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                        <input type="text" name="telefono" value="{{ $patient->telefono }}" placeholder="Ej. 0414-1234567" maxlength="11" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                     </div>
 
                     <!-- Correo -->
