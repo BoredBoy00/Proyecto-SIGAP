@@ -304,27 +304,25 @@
         const facturasVal = {{ $facturasHoy > 0 ? $facturasHoy : 0 }}; 
         const pacientesVal = {{ $pacientesTotal > 0 ? $pacientesTotal : 0 }};
         const examenesVal = {{ $examenesTotal > 0 ? $examenesTotal : 0 }};
-        const isDark = document.documentElement.classList.contains('dark');
-        const textColor = isDark ? '#94a3b8' : '#64748b';
+        
+        let isDark = document.documentElement.classList.contains('dark');
+        let textColor = isDark ? '#94a3b8' : '#64748b';
 
-        // 1. Facturas Chart (Bar Chart - Datos Reales 5 Días)
+        // 1. Facturas Chart
         var optFacturas = {
             series: [{ name: 'Facturas', data: @json($facturasData) }],
             chart: { 
                 type: 'bar', 
                 height: '100%', 
                 width: '100%', 
-                sparkline: { enabled: false }, 
                 toolbar: { show: false },
+                background: 'transparent',
                 events: {
-                    mounted: function(chartContext) {
-                        chartContext.el.querySelectorAll('title, desc').forEach(el => el.remove());
-                    },
-                    updated: function(chartContext) {
-                        chartContext.el.querySelectorAll('title, desc').forEach(el => el.remove());
-                    }
+                    mounted: (chart) => chart.el.querySelectorAll('title, desc').forEach(el => el.remove()),
+                    updated: (chart) => chart.el.querySelectorAll('title, desc').forEach(el => el.remove())
                 }
             },
+            theme: { mode: isDark ? 'dark' : 'light' },
             plotOptions: { bar: { borderRadius: 4, columnWidth: '60%' } },
             colors: ['#3b82f6'],
             dataLabels: { enabled: false },
@@ -341,12 +339,23 @@
                 y: { formatter: function (val) { return val + (val === 1 ? ' Factura' : ' Facturas'); } }
             }
         };
-        new ApexCharts(document.querySelector("#chart-facturas"), optFacturas).render();
+        const chartFacturas = new ApexCharts(document.querySelector("#chart-facturas"), optFacturas);
+        chartFacturas.render();
 
-        // 2. Pacientes Chart (Donut Chart - Nuevos vs Recurrentes)
+        // 2. Pacientes Chart
         var optPacientes = {
             series: [{{ $pacientesNuevos }}, {{ $pacientesRecurrentes }}],
-            chart: { type: 'donut', height: '100%', width: '100%' },
+            chart: { 
+                type: 'donut', 
+                height: '100%', 
+                width: '100%',
+                background: 'transparent',
+                events: {
+                    mounted: (chart) => chart.el.querySelectorAll('title, desc').forEach(el => el.remove()),
+                    updated: (chart) => chart.el.querySelectorAll('title, desc').forEach(el => el.remove())
+                }
+            },
+            theme: { mode: isDark ? 'dark' : 'light' },
             labels: ['Nuevos (30 días)', 'Antiguos'],
             colors: ['#6366f1', '#c7d2fe'],
             plotOptions: {
@@ -356,8 +365,20 @@
                         labels: {
                             show: true,
                             name: { show: false },
-                            value: { show: true, fontSize: '20px', fontWeight: 'bold', color: isDark ? '#f1f5f9' : '#1e293b' },
-                            total: { show: true, label: 'Total', color: textColor, formatter: function (w) { return pacientesVal } }
+                            value: { 
+                                show: true, 
+                                fontSize: '24px', 
+                                fontWeight: '800', 
+                                color: isDark ? '#f8fafc' : '#1e293b',
+                                offsetY: 5
+                            },
+                            total: { 
+                                show: true, 
+                                label: 'Total', 
+                                color: textColor, 
+                                fontWeight: '600',
+                                formatter: function (w) { return pacientesVal } 
+                            }
                         }
                     }
                 }
@@ -368,37 +389,42 @@
             tooltip: { 
                 enabled: true, 
                 theme: isDark ? 'dark' : 'light',
-                fillSeriesColor: false,
                 y: { formatter: function (val) { return val + (val === 1 ? ' Paciente' : ' Pacientes'); } }
-            },
-            chart: { 
-                type: 'donut', 
-                height: '100%', 
-                width: '100%',
-                events: {
-                    mounted: function(chartContext) {
-                        chartContext.el.querySelectorAll('title, desc').forEach(el => el.remove());
-                    },
-                    updated: function(chartContext) {
-                        chartContext.el.querySelectorAll('title, desc').forEach(el => el.remove());
-                    }
-                }
             }
         };
-        new ApexCharts(document.querySelector("#chart-pacientes"), optPacientes).render();
+        const chartPacientes = new ApexCharts(document.querySelector("#chart-pacientes"), optPacientes);
+        chartPacientes.render();
 
-        // 3. Exámenes Chart (Radial Bar - Porcentaje de Completados)
+        // 3. Exámenes Chart
         var optExamenes = {
             series: [{{ $porcentajeCompletados }}], 
-            chart: { type: 'radialBar', height: '120%', width: '100%', offsetY: 10 },
+            chart: { 
+                type: 'radialBar', 
+                height: '110%', 
+                width: '100%', 
+                offsetY: 0,
+                background: 'transparent',
+                events: {
+                    mounted: (chart) => chart.el.querySelectorAll('title, desc').forEach(el => el.remove()),
+                    updated: (chart) => chart.el.querySelectorAll('title, desc').forEach(el => el.remove())
+                }
+            },
+            theme: { mode: isDark ? 'dark' : 'light' },
             colors: ['#a855f7'],
             plotOptions: {
                 radialBar: {
                     hollow: { size: '60%' },
-                    track: { background: isDark ? '#334155' : '#f1f5f9', strokeWidth: '100%' },
+                    track: { background: isDark ? '#1e293b' : '#f1f5f9', strokeWidth: '100%' },
                     dataLabels: {
                         name: { show: true, fontSize: '12px', color: textColor, offsetY: 20 },
-                        value: { show: true, fontSize: '22px', fontWeight: 'bold', color: isDark ? '#f1f5f9' : '#1e293b', offsetY: -10 }
+                        value: { 
+                            show: true, 
+                            fontSize: '24px', 
+                            fontWeight: '800', 
+                            color: isDark ? '#f8fafc' : '#1e293b', 
+                            offsetY: -10,
+                            formatter: (val) => val + '%'
+                        }
                     }
                 }
             },
@@ -407,25 +433,53 @@
             tooltip: { 
                 enabled: true, 
                 theme: isDark ? 'dark' : 'light',
-                fillSeriesColor: false,
                 y: { formatter: function (val) { return val + '% del total'; } }
-            },
-            chart: { 
-                type: 'radialBar', 
-                height: '120%', 
-                width: '100%', 
-                offsetY: 10,
-                events: {
-                    mounted: function(chartContext) {
-                        chartContext.el.querySelectorAll('title, desc').forEach(el => el.remove());
-                    },
-                    updated: function(chartContext) {
-                        chartContext.el.querySelectorAll('title, desc').forEach(el => el.remove());
-                    }
-                }
             }
         };
-        new ApexCharts(document.querySelector("#chart-examenes"), optExamenes).render();
+        const chartExamenes = new ApexCharts(document.querySelector("#chart-examenes"), optExamenes);
+        chartExamenes.render();
+
+        // Escuchar cambios de tema para actualizar gráficas
+        const themeBtn = document.getElementById('theme-toggle');
+        if (themeBtn) {
+            themeBtn.addEventListener('click', () => {
+                setTimeout(() => {
+                    const newIsDark = document.documentElement.classList.contains('dark');
+                    const newTextColor = newIsDark ? '#94a3b8' : '#64748b';
+                    const newValueColor = newIsDark ? '#f8fafc' : '#1e293b';
+                    const newTheme = newIsDark ? 'dark' : 'light';
+
+                    const updateOptions = {
+                        theme: { mode: newTheme },
+                        xaxis: { labels: { style: { colors: newTextColor } } },
+                        tooltip: { theme: newTheme }
+                    };
+
+                    chartFacturas.updateOptions(updateOptions);
+                    
+                    chartPacientes.updateOptions({
+                        theme: { mode: newTheme },
+                        plotOptions: { pie: { donut: { labels: { 
+                            value: { color: newValueColor },
+                            total: { color: newTextColor }
+                        } } } },
+                        tooltip: { theme: newTheme }
+                    });
+
+                    chartExamenes.updateOptions({
+                        theme: { mode: newTheme },
+                        plotOptions: { radialBar: { 
+                            track: { background: newIsDark ? '#1e293b' : '#f1f5f9' },
+                            dataLabels: { 
+                                name: { color: newTextColor },
+                                value: { color: newValueColor }
+                            }
+                        } },
+                        tooltip: { theme: newTheme }
+                    });
+                }, 10);
+            });
+        }
     });
 </script>
 @endpush

@@ -2,17 +2,16 @@
 
 @section('title', 'Iniciar Sesión')
 
-@section('content')
-    <!-- Toast Notification Global -->
+@section('content')    <!-- Toast Notification Global -->
     @if ($errors->any())
         <div id="toast-error"
-            class="bg-red-50/90 backdrop-blur-md border border-red-200 px-5 py-4 rounded-xl shadow-[0_8px_30px_rgba(239,68,68,0.2)] z-50 flex flex-col"
+            class="bg-red-50/90 dark:bg-red-950/90 backdrop-blur-md border border-red-200 dark:border-red-900 px-5 py-4 rounded-xl shadow-[0_8px_30px_rgba(239,68,68,0.2)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.5)] z-50 flex flex-col"
             style="position: fixed; top: 20px; right: 20px; max-width: 24rem; width: 90%; transition: opacity 0.5s ease-out;">
             <div class="flex items-center mb-1.5">
                 <i data-lucide="alert-circle" class="h-5 w-5 text-red-500" style="margin-right: 10px;"></i>
-                <h3 class="text-sm font-bold text-red-700">Error de acceso</h3>
+                <h3 class="text-sm font-bold text-red-700 dark:text-red-400">Error de acceso</h3>
             </div>
-            <p class="text-sm text-red-600/90 leading-snug" style="padding-left: 30px;">{{ $errors->first() }}</p>
+            <p class="text-sm text-red-600/90 dark:text-red-500 leading-snug" style="padding-left: 30px;">{{ $errors->first() }}</p>
         </div>
         <script>
             setTimeout(function () {
@@ -26,40 +25,40 @@
     @endif
 
     <div
-        class="max-w-4xl flex rounded-3xl shadow-[0_20px_50px_rgba(8,_112,_184,_0.1)] bg-white/90 backdrop-blur-sm overflow-hidden relative z-10 m-4">
+        class="max-w-4xl flex flex-col md:flex-row rounded-3xl shadow-[0_20px_50px_rgba(8,_112,_184,_0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)] bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm overflow-hidden relative z-10 m-4 border border-white/20 dark:border-slate-800">
         <!-- Seccion Izquierda: Formulario -->
-        <div class="md:w-1/2 p-8 lg:p-10 flex flex-col justify-center border border-slate-200 rounded-xl relative">
+        <div class="md:w-1/2 p-8 lg:p-10 flex flex-col justify-center border-b md:border-b-0 md:border-r border-slate-200 dark:border-slate-800 relative">
 
             <div class="mb-8 text-center">
                 <h1 class="text-3xl font-bold text-blue-500 tracking-wide mb-2">SIGAP</h1>
-                <p class="text-slate-500 text-sm">Sistema Integral de Gestión y Administración de Pacientes</p>
+                <p class="text-slate-500 dark:text-slate-400 text-sm">Sistema Integral de Gestión y Administración de Pacientes</p>
             </div>
 
             <form method="POST" action="{{ route('login') }}" class="space-y-0">
                 @csrf
 
                 <div class="mb-4">
-                    <label for="email" class="block text-sm font-medium text-slate-700 mb-1.5">Correo Electrónico</label>
+                    <label for="email" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Correo Electrónico</label>
                     <div class="relative">
                         <div class="absolute left-3 flex items-center pointer-events-none"
                             style="top: 50%; transform: translateY(-50%);">
-                            <i data-lucide="mail" class="h-5 w-5 text-slate-400"></i>
+                            <i data-lucide="mail" class="h-5 w-5 text-slate-400 dark:text-slate-500"></i>
                         </div>
                         <input type="email" name="email" id="email" value="{{ old('email') }}" required autofocus
-                            class="block w-full pr-4 py-3 bg-slate-50/50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 focus:bg-white sm:text-sm transition-all duration-200 @error('email') border-red-500 focus:ring-red-500/20 focus:border-red-500 @enderror"
+                            class="block w-full pr-4 py-3 bg-slate-50/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 focus:bg-white dark:focus:bg-slate-800 text-slate-900 dark:text-white sm:text-sm transition-all duration-200 @error('email') border-red-500 focus:ring-red-500/20 focus:border-red-500 @enderror"
                             style="padding-left: 2.75rem;" placeholder="tu@email.com">
                     </div>
                 </div>
 
                 <div class="mb-4">
-                    <label for="password" class="block text-sm font-medium text-slate-700 mb-1.5">Contraseña</label>
+                    <label for="password" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Contraseña</label>
                     <div class="relative">
                         <div class="absolute left-3 flex items-center pointer-events-none"
                             style="top: 50%; transform: translateY(-50%);">
-                            <i data-lucide="lock" class="h-5 w-5 text-slate-400"></i>
+                            <i data-lucide="lock" class="h-5 w-5 text-slate-400 dark:text-slate-500"></i>
                         </div>
                         <input type="password" name="password" id="password" required
-                            class="block w-full pr-4 py-3 bg-slate-50/50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 focus:bg-white sm:text-sm transition-all duration-200 @error('password') border-red-500 focus:ring-red-500/20 focus:border-red-500 @enderror"
+                            class="block w-full pr-4 py-3 bg-slate-50/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 focus:bg-white dark:focus:bg-slate-800 text-slate-900 dark:text-white sm:text-sm transition-all duration-200 @error('password') border-red-500 focus:ring-red-500/20 focus:border-red-500 @enderror"
                             style="padding-left: 2.75rem;" placeholder="••••••••">
                     </div>
                 </div>
@@ -67,8 +66,8 @@
                 <div class="flex items-center justify-between mt-1">
                     <div class="flex items-center">
                         <input id="remember_me" name="remember" type="checkbox"
-                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-slate-300 rounded cursor-pointer transition-colors">
-                        <label for="remember_me" class="ml-2 block text-sm text-slate-600 cursor-pointer select-none">
+                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-slate-300 dark:border-slate-600 rounded cursor-pointer transition-colors bg-white dark:bg-slate-800">
+                        <label for="remember_me" class="ml-2 block text-sm text-slate-600 dark:text-slate-400 cursor-pointer select-none">
                             Recordarme
                         </label>
                     </div>
@@ -85,28 +84,30 @@
 
         <!-- Seccion Derecha: Imagen/Decoración -->
         <div
-            class="hidden md:flex md:w-1/2 bg-gradient-to-br from-blue-50 to-indigo-50/50 flex-col items-center justify-center p-12 relative overflow-hidden border-l border-white">
+            class="hidden md:flex md:w-1/2 bg-gradient-to-br from-blue-50 to-indigo-50/50 dark:from-slate-800 dark:to-slate-950 flex-col items-center justify-center p-12 relative overflow-hidden">
             <!-- Elementos decorativos -->
-            <div class="absolute top-0 right-0 -mr-20 -mt-20 w-72 h-72 rounded-full bg-blue-400/20 blur-3xl"></div>
-            <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-indigo-400/20 blur-3xl"></div>
+            <div class="absolute top-0 right-0 -mr-20 -mt-20 w-72 h-72 rounded-full bg-blue-400/20 dark:bg-blue-600/10 blur-3xl"></div>
+            <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-indigo-400/20 dark:bg-indigo-600/10 blur-3xl"></div>
 
             <div class="relative z-10 text-center w-full max-w-sm">
                 <div
-                    class="w-48 h-48 bg-white/80 backdrop-blur-xl rounded-full shadow-2xl flex items-center justify-center mx-auto mb-10 border border-white relative">
+                    class="w-48 h-48 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-full shadow-2xl flex items-center justify-center mx-auto mb-10 border border-white dark:border-slate-700 relative">
                     <!-- Anillo decorativo animado -->
                     <div
-                        class="absolute inset-0 border-2 border-blue-200 rounded-full animate-[spin_10s_linear_infinite] border-t-blue-500">
+                        class="absolute inset-0 border-2 border-blue-200 dark:border-blue-900/50 rounded-full animate-[spin_10s_linear_infinite] border-t-blue-500">
                     </div>
                     <div
-                        class="absolute inset-2 border border-indigo-100 rounded-full animate-[spin_15s_linear_infinite_reverse]">
+                        class="absolute inset-2 border border-indigo-100 dark:border-indigo-900/30 rounded-full animate-[spin_15s_linear_infinite_reverse]">
                     </div>
 
                     <i data-lucide="microscope" class="w-20 h-20 text-blue-600 drop-shadow-md"></i>
                 </div>
-                <h3 class="text-2xl font-bold text-slate-800 mb-4 tracking-tight">Gestión Eficiente</h3>
-                <p class="text-slate-600 leading-relaxed">Optimiza los procesos de tu laboratorio clínico y ofrece la mejor
+                <h3 class="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4 tracking-tight">Gestión Eficiente</h3>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">Optimiza los procesos de tu laboratorio clínico y ofrece la mejor
                     atención a tus pacientes con herramientas de vanguardia.</p>
             </div>
+        </div>
+    </div>
         </div>
     </div>
 
