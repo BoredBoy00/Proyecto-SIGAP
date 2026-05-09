@@ -11,13 +11,13 @@
 <div class="flex flex-col max-w-7xl w-full mx-auto mt-2">
     <!-- Header -->
     <div class="mb-6">
-        <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Exámenes Pendientes</h1>
-        <p class="text-slate-500 mt-1">Lista de encargos generados desde facturación, pendientes de procesamiento.</p>
+        <h1 class="text-3xl font-bold text-slate-800 dark:text-slate-100 tracking-tight">Exámenes Pendientes</h1>
+        <p class="text-slate-500 dark:text-slate-400 mt-1">Lista de encargos generados desde facturación, pendientes de procesamiento.</p>
     </div>
 
-    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
+    <div class="bg-white dark:bg-slate-900/50 rounded-2xl border border-gray-100 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col">
         <!-- Stats bar -->
-        <div class="p-6 border-b border-gray-100 flex flex-wrap gap-4">
+        <div class="p-6 border-b border-gray-100 dark:border-slate-800 flex flex-wrap gap-4">
             @php
                 $pendientes  = $encargos->where('estado', 'Pendiente')->count();
                 $enProceso   = $encargos->where('estado', 'En proceso')->count();
@@ -36,8 +36,8 @@
 
         <!-- Table -->
         <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm text-slate-600">
-                <thead class="bg-slate-50 text-slate-500 font-bold text-xs uppercase tracking-wider border-b border-gray-200">
+            <table class="w-full text-left text-sm text-slate-600 dark:text-slate-400">
+                <thead class="bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-bold text-xs uppercase tracking-wider border-b border-gray-200 dark:border-slate-700">
                     <tr>
                         <th class="px-4 py-3 text-center w-16">ORD.</th>
                         <th class="px-4 py-3">PACIENTE</th>
@@ -50,16 +50,16 @@
                         @endif
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-100">
+                <tbody class="divide-y divide-gray-100 dark:divide-slate-800">
                     @forelse($encargos as $enc)
-                    <tr class="hover:bg-gray-50/50 transition-colors">
+                    <tr class="hover:bg-gray-50/50 dark:hover:bg-slate-800/50 transition-colors">
                         <td class="px-4 py-3 text-center">
-                            <span class="font-mono text-blue-600 text-xs font-semibold bg-blue-50 px-2 py-1 rounded-md">
+                            <span class="font-mono text-blue-600 dark:text-blue-400 text-xs font-semibold bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded-md">
                                 ORD-{{ str_pad($enc->id_orden, 4, '0', STR_PAD_LEFT) }}
                             </span>
                         </td>
-                        <td class="px-4 py-3 font-semibold text-slate-800">{{ $enc->nombre_paciente }}</td>
-                        <td class="px-4 py-3 text-slate-600">
+                        <td class="px-4 py-3 font-semibold text-slate-800 dark:text-slate-200">{{ $enc->nombre_paciente }}</td>
+                        <td class="px-4 py-3 text-slate-600 dark:text-slate-400">
                             <div class="flex flex-wrap gap-1">
                                 @foreach(explode(', ', $enc->examenes) as $ex)
                                 <span class="text-xs bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-md font-medium">{{ trim($ex) }}</span>
@@ -111,8 +111,8 @@
         </div>
 
         <!-- Pagination Footer -->
-        <div class="px-8 py-4 border-t border-gray-100 bg-white flex flex-col md:flex-row justify-between items-center gap-4">
-            <span class="text-xs font-semibold text-slate-500">Mostrando {{ $encargos->count() }} de {{ $encargos->total() }} encargos</span>
+        <div class="px-8 py-4 border-t border-gray-100 dark:border-slate-800 bg-white dark:bg-transparent flex flex-col md:flex-row justify-between items-center gap-4">
+            <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">Mostrando {{ $encargos->count() }} de {{ $encargos->total() }} encargos</span>
             
             <x-pagination :paginator="$encargos" />
         </div>

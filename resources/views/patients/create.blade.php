@@ -5,8 +5,8 @@
 @section('content')
     <div class="flex flex-col max-w-5xl mx-auto mt-2">
         <div class="mb-6">
-            <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Gestión de Pacientes</h1>
-            <p class="text-slate-400 mt-1">Administra los registros de pacientes individuales o realiza cargas masivas.</p>
+            <h1 class="text-3xl font-bold text-slate-800 dark:text-slate-100 tracking-tight">Gestión de Pacientes</h1>
+            <p class="text-slate-400 dark:text-slate-500 mt-1">Administra los registros de pacientes individuales o realiza cargas masivas.</p>
         </div>
 
         <!-- Navigation Buttons -->
@@ -17,61 +17,61 @@
                 Registro Individual
             </a>
             <a href="{{ route('patients.look') }}"
-                class="inline-flex items-center px-5 py-2.5 text-sm font-bold rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-blue-600 hover:border-blue-200 hover:shadow-sm hover:-translate-y-0.5 transition-all duration-200">
+                class="inline-flex items-center px-5 py-2.5 text-sm font-bold rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:text-blue-600 hover:border-blue-200 hover:shadow-sm hover:-translate-y-0.5 transition-all duration-200">
                 <i data-lucide="users" class="w-4 h-4 mr-2"></i>
                 Ver Pacientes
             </a>
         </div>
 
-        <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden flex flex-col">
-            <div class="p-6 md:p-8 border-b border-gray-100">
-                <h2 class="text-xl font-bold text-slate-800">Nuevo Paciente</h2>
-                <p class="text-slate-400 text-sm mt-1">Ingresa los datos personales para registrar un nuevo paciente.</p>
+        <div class="bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col">
+            <div class="p-6 md:p-8 border-b border-gray-100 dark:border-slate-800">
+                <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100">Nuevo Paciente</h2>
+                <p class="text-slate-400 dark:text-slate-500 text-sm mt-1">Ingresa los datos personales para registrar un nuevo paciente.</p>
             </div>
 
             <form action="{{ route('patients.store') }}" method="POST" class="p-6 md:p-8 flex flex-col space-y-6 flex-1">
                 @csrf
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="flex flex-col space-y-2">
-                        <label class="text-sm font-semibold text-slate-700">Nombre</label>
+                        <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Nombre</label>
                         <input type="text" name="nombres" value="{{ old('nombres') }}" required placeholder="Ej. Carlos"
                             maxlength="25" oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ ]/g, '')"
-                            class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                            class="px-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-sm text-slate-700 dark:text-slate-200 placeholder-slate-300 dark:placeholder-slate-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                     </div>
                     <div class="flex flex-col space-y-2">
-                        <label class="text-sm font-semibold text-slate-700">Apellido</label>
+                        <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Apellido</label>
                         <input type="text" name="apellidos" value="{{ old('apellidos') }}" required
                             placeholder="Ej. Rodriguez" maxlength="25"
                             oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ ]/g, '')"
-                            class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                            class="px-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-sm text-slate-700 dark:text-slate-200 placeholder-slate-300 dark:placeholder-slate-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                     </div>
                     <div class="flex flex-col space-y-2">
-                        <label class="text-sm font-semibold text-slate-700">Cédula de Identidad</label>
+                        <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Cédula de Identidad</label>
                         <input type="text" id="cedula-input" name="cedula" value="{{ old('cedula') }}"
                             placeholder="Ej. V-12345678" maxlength="10"
-                            class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                            class="px-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-sm text-slate-700 dark:text-slate-200 placeholder-slate-300 dark:placeholder-slate-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                     </div>
                     <div class="flex flex-col space-y-2 relative">
-                        <label class="text-sm font-semibold text-slate-700">Fecha de Nacimiento</label>
+                        <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Fecha de Nacimiento</label>
                         <i data-lucide="calendar" class="absolute right-4 top-[38px] w-4 h-4 text-slate-400"></i>
                         <input type="date" name="fecha_nacimiento" required value="{{ old('fecha_nacimiento') }}"
-                            class="px-4 py-3 pr-10 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                            class="px-4 py-3 pr-10 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-sm text-slate-700 dark:text-slate-200 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all dark:[color-scheme:dark]">
                     </div>
                     <div class="flex flex-col space-y-2">
-                        <label class="text-sm font-semibold text-slate-700">Teléfono</label>
+                        <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Teléfono</label>
                         <input type="text" id="telefono-input" name="telefono" value="{{ old('telefono') }}"
                             placeholder="Ej. 0414-1234567" maxlength="12"
-                            class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                            class="px-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-sm text-slate-700 dark:text-slate-200 placeholder-slate-300 dark:placeholder-slate-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                     </div>
                     <div class="flex flex-col space-y-2">
-                        <label class="text-sm font-semibold text-slate-700">Correo Electrónico (Opcional)</label>
+                        <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Correo Electrónico (Opcional)</label>
                         <input type="email" name="email" value="{{ old('email') }}" placeholder="ejemplo@correo.com"
-                            class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                            class="px-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-sm text-slate-700 dark:text-slate-200 placeholder-slate-300 dark:placeholder-slate-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                     </div>
                     
                     <div class="flex flex-col space-y-2">
-                        <label class="text-sm font-semibold text-slate-700">Convenio / Empresa (Opcional)</label>
-                        <select name="id_empresa" class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all cursor-pointer">
+                        <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Convenio / Empresa (Opcional)</label>
+                        <select name="id_empresa" class="px-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-sm text-slate-700 dark:text-slate-200 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all cursor-pointer">
                             <option value="">Sin convenio</option>
                             @foreach($empresas as $empresa)
                                 <option value="{{ $empresa->id_empresa }}" {{ old('id_empresa') == $empresa->id_empresa ? 'selected' : '' }}>
@@ -82,9 +82,9 @@
                     </div>
                 </div>
 
-                <div class="bg-blue-50/50 border-t border-blue-100 p-6 flex items-center justify-end space-x-3 mt-auto">
+                <div class="bg-blue-50/50 dark:bg-slate-800 border-t border-blue-100 dark:border-slate-700 p-6 flex items-center justify-end space-x-3 mt-auto">
                     <button type="button"
-                        class="px-6 py-2.5 bg-white text-slate-700 font-medium rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer">
+                        class="px-6 py-2.5 bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium rounded-lg border border-gray-200 dark:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-600 transition-colors cursor-pointer">
                         Cancelar
                     </button>
                     <button type="submit"

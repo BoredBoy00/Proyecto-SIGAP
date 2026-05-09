@@ -7,14 +7,14 @@
 
     <!-- Header -->
     <div class="mb-6">
-        <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Gestión de Pacientes</h1>
-        <p class="text-slate-500 mt-1">Administra los registros de pacientes individuales o realiza búsquedas.</p>
+        <h1 class="text-3xl font-bold text-slate-800 dark:text-slate-100 tracking-tight">Gestión de Pacientes</h1>
+        <p class="text-slate-500 dark:text-slate-400 mt-1">Administra los registros de pacientes individuales o realiza búsquedas.</p>
     </div>
 
     <!-- Nav Pills -->
     <div class="flex items-center space-x-3 mb-6">
         <a href="{{ route('patients.create') }}"
-           class="inline-flex items-center px-5 py-2.5 text-sm font-bold rounded-xl border border-gray-200 text-slate-600 bg-white hover:text-blue-600 hover:border-blue-200 hover:shadow-sm transition-all">
+           class="inline-flex items-center px-5 py-2.5 text-sm font-bold rounded-xl border border-gray-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 hover:text-blue-600 hover:border-blue-200 hover:shadow-sm transition-all">
             <i data-lucide="user-plus" class="w-4 h-4 mr-2"></i>
             Registro Individual
         </a>
@@ -26,23 +26,23 @@
     </div>
 
     <!-- Main Card -->
-    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
+    <div class="bg-white dark:bg-slate-900/50 rounded-2xl border border-gray-100 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col">
 
         <!-- Search + Controls -->
-        <div class="p-6 border-b border-gray-100 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="p-6 border-b border-gray-100 dark:border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
             <form method="GET" action="{{ route('patients.look') }}" class="relative w-full md:w-[360px]">
                 <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
                 <input type="text" name="search" value="{{ $search ?? '' }}"
                        placeholder="Buscar por nombre, apellido o cédula..."
-                       class="w-full pl-9 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all text-slate-700 placeholder-slate-400">
+                       class="w-full pl-9 pr-4 py-2.5 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all text-slate-700 dark:text-slate-200 placeholder-slate-400">
             </form>
-            <span class="text-sm text-slate-400">Total: <span class="font-semibold text-slate-700">{{ $patients->total() }}</span> paciente(s)</span>
+            <span class="text-sm text-slate-400 dark:text-slate-500">Total: <span class="font-semibold text-slate-700 dark:text-slate-300">{{ $patients->total() }}</span> paciente(s)</span>
         </div>
 
         <!-- Table -->
         <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm text-slate-600">
-                <thead class="bg-slate-50 text-slate-500 font-bold text-xs uppercase tracking-wider border-b border-gray-200">
+            <table class="w-full text-left text-sm text-slate-600 dark:text-slate-400">
+                <thead class="bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-bold text-xs uppercase tracking-wider border-b border-gray-200 dark:border-slate-700">
                     <tr>
                         <th class="px-4 py-3">NOMBRE</th>
                         <th class="px-4 py-3">APELLIDO</th>
@@ -53,13 +53,13 @@
                         <th class="px-4 py-3 text-center w-24">ACCIONES</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-100">
+                <tbody class="divide-y divide-gray-100 dark:divide-slate-800">
                     @forelse($patients as $patient)
-                    <tr id="item-{{ $patient->id }}" class="hover:bg-gray-50/50 transition-colors {{ (request('highlight') == $patient->id || request('highlight') == $patient->cedula) ? 'highlight-flash' : '' }}">
-                        <td class="px-4 py-3 font-semibold text-slate-800">{{ $patient->nombre }}</td>
-                        <td class="px-4 py-3">{{ $patient->apellido }}</td>
-                        <td class="px-4 py-3 text-center font-medium">{{ $patient->cedula }}</td>
-                        <td class="px-4 py-3 text-center text-slate-500">
+                    <tr id="item-{{ $patient->id }}" class="hover:bg-gray-50/50 dark:hover:bg-slate-800/50 transition-colors {{ (request('highlight') == $patient->id || request('highlight') == $patient->cedula) ? 'highlight-flash' : '' }}">
+                        <td class="px-4 py-3 font-semibold text-slate-800 dark:text-slate-200">{{ $patient->nombre }}</td>
+                        <td class="px-4 py-3 dark:text-slate-300">{{ $patient->apellido }}</td>
+                        <td class="px-4 py-3 text-center font-medium dark:text-slate-300">{{ $patient->cedula }}</td>
+                        <td class="px-4 py-3 text-center text-slate-500 dark:text-slate-400">
                             {{ $patient->fecha_nacimiento ? \Carbon\Carbon::parse($patient->fecha_nacimiento)->format('d/m/Y') : '—' }}
                         </td>
                         <td class="px-4 py-3 text-center">{{ $patient->telefono }}</td>
@@ -96,8 +96,8 @@
         </div>
 
         <!-- Pagination Footer -->
-        <div class="px-6 py-4 border-t border-gray-100 bg-white flex flex-col md:flex-row justify-between items-center gap-4">
-            <span class="text-xs font-semibold text-slate-500">Mostrando {{ $patients->count() }} de {{ $patients->total() }} pacientes</span>
+        <div class="px-6 py-4 border-t border-gray-100 dark:border-slate-800 bg-white dark:bg-transparent flex flex-col md:flex-row justify-between items-center gap-4">
+            <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">Mostrando {{ $patients->count() }} de {{ $patients->total() }} pacientes</span>
             
             <x-pagination :paginator="$patients" />
         </div>

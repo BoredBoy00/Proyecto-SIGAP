@@ -13,66 +13,132 @@
 
     <!-- Styles / Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
     <style>
-        @keyframes highlight-fade {
-            0% {
-                background-color: rgba(34, 197, 94, 0.4);
-            }
-            50% {
-                background-color: rgba(34, 197, 94, 0.2);
-            }
-            100% {
-                background-color: transparent;
-            }
+        :root {
+            --app-bg-1: #f9fafb;
+            --app-bg-2: #e8f0fe;
+            --sidebar-bg-1: #ffffff;
+            --sidebar-bg-2: #f8fafc;
         }
 
+        .dark, :is(.dark) {
+            --app-bg-1: #0f172a;
+            --app-bg-2: #1e293b;
+            --sidebar-bg-1: #1e293b;
+            --sidebar-bg-2: #0f172a;
+        }
+
+        .app-gradient {
+            background: linear-gradient(110deg, var(--app-bg-1) 55%, var(--app-bg-2) 55%) !important;
+        }
+
+        .sidebar-gradient {
+            background: linear-gradient(180deg, var(--sidebar-bg-1) 0%, var(--sidebar-bg-2) 100%) !important;
+        }
+
+        @keyframes highlight-fade {
+            0%   { background-color: rgba(34, 197, 94, 0.4); }
+            50%  { background-color: rgba(34, 197, 94, 0.2); }
+            100% { background-color: transparent; }
+        }
         .highlight-flash {
             animation: highlight-fade 4s ease-in-out forwards;
             border-left: 5px solid #16a34a !important;
             outline: 2px solid rgba(22, 163, 74, 0.3);
         }
-
         .nav-item-hover:hover {
             box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4), 0 0 20px rgba(37, 99, 235, 0.15) !important;
             background-color: white !important;
         }
-
-        @keyframes toast-slide-up {
-            0% {
-                transform: translateY(100%);
-                opacity: 0;
-            }
-
-            100% {
-                transform: translateY(0);
-                opacity: 1;
-            }
+        html.dark .nav-item-hover:hover {
+            background-color: rgba(30, 41, 59, 0.5) !important;
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.2), 0 0 20px rgba(37, 99, 235, 0.1) !important;
         }
-
+        @keyframes toast-slide-up {
+            0%   { transform: translateY(100%); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
         .toast-container {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
+            position: fixed; bottom: 2rem; left: 50%;
+            transform: translateX(-50%); z-index: 9999;
+            display: flex; flex-direction: column; gap: 0.75rem;
             pointer-events: none;
         }
+        .toast-container > div { pointer-events: auto; }
 
-        .toast-container>div {
-            pointer-events: auto;
+        /* Dark mode: native <dialog> background */
+        :where(html.dark) dialog {
+            background: #0f172a;
+            color: #e2e8f0;
+            border: 1px solid #1e293b;
+        }
+
+        /* Dark mode: date / datetime-local picker widget */
+        :where(html.dark) input[type="date"],
+        :where(html.dark) input[type="datetime-local"],
+        :where(html.dark) input[type="time"] {
+            color-scheme: dark;
+        }
+
+        /* Dark mode: override browser autofill white background */
+        :where(html.dark) input:-webkit-autofill,
+        :where(html.dark) input:-webkit-autofill:hover,
+        :where(html.dark) input:-webkit-autofill:focus,
+        :where(html.dark) input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 1000px #1e293b inset !important;
+            -webkit-text-fill-color: #e2e8f0 !important;
+            caret-color: #e2e8f0;
+        }
+
+        /* Dark mode: select options background */
+        :where(html.dark) select option {
+            background-color: #1e293b;
+            color: #e2e8f0;
+        }
+        :where(html.dark) select option:checked {
+            background-color: #1d4ed8;
+            color: #ffffff;
+        }
+
+        /* Dark mode: scrollbar for selects */
+        :where(html.dark) select::-webkit-scrollbar { width: 6px; }
+        :where(html.dark) select::-webkit-scrollbar-track { background: #0f172a; }
+        :where(html.dark) select::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+
+        /* Dark mode: global scrollbar */
+        :where(html.dark) ::-webkit-scrollbar { 
+            width: 10px; 
+            height: 10px; 
+        }
+        :where(html.dark) ::-webkit-scrollbar-track { 
+            background: #0f172a; 
+        }
+        :where(html.dark) ::-webkit-scrollbar-thumb { 
+            background: #334155; 
+            border: 2px solid #0f172a; 
+            border-radius: 10px; 
+        }
+        :where(html.dark) ::-webkit-scrollbar-thumb:hover { 
+            background: #475569; 
         }
     </style>
 </head>
 
-<body class="text-slate-800 font-sans antialiased flex h-screen overflow-hidden"
-    style="background: linear-gradient(110deg, #f9fafb 55%, #e8f0fe 55%);">
+<body class="text-slate-800 dark:text-slate-200 font-sans antialiased flex h-screen overflow-hidden app-gradient">
+
+    <!-- Mobile Overlay -->
+    <div id="mobile-overlay" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-30 hidden lg:hidden transition-opacity" onclick="toggleSidebar()"></div>
 
     <!-- Sidebar -->
-    <aside class="w-64 border-r border-gray-100 flex flex-col items-center py-6 shrink-0 z-20"
-        style="background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);">
+    <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 w-64 border-r border-gray-100 dark:border-slate-800 flex flex-col items-center py-6 shrink-0 z-40 sidebar-gradient transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out shadow-2xl lg:shadow-none">
         <!-- Logo -->
         <div class="mb-10 w-full px-8 flex items-center space-x-3">
             <div class="w-10 h-10 rounded-full bg-blue-600/10 flex items-center justify-center">
@@ -131,7 +197,7 @@
 
             @foreach($navItems as $item)
                 <a href="{{ $item['route'] }}"
-                    class="flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 group nav-item-hover {{ $item['active'] ? 'text-white shadow-lg shadow-blue-500/30' : 'text-slate-500 hover:bg-white hover:text-blue-600 hover:-translate-y-0.5' }}"
+                    class="flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 group nav-item-hover {{ $item['active'] ? 'text-white shadow-lg shadow-blue-500/30' : 'text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-blue-400 hover:-translate-y-0.5' }}"
                     style="{{ $item['active'] ? 'background: linear-gradient(110deg, #2563eb 55%, #1d4ed8 55%);' : '' }}">
                     <div class="flex items-center space-x-3">
                         <i data-lucide="{{ $item['icon'] }}"
@@ -148,28 +214,53 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 flex flex-col h-screen relative items-center">
+    <main class="flex-1 flex flex-col h-screen relative w-full overflow-x-hidden">
         <!-- Header wrapper -->
         <header
-            class="w-full max-w-[1400px] h-16 bg-white md:bg-transparent border-b md:border-none border-gray-100 flex items-center justify-between px-8 shrink-0 relative top-0 z-10">
-            <div class="flex items-center space-x-4">
+            class="w-full max-w-[1400px] mx-auto mt-4 mb-2 flex items-center justify-between px-4 md:px-8 shrink-0 relative top-0 z-10">
+            <div class="flex items-center space-x-2 md:space-x-4">
+                <!-- Hamburger Menu (Mobile Only) -->
+                <button type="button" onclick="toggleSidebar()" class="lg:hidden text-slate-500 dark:text-slate-400 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm border border-gray-200/50 dark:border-slate-800/50 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-xl p-2.5 transition-all active:scale-95 cursor-pointer flex items-center justify-center">
+                    <i data-lucide="menu" class="w-5 h-5"></i>
+                </button>
+
                 @hasSection('header_left')
                     @yield('header_left')
                 @endif
             </div>
 
-            <div class="flex items-center space-x-4">
+            <!-- Floating User Profile Pill -->
+            <div class="flex items-center space-x-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-2xl p-2 px-4 shadow-sm border border-gray-200/50 dark:border-slate-800/50">
+                <button id="theme-toggle" type="button" title="Cambiar tema"
+                    class="text-slate-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-xl p-2.5 transition-all active:scale-95 cursor-pointer flex items-center justify-center">
+                    {{-- Moon icon (shown in light mode) --}}
+                    <svg id="theme-toggle-dark-icon" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+                    </svg>
+                    {{-- Sun icon (shown in dark mode) --}}
+                    <svg id="theme-toggle-light-icon" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"/>
+                        <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                    </svg>
+                </button>
+
                 @auth
-                    <div class="text-right flex flex-col justify-center mr-2">
-                        <span class="text-sm font-semibold text-slate-800 leading-tight">{{ Auth::user()->name }}
+                    <div class="h-8 w-px bg-gray-200 dark:bg-slate-700 hidden md:block"></div>
+
+                    <div class="text-right flex flex-col justify-center mx-2 hidden sm:flex">
+                        <span class="text-sm font-bold text-slate-800 dark:text-slate-200 leading-tight">{{ Auth::user()->name }}
                             {{ Auth::user()->apellido }}</span>
-                        <span class="text-xs text-slate-500 leading-tight capitalize">{{ Auth::user()->rol }}</span>
+                        <span class="text-[11px] font-medium text-blue-600 dark:text-blue-400 leading-tight tracking-wide uppercase">{{ Auth::user()->rol }}</span>
                     </div>
+
                     <form method="POST" action="{{ route('logout') }}" class="m-0 p-0 flex items-center">
                         @csrf
-                        <button type="submit" class="flex items-center justify-center px-4 py-2 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-lg font-medium transition-all shadow-sm active:scale-95 cursor-pointer" title="Cerrar Sesión">
-                            <i data-lucide="log-out" class="w-4 h-4 mr-2"></i>
-                            <span class="text-sm">Salir</span>
+                        <button type="submit" class="flex items-center justify-center px-3 sm:px-4 py-2 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 hover:bg-red-600 hover:text-white dark:hover:bg-red-600 dark:hover:text-white rounded-xl font-bold transition-all shadow-sm hover:shadow-md hover:shadow-red-500/20 active:scale-95 cursor-pointer group" title="Cerrar Sesión">
+                            <i data-lucide="log-out" class="w-4 h-4 sm:mr-2 group-hover:translate-x-1 transition-transform"></i>
+                            <span class="text-sm hidden sm:inline">Salir</span>
                         </button>
                     </form>
                 @endauth
@@ -177,7 +268,7 @@
         </header>
 
         @hasSection('search_form')
-            <div class="w-full max-w-[1400px] px-8 py-4">
+            <div class="w-full max-w-[1400px] mx-auto px-4 md:px-8 py-4">
                 @yield('search_form')
             </div>
         @endif
@@ -186,36 +277,195 @@
             <x-toast />
         </div>
 
-        <div class="w-full max-w-[1400px] flex-1 overflow-y-auto px-8 pb-8 pt-0">
+        <div class="w-full max-w-[1400px] mx-auto flex-1 overflow-y-auto px-4 md:px-8 pb-8 pt-4 md:pt-10">
             @yield('content')
         </div>
     </main>
 
     @stack('modals')
 
-    <!-- Iconos -->
-
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
-        lucide.createIcons();
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
 
-        // Highlight logic
-        document.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const highlightId = urlParams.get('highlight');
-            console.log('Highlighting ID:', highlightId);
-            if (highlightId) {
-                const element = document.getElementById('item-' + highlightId);
-                if (element) {
-                    console.log('Found element:', element);
-                    element.classList.add('highlight-flash');
-                    setTimeout(() => {
-                        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 500);
+        // Funcionalidad de Modo Oscuro y Highlight
+        (function() {
+            function initTheme() {
+                const themeToggleBtn = document.getElementById('theme-toggle');
+                const darkIcon = document.getElementById('theme-toggle-dark-icon');
+                const lightIcon = document.getElementById('theme-toggle-light-icon');
+                
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
                 }
+
+                if (!themeToggleBtn || !darkIcon || !lightIcon) return;
+
+                // Estado inicial de los iconos
+                if (document.documentElement.classList.contains('dark')) {
+                    lightIcon.classList.remove('hidden');
+                    darkIcon.classList.add('hidden');
+                } else {
+                    lightIcon.classList.add('hidden');
+                    darkIcon.classList.remove('hidden');
+                }
+
+                themeToggleBtn.onclick = function() {
+                    // Cambiar clase dark en html
+                    const isDark = document.documentElement.classList.toggle('dark');
+                    
+                    // Intercambiar iconos
+                    darkIcon.classList.toggle('hidden');
+                    lightIcon.classList.toggle('hidden');
+
+                    // Guardar preferencia
+                    localStorage.setItem('color-theme', isDark ? 'dark' : 'light');
+                };
             }
-        });
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initTheme);
+            } else {
+                initTheme();
+            }
+
+            // Lógica de resaltado (Highlight)
+            window.addEventListener('DOMContentLoaded', () => {
+                initLiveSearch();
+            });
+
+            window.addEventListener('load', () => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const highlightId = urlParams.get('highlight');
+                if (highlightId) {
+                    const element = document.getElementById('item-' + highlightId);
+                    if (element) {
+                        element.classList.add('highlight-flash');
+                        setTimeout(() => {
+                            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }, 500);
+                    }
+                }
+            });
+
+            window.showJsToast = function(title, message, type = 'error') {
+                const oldToast = document.getElementById('toast-message');
+                if(oldToast) oldToast.remove();
+
+                const iconBg = type === 'error' ? '#fef2f2' : '#f0fdf4';
+                const iconColor = type === 'error' ? '#ef4444' : '#16a34a';
+                const iconName = type === 'error' ? 'alert-circle' : 'check-circle';
+                const darkIconBg = type === 'error' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(34, 197, 94, 0.1)';
+
+                const toastHTML = `
+                    <div id="toast-message" class="fixed top-6 right-6 z-[100] bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-xl shadow-2xl min-w-[320px] p-4 animate-toast-slide-up">
+                        <div class="grid grid-cols-[4px_1fr_24px] items-center">
+                            <div></div>
+                            <div class="flex items-center justify-center gap-2.5">
+                                <div class="w-9 h-9 rounded-full flex items-center justify-center shrink-0 bg-[${iconBg}] dark:bg-[${darkIconBg}]">
+                                    <i data-lucide="${iconName}" class="w-4 h-4" style="color: ${iconColor}"></i>
+                                </div>
+                                <span class="font-bold text-sm text-slate-800 dark:text-slate-100">${title}</span>
+                            </div>
+                            <button onclick="this.closest('#toast-message').remove()"
+                                class="bg-none border-none cursor-pointer text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-0 flex items-center justify-center transition-colors">
+                                <i data-lucide="x" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <p class="text-center text-xs text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">${message}</p>
+                    </div>
+                `;
+                
+                const container = document.createElement('div');
+                container.innerHTML = toastHTML;
+                document.body.appendChild(container.firstElementChild);
+                if(typeof lucide !== 'undefined') lucide.createIcons();
+                
+                setTimeout(() => {
+                    const t = document.getElementById('toast-message');
+                    if(t) t.remove();
+                }, 4000);
+            };
+
+            function initLiveSearch() {
+                const searchInputs = document.querySelectorAll('input[name="search"]');
+                searchInputs.forEach(input => {
+                    let debounceTimeout = null;
+                    const form = input.closest('form');
+                    
+                    if (form) {
+                        form.addEventListener('submit', e => {
+                            e.preventDefault();
+                        });
+                    }
+
+                    input.addEventListener('input', function() {
+                        clearTimeout(debounceTimeout);
+                        const query = this.value.trim();
+                        const url = new URL(window.location.href);
+                        
+                        if (query) {
+                            url.searchParams.set('search', query);
+                        } else {
+                            url.searchParams.delete('search');
+                        }
+                        url.searchParams.delete('page');
+
+                        debounceTimeout = setTimeout(() => {
+                            const originalClasses = input.className;
+                            input.style.opacity = '0.6';
+
+                            fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                            .then(res => res.text())
+                            .then(html => {
+                                const parser = new DOMParser();
+                                const doc = parser.parseFromString(html, 'text/html');
+                                
+                                const currentTableBody = document.querySelector('tbody');
+                                const newTableBody = doc.querySelector('tbody');
+                                
+                                if (currentTableBody && newTableBody) {
+                                    currentTableBody.innerHTML = newTableBody.innerHTML;
+                                    if(typeof lucide !== 'undefined') lucide.createIcons();
+                                    
+                                    const rows = newTableBody.querySelectorAll('tr');
+                                    const isEmpty = rows.length === 0 || 
+                                                    (rows.length === 1 && rows[0].cells.length === 1 && rows[0].cells[0].hasAttribute('colspan'));
+                                    
+                                    if (isEmpty && query !== '') {
+                                        window.showJsToast('Búsqueda sin resultados', `No se encontró ningún registro coincidente con '${query}'`, 'error');
+                                    }
+                                }
+                                
+                                window.history.replaceState({}, '', url);
+
+                                // Update pagination wrappers if found
+                                const currentPagination = document.querySelector('div.mt-auto') || document.querySelector('nav[role="navigation"]')?.parentElement;
+                                const newPagination = doc.querySelector('div.mt-auto') || doc.querySelector('nav[role="navigation"]')?.parentElement;
+                                
+                                if (currentPagination && newPagination) {
+                                    currentPagination.innerHTML = newPagination.innerHTML;
+                                }
+                            })
+                            .catch(err => console.error('Live search error:', err))
+                            .finally(() => {
+                                input.style.opacity = '1';
+                            });
+                        }, 400);
+                    });
+                });
+            }
+        })();
     </script>
+    
+    @stack('scripts')
 </body>
 
 </html>

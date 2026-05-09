@@ -35,6 +35,10 @@ class UserController extends Controller
         ->orderBy('id', 'desc')
         ->get();
 
+    if ($request->filled('search') && $usuarios->isEmpty()) {
+        session()->now('error', "No se encontró ningún usuario coincidente con '{$search}'");
+    }
+
     return view('users.index', compact('usuarios'));
 }
 

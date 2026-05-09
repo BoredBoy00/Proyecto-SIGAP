@@ -48,6 +48,11 @@ class ResulExamenController extends Controller
         }
 
         $resultados = $query->paginate(15)->withQueryString();
+
+        if ($request->filled('search') && $resultados->isEmpty()) {
+            session()->now('error', "No se encontró ningún resultado coincidente con '{$request->search}'");
+        }
+
         // Recepcionista: solo lectura (no puede crear ni eliminar)
         $readonly = in_array(strtolower(auth()->user()->rol), ['recepcionista', 'recepcion']);
         return view('resulexamen.index', compact('resultados', 'readonly'));

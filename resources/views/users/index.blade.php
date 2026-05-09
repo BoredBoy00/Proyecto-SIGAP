@@ -87,20 +87,20 @@
         
         <!-- Header -->
         <div class="mb-6">
-            <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Gestión de Usuarios</h1>
+            <h1 class="text-3xl font-bold text-slate-800 dark:text-slate-100 tracking-tight">Gestión de Usuarios</h1>
         </div>
 
         <!-- Main Card -->
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
+        <div class="bg-white dark:bg-slate-900/50 rounded-2xl border border-gray-100 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col">
             
             <!-- Controls area -->
-            <div class="p-6 md:p-8 border-b border-gray-100 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="p-6 md:p-8 border-b border-gray-100 dark:border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
                 <!-- Search -->
                 <div class="relative w-full md:w-[320px]">
                     <form action="{{ route('users.index') }}" method="GET" class="relative w-full md:w-[320px]">
                         <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400"></i>
                     <input type="text" placeholder="Buscar usuario por nombre o rol..." 
-                        class="w-full pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all text-slate-700 placeholder-slate-400"
+                        class="w-full pl-9 pr-4 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all text-slate-700 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500"
                         name="search">
                     </form>
                 </div>
@@ -116,8 +116,8 @@
 
             <!-- Table -->
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm text-slate-600">
-                    <thead class="bg-slate-50 text-slate-500 font-bold text-xs uppercase tracking-wider border-b border-gray-200">
+                <table class="w-full text-left text-sm text-slate-600 dark:text-slate-400">
+                    <thead class="bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-bold text-xs uppercase tracking-wider border-b border-gray-200 dark:border-slate-700">
                         <tr>
                             <th class="px-4 py-3 w-16">ID</th>
                             <th class="px-4 py-3 w-48">USUARIO</th>
@@ -129,15 +129,15 @@
                             <th class="px-4 py-3 w-28 text-center">ACCIONES</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-100 text-[15px]">
+                    <tbody class="divide-y divide-gray-100 dark:divide-slate-800 text-[15px]">
                         @foreach($usuarios as $user)
-                        <tr id="item-{{ $user->id }}" class="hover:bg-gray-50/50 transition-colors {{ (request('highlight') == $user->id) ? 'highlight-flash' : '' }}">
-                            <td class="px-4 py-3 text-slate-500 font-medium">#{{ $user->id }}</td>
+                        <tr id="item-{{ $user->id }}" class="hover:bg-gray-50/50 dark:hover:bg-slate-800/50 transition-colors {{ (request('highlight') == $user->id) ? 'highlight-flash' : '' }}">
+                            <td class="px-4 py-3 text-slate-500 dark:text-slate-400 font-medium">#{{ $user->id }}</td>
                             <td class="px-4 py-3">
-                                <div class="font-bold text-slate-800">{{ $user->name }} {{ $user->apellido }}</div>
+                                <div class="font-bold text-slate-800 dark:text-slate-200">{{ $user->name }} {{ $user->apellido }}</div>
                             </td>
-                            <td class="px-4 py-3 text-slate-500">{{ $user->email }}</td>
-                            <td class="px-4 py-3 text-center text-slate-700 font-medium">{{ $user->cedula ?? 'N/A' }}</td>
+                            <td class="px-4 py-3 text-slate-500 dark:text-slate-400">{{ $user->email }}</td>
+                            <td class="px-4 py-3 text-center text-slate-700 dark:text-slate-300 font-medium">{{ $user->cedula ?? 'N/A' }}</td>
                             <td class="px-4 py-3 text-center">
                                 <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold text-white shadow-sm" 
                                     style="background-color: {{ in_array(strtolower($user->rol), ['admin', 'administrador']) ? '#dc2626' : '#fff7ed' }}; color: {{ in_array(strtolower($user->rol), ['admin', 'administrador']) ? 'white' : '#ea580c' }}; {{ in_array(strtolower($user->rol), ['admin', 'administrador']) ? '' : 'border: 1px solid #ffedd5;' }}">
@@ -154,7 +154,7 @@
                                      </button>
                                  </form>
                              </td>
-                            <td class="px-4 py-3 text-center text-slate-500">
+                            <td class="px-4 py-3 text-center text-slate-500 dark:text-slate-400">
                                 {{ $user->last_login_at ? $user->last_login_at->diffForHumans() : 'Nunca' }}
                             </td>
                             <td class="px-4 py-3">

@@ -115,6 +115,10 @@ class PatientController extends Controller
             });
         })->paginate(10)->withQueryString();
 
+        if ($request->filled('search') && $patients->isEmpty()) {
+            session()->now('error', "No se encontró ningún paciente coincidente con '{$search}'");
+        }
+
         return view('patients.look', compact('patients', 'search'));
     }
 

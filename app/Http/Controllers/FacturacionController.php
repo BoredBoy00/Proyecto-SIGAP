@@ -33,6 +33,10 @@ class FacturacionController extends Controller
 
         $facturas = $query->orderBy($sort, $direction)->paginate(10);
 
+        if ($request->filled('search') && $facturas->isEmpty()) {
+            session()->now('error', "No se encontraron facturas para la búsqueda: '{$request->search}'");
+        }
+
         return view('facturacion.index', compact('facturas', 'sort', 'direction', 'tasaBcv'));
     }
 

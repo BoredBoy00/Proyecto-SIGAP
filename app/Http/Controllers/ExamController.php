@@ -44,6 +44,10 @@ class ExamController extends Controller
         $examenes = $query->paginate(15)->withQueryString();
         $tasaBcv = $bcvService->getRate();
 
+        if ($request->filled('search') && $examenes->isEmpty()) {
+            session()->now('error', "No se encontró ningún examen coincidente con '{$request->search}'");
+        }
+
         return view('exams.index', compact('examenes', 'tasaBcv'));
     }
 

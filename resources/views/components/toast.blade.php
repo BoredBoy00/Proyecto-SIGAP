@@ -27,23 +27,21 @@
 @endphp
 
 @if($toastMsg)
-    <div id="toast-message" class="fixed top-6 right-6 z-[100]"
-        style="background:white;border:1px solid #f1f5f9;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.12);min-width:320px;padding:1rem 1.25rem;animation:toast-slide-up 0.3s cubic-bezier(0.16,1,0.3,1) forwards;">
-        <div style="display:grid;grid-template-columns:4px 1fr 24px;align-items:center;">
+    <div id="toast-message" class="fixed top-6 right-6 z-[100] bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-xl shadow-2xl min-w-[320px] p-4 animate-toast-slide-up">
+        <div class="grid grid-cols-[4px_1fr_24px] items-center">
             <div></div>
-            <div style="display:flex;align-items:center;justify-content:center;gap:10px;">
-                <div style="width:36px;height:36px;border-radius:50%;background:{{ $iconBg }};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                    <i data-lucide="{{ $toastIcon }}" style="width:16px;height:16px;color:{{ $iconColor }};"></i>
+            <div class="flex items-center justify-center gap-2.5">
+                <div class="w-9 h-9 rounded-full flex items-center justify-center shrink-0" style="background-color: {{ $iconBg }}">
+                    <i data-lucide="{{ $toastIcon }}" class="w-4 h-4" style="color: {{ $iconColor }}"></i>
                 </div>
-                <span style="font-weight:700;font-size:15px;color:#1e293b;">{{ $toastTitle }}</span>
+                <span class="font-bold text-sm text-slate-800 dark:text-slate-100">{{ $toastTitle }}</span>
             </div>
             <button onclick="document.getElementById('toast-message').remove()"
-                style="background:none;border:none;cursor:pointer;color:#94a3b8;padding:0;display:flex;align-items:center;justify-content:center;"
-                onmouseover="this.style.color='#475569'" onmouseout="this.style.color='#94a3b8'">
-                <i data-lucide="x" style="width:16px;height:16px;"></i>
+                class="bg-none border-none cursor-pointer text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-0 flex items-center justify-center transition-colors">
+                <i data-lucide="x" class="w-4 h-4"></i>
             </button>
         </div>
-        <p style="text-align:center;font-size:13.5px;color:#64748b;margin:0.3rem 0 0;line-height:1.4;">
+        <p class="text-center text-xs text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">
             {!! $toastMsg !!}</p>
     </div>
     <script>setTimeout(() => document.getElementById('toast-message')?.remove(), {{ (isset($errors) && $errors->any()) ? 6000 : 4000 }});</script>

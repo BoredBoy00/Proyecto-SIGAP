@@ -17,6 +17,25 @@ class DashboardController extends Controller
         $pacientesTotal = Patient::count();
         $examenesTotal = \App\Models\Detalle::count();
 
+        // 1. Datos Reales para Gráfica de Facturas (Últimos 5 días)
+        $facturasData = [];
+        $facturasLabels = [];
+        for ($i = 4; $i >= 0; $i--) {
+            $date = Carbon::today()->subDays($i);
+            $facturasData[] = Facturacion::whereDate('created_at', $date)->count();
+            // Formatear día (ej. Lun, Mar)
+            $dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+            $facturasLabels[] = $dias[$date->dayOfWeek];
+        }
+
+        // 2. Datos Reales para Gráfica de Pacientes (Nuevos vs Recurrentes)
+        $pacientesNuevos = Patient::where('created_at', '>=', Carbon::now()->subDays(30))->count();
+        $pacientesRecurrentes = $pacientesTotal - $pacientesNuevos;
+
+        // 3. Datos Reales para Gráfica de Exámenes (Porcentaje de completados)
+        $resultadosTotal = \App\Models\ResulExamen::count();
+        $porcentajeCompletados = $examenesTotal > 0 ? round(($resultadosTotal / $examenesTotal) * 100) : 0;
+
         $recentActivity = Activity::with('user')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
@@ -32,6 +51,11 @@ class DashboardController extends Controller
                             ->whereYear('created_at', Carbon::now()->year)
                             ->count();
 
-        return view('dashboard', compact('facturasHoy', 'pacientesTotal', 'examenesTotal', 'recentActivity', 'recentPatients', 'recentExams', 'examenesHoy', 'examenesSemana', 'examenesMes'));
+        return view('dashboard', compact(
+            'facturasHoy', 'pacientesTotal', 'examenesTotal', 
+            'recentActivity', 'recentPatients', 'recentExams', 
+            'examenesHoy', 'examenesSemana', 'examenesMes',
+            'facturasData', 'facturasLabels', 'pacientesNuevos', 'pacientesRecurrentes', 'porcentajeCompletados'
+        ));
     }
 }

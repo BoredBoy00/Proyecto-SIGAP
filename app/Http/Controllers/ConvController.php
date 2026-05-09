@@ -42,6 +42,10 @@ class ConvController extends Controller
         }
 
         $empresas = $query->paginate(10)->withQueryString();
+
+        if ($request->filled('search') && $empresas->isEmpty()) {
+            session()->now('error', "No se encontró ningún convenio coincidente con '{$request->search}'");
+        }
         return view('convenios.index', compact('empresas'));
     }
 

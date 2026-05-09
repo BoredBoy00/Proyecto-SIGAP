@@ -10,13 +10,13 @@
 
 <div class="flex flex-col max-w-7xl w-full mx-auto mt-2">
     <div class="mb-6">
-        <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Resultados de Exámenes</h1>
-        <p class="text-slate-500 mt-1">Historial de resultados con archivos PDF adjuntos.</p>
+        <h1 class="text-3xl font-bold text-slate-800 dark:text-slate-100 tracking-tight">Resultados de Exámenes</h1>
+        <p class="text-slate-500 dark:text-slate-400 mt-1">Historial de resultados con archivos PDF adjuntos.</p>
     </div>
 
-    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
-        <div class="p-6 border-b border-gray-100 flex items-center justify-between gap-4">
-            <p class="text-sm text-slate-400">{{ $resultados->total() }} resultado(s) registrado(s)</p>
+    <div class="bg-white dark:bg-slate-900/50 rounded-2xl border border-gray-100 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col">
+        <div class="p-6 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between gap-4">
+            <p class="text-sm text-slate-400 dark:text-slate-500">{{ $resultados->total() }} resultado(s) registrado(s)</p>
             @if(!$readonly)
             <a href="{{ route('resulexamen.create') }}" class="flex items-center space-x-2 px-5 py-2.5 bg-[#0d6efd] text-white font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
                 <i data-lucide="plus" class="w-4 h-4"></i>
@@ -26,12 +26,12 @@
         </div>
 
         <!-- Controls area -->
-        <form action="{{ route('resulexamen.index') }}" method="GET" class="p-6 md:p-8 border-b border-gray-100 flex flex-col md:flex-row items-center justify-between gap-4">
+        <form action="{{ route('resulexamen.index') }}" method="GET" class="p-6 md:p-8 border-b border-gray-100 dark:border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
             <!-- Search -->
             <div class="relative w-full md:w-[400px]">
                 <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400"></i>
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Buscar por ID, paciente o examen..." 
-                       class="w-full pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all text-slate-700 placeholder-slate-400">
+                       class="w-full pl-9 pr-4 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all text-slate-700 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500">
             </div>
 
             <!-- Right Control -->
@@ -39,7 +39,7 @@
                 <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
                     <i data-lucide="list-filter" class="w-4 h-4 text-slate-500"></i>
                 </div>
-                <select name="sort" onchange="this.form.submit()" class="w-full text-center pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 hover:bg-gray-50 transition-colors focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 appearance-none cursor-pointer" style="text-align-last: center;">
+                <select name="sort" onchange="this.form.submit()" class="w-full text-center pl-10 pr-4 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-sm text-slate-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 appearance-none cursor-pointer" style="text-align-last: center;">
                     <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Más nuevos</option>
                     <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Más viejos</option>
                     <option value="az" {{ request('sort') == 'az' ? 'selected' : '' }}>Paciente (A-Z)</option>
@@ -49,8 +49,8 @@
         </form>
 
         <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm text-slate-600">
-                <thead class="bg-slate-50 text-slate-500 font-bold text-xs uppercase tracking-wider border-b border-gray-200">
+            <table class="w-full text-left text-sm text-slate-600 dark:text-slate-400">
+                <thead class="bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-bold text-xs uppercase tracking-wider border-b border-gray-200 dark:border-slate-700">
                     <tr>
                         <th class="px-4 py-3 w-16 text-center">ID</th>
                         <th class="px-4 py-3">PACIENTE</th>
@@ -63,15 +63,15 @@
                         @endif
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-100">
+                <tbody class="divide-y divide-gray-100 dark:divide-slate-800">
                     @forelse($resultados as $r)
-                    <tr id="item-{{ $r->id }}" class="hover:bg-gray-50/50 transition-colors {{ request('highlight') == $r->id ? 'highlight-flash' : '' }}">
+                    <tr id="item-{{ $r->id }}" class="hover:bg-gray-50/50 dark:hover:bg-slate-800/50 transition-colors {{ request('highlight') == $r->id ? 'highlight-flash' : '' }}">
                         <td class="px-4 py-3 text-center">
-                            <span class="font-mono text-blue-600 text-xs font-semibold bg-blue-50 px-2 py-1 rounded-md">#{{ str_pad($r->id, 4, '0', STR_PAD_LEFT) }}</span>
+                            <span class="font-mono text-blue-600 text-xs font-semibold bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded-md">#{{ str_pad($r->id, 4, '0', STR_PAD_LEFT) }}</span>
                         </td>
-                        <td class="px-4 py-3 font-semibold text-slate-800">{{ $r->nombre_paciente }}</td>
-                        <td class="px-4 py-3 text-slate-600">{{ $r->nombre_examen }}</td>
-                        <td class="px-4 py-3 text-slate-500 text-xs">{{ $r->bioanalista ?? '—' }}</td>
+                        <td class="px-4 py-3 font-semibold text-slate-800 dark:text-slate-200">{{ $r->nombre_paciente }}</td>
+                        <td class="px-4 py-3 text-slate-600 dark:text-slate-400">{{ $r->nombre_examen }}</td>
+                        <td class="px-4 py-3 text-slate-500 dark:text-slate-500 text-xs">{{ $r->bioanalista ?? '—' }}</td>
                         <td class="px-4 py-3 text-center">
                             @if($r->imagen_path)
                                 <a href="{{ asset('storage/' . $r->imagen_path) }}" target="_blank"
@@ -124,8 +124,8 @@
         </div>
 
         <!-- Pagination Footer -->
-        <div class="px-8 py-4 border-t border-gray-100 bg-white flex flex-col md:flex-row justify-between items-center gap-4">
-            <span class="text-xs font-semibold text-slate-500">Mostrando {{ $resultados->count() }} de {{ $resultados->total() }} resultados</span>
+        <div class="px-8 py-4 border-t border-gray-100 dark:border-slate-800 bg-white dark:bg-transparent flex flex-col md:flex-row justify-between items-center gap-4">
+            <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">Mostrando {{ $resultados->count() }} de {{ $resultados->total() }} resultados</span>
             
             <x-pagination :paginator="$resultados" />
         </div>

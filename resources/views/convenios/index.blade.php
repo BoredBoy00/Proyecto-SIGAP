@@ -53,8 +53,8 @@
         <!-- Header -->
         <div class="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
-                <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Gestión de Convenios</h1>
-                <p class="text-slate-400 mt-1">Gestiona los convenios con proveedores y clientes.</p>
+                <h1 class="text-3xl font-bold text-slate-800 dark:text-slate-100 tracking-tight">Gestión de Convenios</h1>
+                <p class="text-slate-400 dark:text-slate-500 mt-1">Gestiona los convenios con proveedores y clientes.</p>
             </div>
             <button class="flex items-center space-x-2 px-5 py-2.5">
                 <a href="{{ route('convens.create') }}" class="flex items-center space-x-2 px-5 py-2.5 bg-[#0d6efd] text-white font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
@@ -65,15 +65,15 @@
         </div>
 
         <!-- Main Card -->
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
+        <div class="bg-white dark:bg-slate-900/50 rounded-2xl border border-gray-100 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col">
             
             <!-- Controls area -->
-            <form action="{{ route('convens.index') }}" method="GET" class="p-6 md:p-8 border-b border-gray-100 flex flex-col md:flex-row items-center justify-between gap-4">
+            <form action="{{ route('convens.index') }}" method="GET" class="p-6 md:p-8 border-b border-gray-100 dark:border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
                 <!-- Search -->
                 <div class="relative w-full md:w-[400px]">
                     <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400"></i>
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Buscar por código, RIF o nombre de la empresa..." 
-                           class="w-full pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all text-slate-700 placeholder-slate-400">
+                           class="w-full pl-9 pr-4 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all text-slate-700 dark:text-slate-200 placeholder-slate-400">
                 </div>
 
                 <!-- Right Control -->
@@ -81,7 +81,7 @@
                     <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
                         <i data-lucide="list-filter" class="w-4 h-4 text-slate-500"></i>
                     </div>
-                    <select name="sort" onchange="this.form.submit()" class="w-full text-center pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm text-slate-700 hover:bg-gray-50 transition-colors focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 appearance-none cursor-pointer" style="text-align-last: center;">
+                    <select name="sort" onchange="this.form.submit()" class="w-full text-center pl-10 pr-4 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-sm text-slate-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 appearance-none cursor-pointer" style="text-align-last: center;">
                         <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Más nuevos</option>
                         <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Más viejos</option>
                         <option value="az" {{ request('sort') == 'az' ? 'selected' : '' }}>Nombre (A-Z)</option>
@@ -92,26 +92,26 @@
 
             <!-- Table -->
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm text-slate-600 table-auto border-separate border-spacing-0">
-                    <thead class="bg-[#f1f7ff] text-slate-500 font-bold text-[11px] uppercase tracking-wider border-b border-blue-100">
+                <table class="w-full text-left text-sm text-slate-600 dark:text-slate-400 table-auto border-separate border-spacing-0">
+                    <thead class="bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 font-bold text-[11px] uppercase tracking-wider border-b border-slate-100 dark:border-slate-800">
                         <tr>
-                            <th class="px-6 py-4 w-32 border-b border-blue-100 text-center">CÓDIGO</th>
-                            <th class="px-6 py-4 w-48 border-b border-blue-100 text-center">RIF</th>
-                            <th class="px-6 py-4 border-b border-blue-100 text-center">NOMBRE DE LA EMPRESA</th>
-                            <th class="px-6 py-4 w-32 text-center border-b border-blue-100">DIRECCIÓN</th>
-                            <th class="px-6 py-4 w-40 text-center border-b border-blue-100">% DE DESCUENTO</th>
-                            <th class="px-6 py-4 w-28 text-center border-b border-blue-100">ACCIONES</th>
+                            <th class="px-6 py-4 w-32 border-b border-slate-100 dark:border-slate-800 text-center">CÓDIGO</th>
+                            <th class="px-6 py-4 w-48 border-b border-slate-100 dark:border-slate-800 text-center">RIF</th>
+                            <th class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 text-center">NOMBRE DE LA EMPRESA</th>
+                            <th class="px-6 py-4 w-32 text-center border-b border-slate-100 dark:border-slate-800">DIRECCIÓN</th>
+                            <th class="px-6 py-4 w-40 text-center border-b border-slate-100 dark:border-slate-800">% DE DESCUENTO</th>
+                            <th class="px-6 py-4 w-28 text-center border-b border-slate-100 dark:border-slate-800">ACCIONES</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-100 text-[15px]">
+                    <tbody class="divide-y divide-gray-100 dark:divide-slate-800 text-[15px]">
                         @forelse($empresas as $empresa)
-                        <tr id="item-{{ $empresa->id_empresa }}" class="hover:bg-blue-50/50 transition-colors group {{ (request('highlight') == $empresa->id_empresa || request('highlight') == $empresa->rif) ? 'highlight-flash' : '' }}">
+                        <tr id="item-{{ $empresa->id_empresa }}" class="hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-colors group {{ (request('highlight') == $empresa->id_empresa || request('highlight') == $empresa->rif) ? 'highlight-flash' : '' }}">
                             <td class="px-6 py-4 text-center">
-                                <span class="bg-blue-50/50 font-mono text-blue-600 text-xs font-semibold px-2.5 py-1 rounded-md">#{{ str_pad($empresa->id_empresa, 4, '0', STR_PAD_LEFT) }}</span>
+                                <span class="bg-blue-50/50 dark:bg-blue-900/30 font-mono text-blue-600 dark:text-blue-400 text-xs font-semibold px-2.5 py-1 rounded-md">#{{ str_pad($empresa->id_empresa, 4, '0', STR_PAD_LEFT) }}</span>
                             </td>
-                            <td class="px-6 py-4 font-semibold text-slate-800 text-center">{{ $empresa->rif }}</td>
-                            <td class="px-6 py-4 font-semibold text-slate-800 text-center">{{ $empresa->nombre_empresa }}</td>
-                            <td class="px-6 py-4 text-center text-slate-600">{{ $empresa->direccion }}</td>
+                            <td class="px-6 py-4 font-semibold text-slate-800 dark:text-slate-200 text-center">{{ $empresa->rif }}</td>
+                            <td class="px-6 py-4 font-semibold text-slate-800 dark:text-slate-200 text-center">{{ $empresa->nombre_empresa }}</td>
+                            <td class="px-6 py-4 text-center text-slate-600 dark:text-slate-400">{{ $empresa->direccion }}</td>
                             <td class="px-6 py-4 text-center">
                                 <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
                                     {{ $empresa->porcentaje_descuento }}%
@@ -148,8 +148,8 @@
             </div>
 
             <!-- Pagination Footer -->
-            <div class="px-8 py-4 border-t border-gray-100 bg-white flex flex-col md:flex-row justify-between items-center gap-4">
-                <span class="text-xs font-semibold text-slate-500">Mostrando {{ $empresas->count() }} de {{ $empresas->total() }} convenios</span>
+            <div class="px-8 py-4 border-t border-gray-100 dark:border-slate-800 bg-white dark:bg-transparent flex flex-col md:flex-row justify-between items-center gap-4">
+                <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">Mostrando {{ $empresas->count() }} de {{ $empresas->total() }} convenios</span>
                 
                 <x-pagination :paginator="$empresas" />
             </div>

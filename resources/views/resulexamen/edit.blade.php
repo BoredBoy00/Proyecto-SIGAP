@@ -5,34 +5,34 @@
 <div class="flex flex-col max-w-2xl w-full mx-auto mt-2">
     <div class="mb-6 flex items-center justify-between">
         <div>
-            <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Editar Resultado</h1>
-            <p class="text-slate-500 mt-1">Actualiza las observaciones o reemplaza el PDF adjunto.</p>
+            <h1 class="text-3xl font-bold text-slate-800 dark:text-slate-100 tracking-tight">Editar Resultado</h1>
+            <p class="text-slate-500 dark:text-slate-400 mt-1">Actualiza las observaciones o reemplaza el PDF adjunto.</p>
         </div>
         <a href="{{ route('resulexamen.index') }}"
-           class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-slate-600 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
+           class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
             <i data-lucide="arrow-left" class="w-4 h-4"></i> Volver
         </a>
     </div>
 
-    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 space-y-6">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-100 dark:border-slate-800 shadow-sm p-8 space-y-6">
 
         <!-- Info readonly -->
-        <div class="grid grid-cols-2 gap-4 p-4 bg-slate-50 rounded-xl border border-slate-200">
+        <div class="grid grid-cols-2 gap-4 p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
             <div>
-                <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Paciente</p>
-                <p class="font-semibold text-slate-800 mt-1">{{ $resultado->nombre_paciente }}</p>
+                <p class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Paciente</p>
+                <p class="font-semibold text-slate-800 dark:text-slate-200 mt-1">{{ $resultado->nombre_paciente }}</p>
             </div>
             <div>
-                <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Examen</p>
-                <p class="font-semibold text-slate-800 mt-1">{{ $resultado->nombre_examen }}</p>
+                <p class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Examen</p>
+                <p class="font-semibold text-slate-800 dark:text-slate-200 mt-1">{{ $resultado->nombre_examen }}</p>
             </div>
             <div>
-                <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Bioanalista</p>
-                <p class="text-slate-600 mt-1">{{ $resultado->bioanalista ?? '—' }}</p>
+                <p class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Bioanalista</p>
+                <p class="text-slate-600 dark:text-slate-300 mt-1">{{ $resultado->bioanalista ?? '—' }}</p>
             </div>
             <div>
-                <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Fecha Original</p>
-                <p class="text-slate-600 mt-1">{{ \Carbon\Carbon::parse($resultado->fecha_resultado)->format('d/m/Y H:i') }}</p>
+                <p class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Fecha Original</p>
+                <p class="text-slate-600 dark:text-slate-300 mt-1">{{ \Carbon\Carbon::parse($resultado->fecha_resultado)->format('d/m/Y H:i') }}</p>
             </div>
         </div>
 
@@ -42,14 +42,14 @@
 
             <!-- PDF actual -->
             @if($resultado->imagen_path)
-            <div class="flex items-center gap-3 p-3 bg-red-50 border border-red-100 rounded-xl">
-                <i data-lucide="file-text" class="w-5 h-5 text-red-500 shrink-0"></i>
+            <div class="flex items-center gap-3 p-3 bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30 rounded-xl">
+                <i data-lucide="file-text" class="w-5 h-5 text-red-500 dark:text-red-400 shrink-0"></i>
                 <div class="flex-1 min-w-0">
-                    <p class="text-sm font-semibold text-slate-700">PDF actual adjunto</p>
-                    <p class="text-xs text-slate-400 truncate">{{ basename($resultado->imagen_path) }}</p>
+                    <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">PDF actual adjunto</p>
+                    <p class="text-xs text-slate-400 dark:text-slate-500 truncate">{{ basename($resultado->imagen_path) }}</p>
                 </div>
                 <a href="{{ asset('storage/' . $resultado->imagen_path) }}" target="_blank"
-                   class="text-xs px-3 py-1.5 bg-white border border-gray-200 text-slate-600 rounded-lg hover:bg-gray-50 font-medium transition-colors shrink-0">
+                   class="text-xs px-3 py-1.5 bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 text-slate-600 dark:text-slate-200 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-600 font-medium transition-colors shrink-0">
                     Ver PDF
                 </a>
             </div>
@@ -57,24 +57,24 @@
 
             <!-- Observaciones -->
             <div>
-                <label class="block text-sm font-semibold text-slate-700 mb-1.5">Observaciones</label>
+                <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Observaciones</label>
                 <textarea name="observaciones" rows="4"
-                          class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all resize-none"
+                          class="w-full px-4 py-2.5 border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all resize-none"
                           placeholder="Notas adicionales...">{{ old('observaciones', $resultado->observaciones) }}</textarea>
             </div>
 
             <!-- Reemplazar PDF -->
             <div>
-                <label class="block text-sm font-semibold text-slate-700 mb-1.5">
-                    Reemplazar PDF <span class="text-slate-400 font-normal">(opcional)</span>
+                <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                    Reemplazar PDF <span class="text-slate-400 dark:text-slate-500 font-normal">(opcional)</span>
                 </label>
                 <div id="dropzone"
-                     class="w-full border-2 border-dashed border-gray-200 rounded-xl p-6 text-center cursor-pointer hover:border-red-400 hover:bg-red-50/30 transition-all"
+                     class="w-full border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-xl p-6 text-center cursor-pointer hover:border-red-400 dark:hover:border-red-500 hover:bg-red-50/30 dark:hover:bg-red-900/10 transition-all"
                      onclick="document.getElementById('pdfInput').click()">
-                    <i data-lucide="upload-cloud" class="w-8 h-8 text-slate-300 mx-auto mb-2"></i>
-                    <p class="text-sm text-slate-500">Arrastra un nuevo PDF o <span class="text-red-600 underline">haz clic aquí</span></p>
-                    <p class="text-xs text-slate-400 mt-1">PDF · Máx. 10MB</p>
-                    <p id="fileName" class="text-xs text-red-600 font-semibold mt-2 hidden"></p>
+                    <i data-lucide="upload-cloud" class="w-8 h-8 text-slate-300 dark:text-slate-600 mx-auto mb-2"></i>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">Arrastra un nuevo PDF o <span class="text-red-600 dark:text-red-400 underline">haz clic aquí</span></p>
+                    <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">PDF · Máx. 10MB</p>
+                    <p id="fileName" class="text-xs text-red-600 dark:text-red-400 font-semibold mt-2 hidden"></p>
                 </div>
                 <input type="file" id="pdfInput" name="pdf" accept=".pdf" class="hidden" onchange="handleFile(this)">
                 @error('pdf') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
@@ -83,7 +83,7 @@
             <!-- Botones -->
             <div class="flex justify-end space-x-3 pt-2">
                 <a href="{{ route('resulexamen.index') }}"
-                   class="px-5 py-2.5 text-sm font-medium text-slate-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                   class="px-5 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
                     Cancelar
                 </a>
                 <button type="submit"
