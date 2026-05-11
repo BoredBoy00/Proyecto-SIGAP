@@ -129,6 +129,26 @@
         :where(html.dark) ::-webkit-scrollbar-thumb:hover { 
             background: #475569; 
         }
+
+        /* Fix ApexCharts tooltip in dark mode */
+        :where(html.dark) .apexcharts-tooltip {
+            background: #1e293b !important;
+            border-color: #334155 !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5) !important;
+            color: #f8fafc !important;
+        }
+        :where(html.dark) .apexcharts-tooltip-title {
+            background: #0f172a !important;
+            border-bottom: 1px solid #334155 !important;
+            color: #f8fafc !important;
+        }
+        :where(html.dark) .apexcharts-tooltip-text {
+            color: #f8fafc !important;
+        }
+        :where(html.dark) .apexcharts-tooltip.apexcharts-theme-light {
+            background: #1e293b !important;
+            color: #f8fafc !important;
+        }
     </style>
 </head>
 

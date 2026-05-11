@@ -45,7 +45,7 @@
                             <i data-lucide="mail" class="h-5 w-5 text-slate-400 dark:text-slate-500"></i>
                         </div>
                         <input type="email" name="email" id="email" value="{{ old('email') }}" required autofocus
-                            class="block w-full pr-4 py-3 bg-slate-50/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 focus:bg-white dark:focus:bg-slate-800 text-slate-900 dark:text-white sm:text-sm transition-all duration-200 @error('email') border-red-500 focus:ring-red-500/20 focus:border-red-500 @enderror"
+                            class="block w-full pr-4 py-3 bg-slate-50/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 focus:bg-white dark:focus:bg-slate-800 text-slate-900 dark:text-white sm:text-sm transition-all duration-200 @error('email') border-red-500 focus:ring-red-500/20 focus:border-red-500 @enderror"
                             style="padding-left: 2.75rem;" placeholder="tu@email.com">
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                             <i data-lucide="lock" class="h-5 w-5 text-slate-400 dark:text-slate-500"></i>
                         </div>
                         <input type="password" name="password" id="password" required
-                            class="block w-full pr-4 py-3 bg-slate-50/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 focus:bg-white dark:focus:bg-slate-800 text-slate-900 dark:text-white sm:text-sm transition-all duration-200 @error('password') border-red-500 focus:ring-red-500/20 focus:border-red-500 @enderror"
+                            class="block w-full pr-4 py-3 bg-slate-50/50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 focus:bg-white dark:focus:bg-slate-800 text-slate-900 dark:text-white sm:text-sm transition-all duration-200 @error('password') border-red-500 focus:ring-red-500/20 focus:border-red-500 @enderror"
                             style="padding-left: 2.75rem;" placeholder="••••••••">
                     </div>
                 </div>

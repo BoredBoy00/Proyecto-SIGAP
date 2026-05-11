@@ -50,7 +50,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [ExamController::class, 'destroy'])->name('destroy');
     });
 
-    Route::prefix('usuarios')->name('users.')->middleware('role:admin')->group(function () {
+    Route::prefix('usuarios')->name('users.')->middleware('role:admin,Administrador')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index');
         Route::get('/nuevo', [UserController::class, 'create'])->name('create');
         Route::post('/nuevo', [UserController::class, 'store'])->name('store');
