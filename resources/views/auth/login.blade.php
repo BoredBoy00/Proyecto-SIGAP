@@ -24,6 +24,8 @@
         </script>
     @endif
 
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
     <div
         class="max-w-4xl flex flex-col md:flex-row rounded-3xl shadow-[0_20px_50px_rgba(8,_112,_184,_0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)] bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm overflow-hidden relative z-10 m-4 border border-white/20 dark:border-slate-800">
         <!-- Seccion Izquierda: Formulario -->
@@ -72,6 +74,13 @@
                         </label>
                     </div>
                 </div>
+
+                <div class="mt-5 flex justify-center">
+                    <div class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}"></div>
+                </div>
+                @error('g-recaptcha-response')
+                    <p class="text-red-500 text-xs text-center mt-2">{{ $message }}</p>
+                @enderror
 
                 <div class="pt-4">
                     <button type="submit"

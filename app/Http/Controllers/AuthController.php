@@ -27,14 +27,32 @@ class AuthController extends Controller
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
+            'g-recaptcha-response' => ['required'],
+        ], [
+            'g-recaptcha-response.required' => 'Por favor, marca la casilla de seguridad reCAPTCHA.',
         ]);
 
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+        $response = \Illuminate\Support\Facades\Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => env('RECAPTCHA_SECRET_KEY'),
+            'response' => $request->input('g-recaptcha-response'),
+            'remoteip' => $request->ip()
+        ]);
+
+        if (! $response->json('success')) {
+            return back()->withErrors([
+                'g-recaptcha-response' => 'La validación de reCAPTCHA falló. Inténtalo de nuevo.',
+            ])->onlyInput('email');
+        }
+
+        if (Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
             /** @var \App\Models\User $user */
             $user = Auth::user();
             $user->update([
                 'last_login_at' => now(),
             ]);
+
+            // Desloguear otros dispositivos para mantener una sola sesión activa
+            Auth::logoutOtherDevices($request->input('password'));
 
             $request->session()->regenerate();
 

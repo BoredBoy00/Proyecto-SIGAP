@@ -19,7 +19,10 @@ class CheckRole
             return redirect('/login');
         }
 
-        if (! in_array($request->user()->rol, $roles)) {
+        $userRole = strtolower($request->user()->rol);
+        $allowedRoles = array_map('strtolower', $roles);
+
+        if (! in_array($userRole, $allowedRoles)) {
             // Redirect or show an unauthorized page/message
             return redirect('/')->with('error', 'No tienes permiso para acceder a esta página.');
         }

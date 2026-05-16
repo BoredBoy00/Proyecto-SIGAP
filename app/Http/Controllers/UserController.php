@@ -13,7 +13,7 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
-            if (!Auth::user() || !in_array(Auth::user()->rol, ['admin', 'Administrador'])) {
+            if (!Auth::user() || !in_array(strtolower(Auth::user()->rol), ['admin', 'administrador'])) {
                 abort(403, 'Acceso denegado. Solo administradores pueden acceder a esta sección.');
             }
             return $next($request);
