@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('empresas', function (Blueprint $table) {
-            $table->string('email')->nullable()->after('rif');
-            $table->string('telefono')->nullable()->after('email');
+            // Ya fueron agregadas en la migración original de create_empresas_table
+            // $table->string('email')->nullable()->after('rif');
+            // $table->string('telefono')->nullable()->after('email');
         });
     }
 
@@ -23,7 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('empresas', function (Blueprint $table) {
-            $table->dropColumn(['email', 'telefono']);
+            // $table->dropColumn(['email', 'telefono']);
         });
     }
 };
