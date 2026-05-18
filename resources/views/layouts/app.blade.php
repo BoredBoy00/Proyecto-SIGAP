@@ -7,11 +7,11 @@
 
     <title>SIGAP - @yield('title', 'Dashboard')</title>
 
-    <!-- Fonts -->
+    <!-- Fuentes -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet" />
 
-    <!-- Styles / Scripts -->
+    <!-- Estilos / Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <script>
@@ -62,33 +62,34 @@
             background-color: rgba(30, 41, 59, 0.5) !important;
             box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.2), 0 0 20px rgba(37, 99, 235, 0.1) !important;
         }
-        @keyframes toast-slide-up {
-            0%   { transform: translateY(100%); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
+        @keyframes toast-slide-up-center {
+            0%   { transform: translate(-50%, 100%); opacity: 0; }
+            100% { transform: translate(-50%, 0); opacity: 1; }
         }
-        .toast-container {
-            position: fixed; bottom: 2rem; left: 50%;
-            transform: translateX(-50%); z-index: 9999;
-            display: flex; flex-direction: column; gap: 0.75rem;
-            pointer-events: none;
+        .toast-fixed-center {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            z-index: 9999;
+            animation: toast-slide-up-center 0.3s cubic-bezier(0.16,1,0.3,1) forwards;
         }
-        .toast-container > div { pointer-events: auto; }
 
-        /* Dark mode: native <dialog> background */
+
+        /* Modo oscuro: fondo nativo de <dialog> */
         :where(html.dark) dialog {
             background: #0f172a;
             color: #e2e8f0;
             border: 1px solid #1e293b;
         }
 
-        /* Dark mode: date / datetime-local picker widget */
+        /* Modo oscuro: widget de selección de fecha / datetime-local */
         :where(html.dark) input[type="date"],
         :where(html.dark) input[type="datetime-local"],
         :where(html.dark) input[type="time"] {
             color-scheme: dark;
         }
 
-        /* Dark mode: override browser autofill white background */
+        /* Modo oscuro: sobreescribir fondo blanco de autocompletado del navegador */
         :where(html.dark) input:-webkit-autofill,
         :where(html.dark) input:-webkit-autofill:hover,
         :where(html.dark) input:-webkit-autofill:focus,
@@ -98,7 +99,7 @@
             caret-color: #e2e8f0;
         }
 
-        /* Dark mode: select options background */
+        /* Modo oscuro: fondo de opciones select */
         :where(html.dark) select option {
             background-color: #1e293b;
             color: #e2e8f0;
@@ -108,12 +109,12 @@
             color: #ffffff;
         }
 
-        /* Dark mode: scrollbar for selects */
+        /* Modo oscuro: barra de desplazamiento para selects */
         :where(html.dark) select::-webkit-scrollbar { width: 6px; }
         :where(html.dark) select::-webkit-scrollbar-track { background: #0f172a; }
         :where(html.dark) select::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
 
-        /* Dark mode: global scrollbar */
+        /* Modo oscuro: barra de desplazamiento global */
         :where(html.dark) ::-webkit-scrollbar { 
             width: 10px; 
             height: 10px; 
@@ -130,7 +131,7 @@
             background: #475569; 
         }
 
-        /* Fix ApexCharts tooltip in dark mode */
+        /* Solucionar tooltip de ApexCharts en modo oscuro */
         :where(html.dark) .apexcharts-tooltip {
             background: #1e293b !important;
             border-color: #334155 !important;
@@ -154,18 +155,18 @@
 
 <body class="text-slate-800 dark:text-slate-200 font-sans antialiased flex h-screen overflow-hidden app-gradient">
 
-    <!-- Mobile Overlay -->
+    <!-- Superposición Móvil -->
     <div id="mobile-overlay" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-30 hidden lg:hidden transition-opacity" onclick="toggleSidebar()"></div>
 
-    <!-- Sidebar -->
+    <!-- Barra Lateral -->
     <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 w-64 border-r border-gray-100 dark:border-slate-800 flex flex-col items-center py-6 shrink-0 z-40 sidebar-gradient transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out shadow-2xl lg:shadow-none">
-        <!-- Logo -->
-        <div class="mb-10 w-full px-8 flex items-center space-x-3">
+        <!-- Logotipo -->
+        <a href="{{ route('dashboard') }}" class="mb-10 w-full px-8 flex items-center space-x-3 hover:opacity-80 transition-opacity cursor-pointer">
             <div class="w-10 h-10 rounded-full bg-blue-600/10 flex items-center justify-center">
                 <i data-lucide="activity" class="w-6 h-6 text-blue-600"></i>
             </div>
-            <h1 class="text-2xl font-black text-blue-600 tracking-tighter">SIGAP</h1>
-        </div>
+            <span class="text-2xl font-black text-blue-600 tracking-tighter">SIGAP</span>
+        </a>
 
         <!-- Navegacion -->
         <nav class="w-full px-4 flex flex-col space-y-1">
@@ -233,13 +234,13 @@
         </nav>
     </aside>
 
-    <!-- Main Content -->
+    <!-- Contenido Principal -->
     <main class="flex-1 flex flex-col h-screen relative w-full overflow-x-hidden">
-        <!-- Header wrapper -->
+        <!-- Contenedor del Encabezado -->
         <header
             class="w-full max-w-[1400px] mx-auto mt-4 mb-2 flex items-center justify-between px-4 md:px-8 shrink-0 relative top-0 z-10">
             <div class="flex items-center space-x-2 md:space-x-4">
-                <!-- Hamburger Menu (Mobile Only) -->
+                <!-- Menú Hamburguesa (Solo Móvil) -->
                 <button type="button" onclick="toggleSidebar()" class="lg:hidden text-slate-500 dark:text-slate-400 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm border border-gray-200/50 dark:border-slate-800/50 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-xl p-2.5 transition-all active:scale-95 cursor-pointer flex items-center justify-center">
                     <i data-lucide="menu" class="w-5 h-5"></i>
                 </button>
@@ -249,15 +250,15 @@
                 @endif
             </div>
 
-            <!-- Floating User Profile Pill -->
+            <!-- Píldora Flotante del Perfil de Usuario -->
             <div class="flex items-center space-x-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-2xl p-2 px-4 shadow-sm border border-gray-200/50 dark:border-slate-800/50">
                 <button id="theme-toggle" type="button" title="Cambiar tema"
                     class="text-slate-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-xl p-2.5 transition-all active:scale-95 cursor-pointer flex items-center justify-center">
-                    {{-- Moon icon (shown in light mode) --}}
+                    {{-- Icono de luna (mostrado en modo claro) --}}
                     <svg id="theme-toggle-dark-icon" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
                     </svg>
-                    {{-- Sun icon (shown in dark mode) --}}
+                    {{-- Icono de sol (mostrado en modo oscuro) --}}
                     <svg id="theme-toggle-light-icon" xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <circle cx="12" cy="12" r="5"/>
                         <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
@@ -293,9 +294,7 @@
             </div>
         @endif
 
-        <div class="toast-container">
-            <x-toast />
-        </div>
+        <x-toast />
 
         <div class="w-full max-w-[1400px] mx-auto flex-1 overflow-y-auto px-4 md:px-8 pb-8 pt-4 md:pt-10">
             @yield('content')
@@ -379,18 +378,17 @@
                 const oldToast = document.getElementById('toast-message');
                 if(oldToast) oldToast.remove();
 
-                const iconBg = type === 'error' ? '#fef2f2' : '#f0fdf4';
-                const iconColor = type === 'error' ? '#ef4444' : '#16a34a';
+                const iconBgClass = type === 'error' ? 'bg-red-50 dark:bg-red-900/20' : 'bg-green-50 dark:bg-green-900/20';
+                const iconColorClass = type === 'error' ? 'text-red-500 dark:text-red-400' : 'text-green-500 dark:text-green-400';
                 const iconName = type === 'error' ? 'alert-circle' : 'check-circle';
-                const darkIconBg = type === 'error' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(34, 197, 94, 0.1)';
 
                 const toastHTML = `
-                    <div id="toast-message" class="fixed top-6 right-6 z-[100] bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-xl shadow-2xl min-w-[320px] p-4 animate-toast-slide-up">
+                    <div id="toast-message" class="toast-fixed-center bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-xl shadow-2xl min-w-[320px] p-4">
                         <div class="grid grid-cols-[4px_1fr_24px] items-center">
                             <div></div>
                             <div class="flex items-center justify-center gap-2.5">
-                                <div class="w-9 h-9 rounded-full flex items-center justify-center shrink-0 bg-[${iconBg}] dark:bg-[${darkIconBg}]">
-                                    <i data-lucide="${iconName}" class="w-4 h-4" style="color: ${iconColor}"></i>
+                                <div class="w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${iconBgClass}">
+                                    <i data-lucide="${iconName}" class="w-4 h-4 ${iconColorClass}"></i>
                                 </div>
                                 <span class="font-bold text-sm text-slate-800 dark:text-slate-100">${title}</span>
                             </div>
@@ -466,7 +464,7 @@
                                 
                                 window.history.replaceState({}, '', url);
 
-                                // Update pagination wrappers if found
+                                // Actualizar contenedores de paginación si se encuentran
                                 const currentPagination = document.querySelector('div.mt-auto') || document.querySelector('nav[role="navigation"]')?.parentElement;
                                 const newPagination = doc.querySelector('div.mt-auto') || doc.querySelector('nav[role="navigation"]')?.parentElement;
                                 

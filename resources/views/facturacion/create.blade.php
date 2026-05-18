@@ -21,15 +21,7 @@
                 <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100">Datos de Facturación</h2>
                 <p class="text-slate-400 dark:text-slate-500 text-sm mt-1">Ingresa los detalles para generar la factura.</p>
 
-                @if ($errors->any())
-                    <div class="mt-4 p-4 bg-red-50 text-red-600 rounded-lg text-sm">
-                        <ul class="list-disc pl-5">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+
             </div>
 
             <form action="{{ route('facturacion.store') }}" method="POST" class="p-6 md:p-8 flex flex-col space-y-8 flex-1" id="facturacionForm">

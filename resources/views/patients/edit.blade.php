@@ -72,9 +72,6 @@
 
                 </div>
 
-            </div>
-        
-
             <div class="bg-blue-50/50 dark:bg-slate-800 border-t border-blue-100 dark:border-slate-700 p-6 flex items-center justify-end space-x-3 mt-auto">
                 <a href="{{ route('patients.look') }}">
                     <button type="button" class="px-6 py-2.5 bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium rounded-lg border border-gray-200 dark:border-slate-600 hover:bg-gray-50 dark:hover:bg-slate-600 transition-colors cursor-pointer">
@@ -89,7 +86,6 @@
             </form>
             
         </div>
-    </div>
     </div>
     <script>
         const formatField = (id, regex, fn) => {

@@ -22,21 +22,7 @@
                 <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100">Información del Convenio</h2>
                 <p class="text-slate-400 dark:text-slate-500 text-sm mt-1">Ingresa los datos del nuevo convenio.</p>
                 
-                @if ($errors->any())
-                    <div class="mt-4 p-4 bg-red-50 text-red-600 rounded-lg text-sm">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-                
-                @if (session('success'))
-                    <div class="mt-4 p-4 bg-green-50 text-green-600 rounded-lg text-sm">
-                        {{ session('success') }}
-                    </div>
-                @endif
+
             </div>
 
             <form action="{{ route('convens.store') }}" method="POST" class="p-8 flex flex-col space-y-6">

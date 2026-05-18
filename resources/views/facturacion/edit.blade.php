@@ -19,15 +19,7 @@
                 <h2 class="text-2xl font-bold text-slate-800">Actualizar Estado y Pago</h2>
                 <p class="text-slate-400 text-sm mt-1">Modifica el estado o el método de pago de esta factura. Nota: Los montos y exámenes no se pueden modificar una vez facturados.</p>
                 
-                @if ($errors->any())
-                    <div class="mt-4 p-4 bg-red-50 text-red-600 rounded-lg text-sm">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+
             </div>
 
             <form action="{{ route('facturacion.update', $factura->id_facturacion) }}" method="POST" class="p-8 flex flex-col space-y-6">

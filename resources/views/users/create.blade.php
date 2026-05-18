@@ -13,57 +13,43 @@
                 <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Información del Usuario</h2>
                 <p class="text-slate-400 dark:text-slate-500 text-sm mt-1">Ingresa los datos del nuevo usuario y asigna sus credenciales de acceso.</p>
 
-                @if ($errors->any())
-                    <div class="mt-4 p-4 bg-red-50 text-red-600 rounded-lg text-sm">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
 
-                @if (session('success'))
-                    <div class="mt-4 p-4 bg-green-50 text-green-600 rounded-lg text-sm">
-                        {{ session('success') }}
-                    </div>
-                @endif
             </div>
 
             <form action="{{ route('users.store') }}" method="POST" class="p-8 flex flex-col space-y-6">
                 @csrf
-                <!-- Row 1: Nombres y Apellidos -->
+                <!-- Fila 1: Nombres y Apellidos -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="flex flex-col space-y-2">
                         <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Nombres</label>
-                        <input type="text" name="nombres" value="{{ old('nombres') }}" required
-                            placeholder="Ej. Carlos Andrés"
+                        <input type="text" name="nombres" value="{{ old('nombres') }}" required maxlength="50"
+                            placeholder="Ej. Carlos Andrés" oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '')"
                             class="px-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-sm text-slate-700 dark:text-slate-200 placeholder-slate-300 dark:placeholder-slate-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                     </div>
                     <div class="flex flex-col space-y-2">
                         <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Apellidos</label>
-                        <input type="text" name="apellidos" value="{{ old('apellidos') }}" required
-                            placeholder="Ej. Gómez Silva"
+                        <input type="text" name="apellidos" value="{{ old('apellidos') }}" required maxlength="50"
+                            placeholder="Ej. Gómez Silva" oninput="this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '')"
                             class="px-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-sm text-slate-700 dark:text-slate-200 placeholder-slate-300 dark:placeholder-slate-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                     </div>
                 </div>
 
-                <!-- Row 2: Cédula -->
+                <!-- Fila 2: Cédula -->
                 <div class="flex flex-col space-y-2">
-                    <label class="text-sm font-semibold text-slate-700">Cédula de Identidad</label>
-                    <input type="text" id="cedula-input" name="cedula" value="{{ old('cedula') }}"
+                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Cédula de Identidad</label>
+                    <input type="text" id="cedula-input" name="cedula" value="{{ old('cedula') }}" required
                         placeholder="Ejemplo V-12345678" maxlength="10"
-                        class="px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                        class="px-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-sm text-slate-700 dark:text-slate-200 placeholder-slate-300 dark:placeholder-slate-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                 </div>
 
-                <!-- Row 3: Correo -->
+                <!-- Fila 3: Correo -->
                 <div class="flex flex-col space-y-2">
-                    <label class="text-sm font-semibold text-slate-700">Correo Electrónico (Usuario)</label>
+                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Correo Electrónico (Usuario)</label>
                     <input type="email" name="email" value="{{ old('email') }}" required placeholder="usuario@sigap.com"
-                        class="px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                        class="px-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-sm text-slate-700 dark:text-slate-200 placeholder-slate-300 dark:placeholder-slate-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                 </div>
 
-                <!-- Row 3: Contraseñas -->
+                <!-- Fila 4: Contraseñas -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="flex flex-col space-y-2">
                         <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Contraseña</label>
@@ -91,7 +77,7 @@
                     </div>
                 </div>
 
-                <!-- Row 4: Rol -->
+                <!-- Fila 5: Rol -->
                 <div class="flex flex-col space-y-2 relative pb-2">
                     <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Rol / Nivel de Acceso</label>
                     <i data-lucide="chevron-down" class="absolute right-4 top-[38px] w-4 h-4 text-slate-400"></i>

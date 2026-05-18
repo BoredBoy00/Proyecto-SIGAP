@@ -12,27 +12,13 @@
                 <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Información del Usuario</h2>
                 <p class="text-slate-400 dark:text-slate-500 text-sm mt-1">Ingresa los datos del usuario que necesitas corregir</p>
                 
-                @if ($errors->any())
-                    <div class="mt-4 p-4 bg-red-50 text-red-600 rounded-lg text-sm">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-                
-                @if (session('success'))
-                    <div class="mt-4 p-4 bg-green-50 text-green-600 rounded-lg text-sm">
-                        {{ session('success') }}
-                    </div>
-                @endif
+
             </div>
 
             <form action="{{ route('users.update', $user->id) }}" method="POST" class="p-8 flex flex-col space-y-6">
                 @method('PATCH')
                 @csrf
-                <!-- Row 1: Nombres y Apellidos -->
+                <!-- Fila 1: Nombres y Apellidos -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="flex flex-col space-y-2">
                         <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Nombres</label>
@@ -44,28 +30,34 @@
                     </div>
                 </div>
 
-                <!-- Row 2: Cédula -->
+                <!-- Fila 2: Cédula -->
                 <div class="flex flex-col space-y-2">
                     <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Cédula de Identidad</label>
-                    <input type="text" id="cedula-input" name="cedula" value="{{ $user->cedula }}" placeholder="Ejemplo 12345678" maxlength="10" class="px-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-sm text-slate-700 dark:text-slate-200 placeholder-slate-300 dark:placeholder-slate-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                    <input type="text" id="cedula-input" name="cedula" value="{{ $user->cedula }}" required placeholder="Ejemplo 12345678" maxlength="10" class="px-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-sm text-slate-700 dark:text-slate-200 placeholder-slate-300 dark:placeholder-slate-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                 </div>
 
-                <!-- Row 3: Correo -->
+                <!-- Fila 3: Correo -->
                 <div class="flex flex-col space-y-2">
                     <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Correo Electrónico (Usuario)</label>
                     <input type="email" name="email" value="{{ $user->email }}" required placeholder="usuario@sigap.com" class="px-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-sm text-slate-700 dark:text-slate-200 placeholder-slate-300 dark:placeholder-slate-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
                 </div>
 
-                <!-- Row 4: Rol -->
+                <!-- Fila 4: Rol -->
                 <div class="flex flex-col space-y-2 relative pb-2">
                     <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Rol / Nivel de Acceso</label>
-                    <i data-lucide="chevron-down" class="absolute right-4 top-[38px] w-4 h-4 text-slate-400"></i>
-                    <select name="rol" value="{{ $user->rol }}" required class="px-4 py-3 pr-10 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-sm text-slate-700 dark:text-slate-200 appearance-none focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
-                        <option value="" disabled selected>Seleccionar rol</option>
-                        <option value="Administrador">Administrador</option>
-                        <option value="Recepcionista">Recepcionista</option>
-                        <option value="Bioanalista">Bioanalista</option>
-                    </select>
+                    @if(Auth::id() === $user->id)
+                        <input type="text" value="{{ $user->rol }}" disabled class="px-4 py-3 bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-sm text-slate-500 cursor-not-allowed">
+                        <input type="hidden" name="rol" value="{{ $user->rol }}">
+                        <p class="text-xs text-amber-600 dark:text-amber-500 mt-1">No puedes cambiar tu propio nivel de acceso.</p>
+                    @else
+                        <i data-lucide="chevron-down" class="absolute right-4 top-[38px] w-4 h-4 text-slate-400"></i>
+                        <select name="rol" required class="px-4 py-3 pr-10 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-sm text-slate-700 dark:text-slate-200 appearance-none focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all">
+                            <option value="" disabled>Seleccionar rol</option>
+                            <option value="Administrador" {{ strtolower($user->rol) == 'administrador' ? 'selected' : '' }}>Administrador</option>
+                            <option value="Recepcionista" {{ strtolower($user->rol) == 'recepcionista' ? 'selected' : '' }}>Recepcionista</option>
+                            <option value="Bioanalista" {{ strtolower($user->rol) == 'bioanalista' ? 'selected' : '' }}>Bioanalista</option>
+                        </select>
+                    @endif
                 </div>
             
 
